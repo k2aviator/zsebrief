@@ -6,7 +6,7 @@ import Nav from './Nav';
 import app from '../db';
 
 
-export default function GetAirportList() {  
+export default function GetAirportList({pstTime}) {  
    
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -40,8 +40,7 @@ export default function GetAirportList() {
         toggleAirportOpen(!airportOpen) //expands all fields
 
     }
-    // try this on Sunday 3/5: https://blog.logrocket.com/create-collapsible-react-components-react-collapsed/
-    // try this as wellhttps://codesandbox.io/s/react-collapse-expand-all-collapse-all-0h4mc?file=/src/index.js
+
     // MAP AIRPORTS TO AIRPORT LIST
     const airportList = airports.map((airport,index) =>{
         let airportICAO = airport.ICAO
@@ -57,7 +56,7 @@ export default function GetAirportList() {
         // <div className={airportOpen? "" : "content"}>Airport: {airportName}</div>
         return (
             <div key={index}>
-            <GetAirportDetails airportICAO={airportICAO} airportName={airportName} airportTowered={airportTowered} airportHoursOpen={airportHoursOpen} airportHoursClose={airportHoursClose} airspaceClass={airspaceClass} airportElev={airportElev}/>
+            <GetAirportDetails airportICAO={airportICAO} airportName={airportName} airportTowered={airportTowered} airportHoursOpen={airportHoursOpen} airportHoursClose={airportHoursClose} airspaceClass={airspaceClass} airportElev={airportElev} pstTime={pstTime}/>
             </div>
         )
     })

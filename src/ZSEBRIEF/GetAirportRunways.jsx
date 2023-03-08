@@ -65,9 +65,13 @@ export default function GetAirportRunways({airportICAO}) {
 
     return (
         <div>
-        <p>Airport runways:</p>
-        {runwaysList}
-        <GetAirportMETAR airportICAO={airportICAO} runways={varAirportSelected}/>
-        </div>
+            <div>
+            <GetAirportMETAR airportICAO={airportICAO} runways={varAirportSelected}/>
+            </div>
+            <div>
+            <p>Airport runways:</p>
+            {runwaysList}
+            </div>
+         </div>
     );
 }
