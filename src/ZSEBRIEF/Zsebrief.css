@@ -1,0 +1,105 @@
+
+/*BELOW: Key styling of page*/
+
+
+.logo-text {
+  text-decoration: none; /* no underline */
+  color:#3b3939;
+}
+
+
+/* Page content */
+
+.body {
+  padding: 1.5rem;
+}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+.sticky-header{
+  position: sticky;
+  background: #ffffff;
+  top: 0;
+  width: 100%;
+  padding-bottom: 3px;
+}
+
+/*Above styling of page
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible-expand {
+    background-color: #eee;
+    color: #3b3939;
+    cursor: pointer;
+    width: auto;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    padding:10px;
+  }
+
+    
+  /* Style the collapsible content. Note: hidden by default */
+  .collapsible-hidden {
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+  }
+  
+
+  .button {
+    background-color: #d2d1d1;
+    color: #3b3939;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .button-collapse-all {
+    color: #3b3939;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    background-color: #eeeeee91;
+  }
+
+
+  .active, .button:hover {
+    background-color: #ccc;
+  }
+  
+
+
+  /*Airport details box*/
+
+/* 
+  .airport-details-box {
+    display:flex;
+    flex-direction: row;
+    align-items:center;
+  } */
+
+  .airport-details-collapse-button{
+    width:64rem;
+    background-color: #ffffff;
+    justify-content: space-between;
+    text-align:right;
+    top:8.5rem;
+    margin-bottom:.1rem;
+    position: sticky;
+  }
+
+
+  .airport-code-name {
+    width: 64rem;
+    padding:.1rem;
+  }
+
+  .airport-edit {
+    width:4rem;
+  }
