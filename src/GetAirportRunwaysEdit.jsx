@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, onValue, doc, getDocs, onSnapshot, ref, child, get, set } from "firebase/database";
-import GetAirportMETAR from './GetAirportMETAR'
+import { getDatabase,  ref,  get } from "firebase/database";
 
 
 export default function GetAllAirportRunways({airportICAO}) {  
@@ -33,16 +32,6 @@ export default function GetAllAirportRunways({airportICAO}) {
 
     //Write to database
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("test")
-        // set(runwaysdb),{
-        //     RUNWAY_LENGTH : 69
-        // }
-    };
-
-    const runwaysLength = runways.length;
-
     for (const [index, value] of runways.entries()){
         // console.log(index,value)
         const target = value;
@@ -54,7 +43,7 @@ export default function GetAllAirportRunways({airportICAO}) {
 
     const varAirportSelected = runways.filter(function(runways, index) {
         runways.index = index
-        return runways.ICAO == airportICAO;
+        return runways.ICAO === airportICAO;
     })
     
     //MAP Airport Runways

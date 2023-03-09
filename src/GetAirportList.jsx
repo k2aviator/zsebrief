@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import { getDatabase, onValue, doc, getDocs, onSnapshot, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, get, } from "firebase/database";
 import GetAirportDetails from './GetAirportDetails'
-import Nav from './Nav';
-import app from '../db';
-
 
 export default function GetAirportList({pstTime}) {  
    
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [airports, setAirports] = useState([])
-    const [airportOpen, toggleAirportOpen] = useState(false)
 
     useEffect(()=>{
     
@@ -32,14 +27,6 @@ export default function GetAirportList({pstTime}) {
                 // console.log(airports)
             )
         }, [])
-
-   
-    const classToggle = (e) =>{
-        const thisButton = e.target
-        // console.log(thisButton)
-        toggleAirportOpen(!airportOpen) //expands all fields
-
-    }
 
     // MAP AIRPORTS TO AIRPORT LIST
     const airportList = airports.map((airport,index) =>{

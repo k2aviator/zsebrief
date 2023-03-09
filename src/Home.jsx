@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
 import Login from './Login'
 import firebase from 'firebase/compat/app'
 import './Zsebrief.css';
-import db from '../db';
 
 //console.log("db auth ", db)
 //npm install --save moment react-moment

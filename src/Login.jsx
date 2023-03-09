@@ -2,8 +2,8 @@ import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import './db'
 import './Zsebrief.css'
-import db from '../db';
 
 //console.log("db auth ", db)
 
@@ -27,7 +27,7 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <div className="body">
             <h1>ZSEBRIEF</h1>
             <p>Please sign-in:</p>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />     

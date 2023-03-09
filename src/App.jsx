@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './ZSEBRIEF/Home';
-import AirportEdit from './ZSEBRIEF/AirportEdit'
-import Login from './ZSEBRIEF/Login'
+import Home from './Home';
+import AirportEdit from './AirportEdit'
+import Login from './Login'
 import './App.css';
-import './ZSEBRIEF/Zsebrief.css';
+import './Zsebrief.css';
 
 
 function App() {

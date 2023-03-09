@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'
-import ReactDOM from "react-dom";
+import React, { useState } from 'react';
 import GetAirportRunways from './GetAirportRunways'
-import GetAirportMETAR from './GetAirportMETAR'
-import AirportEditModal from './AirportEdit'
 import { Link } from 'react-router-dom';
 
 //https://blog.openreplay.com/creating-a-collapsible-component-for-react/
