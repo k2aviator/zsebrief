@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, onValue, doc, getDocs, onSnapshot, ref, child, get, set } from "firebase/database";
 
 export default function GetAirportMETAR({airportICAO, runways}) {  
     const [metar, setMetar] = useState(undefined)
@@ -24,7 +23,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
               toggleLoading(false);
               setHasError(true);
           })  
-        }, [])
+        }, [avwxUrlCodeFetch])
 
 
  
@@ -39,13 +38,16 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     // console.log("airport metar" ,metar)
     const airportRawMetar = metar.raw
     const airportFlightRules = metar.flight_rules 
+    // eslint-disable-next-line
     let airportWindSpeed;
+    // eslint-disable-next-line
     let airportWindValue = null;
     let airportWindDirection;
 
     //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
 
-    if (metar.wind_speed.value != null || metar.wind_speed != null || metar.wind_speed.value != undefined || metar.wind_speed != undefined){
+    if (metar.wind_speed.value !== null || metar.wind_speed !== null || metar.wind_speed.value !== undefined || metar.wind_speed !== undefined){
+        // eslint-disable-next-line
         airportWindSpeed = metar.wind_speed.value
     }
     if (metar.wind_direction){
@@ -67,7 +69,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
    
     //filter for airport selected
     const calmWindRunway= runways.filter(function(runways) {
-        return runways.CALM_WIND_RUNWAY == 'TRUE';
+        return runways.CALM_WIND_RUNWAY === 'TRUE';
     })
 
     let runwaysToDisplay;
@@ -83,7 +85,6 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         }
         runways.forEach(function (runway) {
             const runwayHeading = runway.TRUE_HEADING
-            const runwayWindDiff = Math.abs(airportWindDirection - runwayHeading)
             GetHeadingDiff(airportWindDirection,runwayHeading)
             //console.log(windDiff)
             //runwaysAndWinds.push(runwayWindDiff)
@@ -134,7 +135,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     //Filter from less to most
 
     //if the airport is showing winds
-    if (airportWindValue == null || airportWindValue == undefined){
+    if (airportWindValue === null || airportWindValue === undefined){
         // console.log("no winds reported", airportWindValue)
         runwaysToDisplay = runways;
         // calmStatus = "no winds reported"

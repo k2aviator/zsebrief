@@ -1,14 +1,5 @@
-//import React from 'react';
-//import { getDatabase, onValue, ref, set } from "firebase/database";
-import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyDKCaRe6miZ1rghwxGNXjMRxUfuRF6T1tc",
-//   authDomain: "zsebrief.firebaseapp.com",
-//   projectId: "zsebrief",
-// })
 
 const firebaseConfig = {
     apiKey: "AIzaSyDKCaRe6miZ1rghwxGNXjMRxUfuRF6T1tc",

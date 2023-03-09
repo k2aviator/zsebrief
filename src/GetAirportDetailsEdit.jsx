@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'
-import ReactDOM from "react-dom";
-import AirportEditModal from './AirportEdit'
-import { Link } from 'react-router-dom';
-import { getDatabase, onValue, doc, getDocs, onSnapshot, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, get} from "firebase/database";
 
 
 export default function GetAirportDetailsEdit({airportICAO}) {  
@@ -34,7 +30,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     const varAirportSelected = airports.filter(function(airports) {
         // console.log("airports filter", airports.ICAO)
         // console.log("airports filter", airportICAO)
-        return airports.ICAO == airportICAO;
+        return airports.ICAO === airportICAO;
     })
     // console.log("airport selected" , varAirportSelected)
 

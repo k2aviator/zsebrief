@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, onValue, doc, getDocs, onSnapshot, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, get } from "firebase/database";
 import GetAirportMETAR from './GetAirportMETAR'
 
 export default function GetAirportRunways({airportICAO}) {  
@@ -30,7 +30,7 @@ export default function GetAirportRunways({airportICAO}) {
 
     //filter for airport selected
     const varAirportSelected = runways.filter(function(runways) {
-        return runways.ICAO == airportICAO;
+        return runways.ICAO === airportICAO;
     })
     // console.log("airport selected", varAirportSelected)
 
@@ -40,8 +40,6 @@ export default function GetAirportRunways({airportICAO}) {
         let runwayNumber = runway.RUNWAY
         let runwayCalmWind = runway.CALM_WIND_RUNWAY
         let runwayCalmWindThreshold = runway.CALM_WIND_THRESHOLD
-        let runwayLength = runway.LENGTH_FT
-        let runwayWidth = runway.WIDTH_FT
 
         //console.log("code is", airportICAO)
         
