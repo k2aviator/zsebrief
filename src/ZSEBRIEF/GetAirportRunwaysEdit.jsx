@@ -4,19 +4,17 @@ import GetAirportMETAR from './GetAirportMETAR'
 
 
 export default function GetAllAirportRunways({airportICAO}) {  
-    
-
- 
-        
+            
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [runways, setRunways] = useState([])
-    
+
     useEffect(()=>{
     
         const db = getDatabase();
         const runwaysdb = ref(db,'runways/');
      
+        //Read database
 
         get(runwaysdb).then((snapshot) => {
             //console.log(snapshot.val());
@@ -33,13 +31,36 @@ export default function GetAllAirportRunways({airportICAO}) {
         }, [])
 
 
-    
-    //filter for airport selected
-    const varAirportSelected = runways.filter(function(runways) {
+    //Write to database
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        alert("test")
+        // set(runwaysdb),{
+        //     RUNWAY_LENGTH : 69
+        // }
+    };
+
+    const runwaysLength = runways.length;
+
+    for (const [index, value] of runways.entries()){
+        // console.log(index,value)
+        const target = value;
+        // console.log("target", target)
+        const source = {"INDEX" : index}
+        Object.assign(target,source)
+    }
+
+
+    const varAirportSelected = runways.filter(function(runways, index) {
+        runways.index = index
         return runways.ICAO == airportICAO;
     })
     
     //MAP Airport Runways
+
+    console.log(varAirportSelected)
+
     const runwaysList = varAirportSelected.map((runway,index) =>{
         let runwayCalmWind = runway.CALM_WIND_RUNWAY
         let runwayCalmWindThreshold = runway.CALM_WIND_THRESHOLD
@@ -53,32 +74,20 @@ export default function GetAllAirportRunways({airportICAO}) {
         let runwayTrueHeading = runway.TRUE_HEADING
         let runwayUpdated = runway.UPDATED
         let runwayWidth = runway.WIDTH_FT
+        let runwayIndex = runway.INDEX
 
-
-        const calmWindOptions = [
-            { value: "TRUE" , label: "TRUE"},
-            { value: "FALSE", label: "FALSE"}
-        ]
-
-        const calmWindIndex = calmWindOptions.findIndex(i => i.value === runwayCalmWind)
-    
-        console.log("index" , calmWindIndex)
-        // <select id="calmWindRunway" name="calmWindRunway">
-        // <option value="TRUE">TRUE</option>
-        // <option value="FALSE">FALSE</option>
-        // </select>
+        // const runwayLengthTest = 69;
 
         return (
             <div key={index}>
                 <form>
-                    <label><b>Runway {runwayNumber}</b></label><br></br>
+                    <label><b>Runway {runwayNumber} | Index # {runwayIndex}</b></label><br></br>
                     <label>Last updated {runwayUpdated}</label><br></br>
-                    <label>Calm Wind Runway? Currently is set to {runwayCalmWind}: </label>
-                    <select>
-                        {calmWindOptions.map((option, index) => (
-                        <option key={index} value={option.value}>{option.label}</option>
-                        ))}
-                    </select>
+                    <label>Calm Wind Runway? Currently is set to {runwayCalmWind}: </label><br></br>
+                    <input type = "radio" id="calmWind" name="calmWindSelector" value="TRUE"></input>
+                    <label htmlFor="True">True</label>
+                    <input type = "radio" id="calmWind" name="calmWindSelector" value="FALSE"></input>
+                    <label htmlFor="True">False</label>  
                     <br></br>
                     <label>Calm threshold: </label><input type="text" id="runwayCalmThreshold" size="1" placeholder={runwayCalmWindThreshold} /><br></br>
                     <label>DVA: </label><input type="text" id="runwayDva" size="50" placeholder={runwayDVA} /><br></br>
@@ -88,13 +97,12 @@ export default function GetAllAirportRunways({airportICAO}) {
                     <label>Width (FT): </label><input type="text" id="runwayWidth" size="1" placeholder={runwayWidth} /><br></br>
                     <label>HDG (Mag): </label><input type="text" id="runwayMagHeading" size="1" placeholder={runwayMagHeading} /><br></br>
                     <label>HDG (True): </label><input type="text" id="runwayTrueHeading" size="1" placeholder={runwayTrueHeading} /><br></br>
-                    <label>Traffic pattern? Currently is set to {runwayPatternDirection}: </label>
-                        <select id="runwayPatternDirection" name="runwayPatternDirection">
-                            <option value="LEFT">LEFT</option>
-                            <option value="RIGHT">RIGHT</option>
-                        </select>
+                    <label>Traffic pattern? Currently is set to {runwayPatternDirection}: </label><br></br>
+                    <input type = "radio" id="trafficDirection" name="trafficDirection" value="LEFT"></input>
+                    <label htmlFor="LEFT">Left</label>
+                    <input type = "radio" id="trafficDirection" name="trafficDirection" value="RIGHT"></input>
+                    <label htmlFor="RIGHT">Right</label> 
                     <br></br>
-                    <input type="submit" value="Submit" />
                     <p></p>
                 </form>
             </div>

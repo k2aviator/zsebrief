@@ -62,7 +62,6 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                 <label>Hour Closed: </label><input type="text" id="airportHoursClose" size="1" placeholder={airportHoursClose} /><br></br>
                 <label>Notes: </label><input type="text" id="airportNotes" size="40" placeholder={airportNotes} /><br></br>
                 <br></br>
-                <input type="submit" value="Submit" />
                 <p></p>
             </form>
         </div>
