@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import AirportEdit from './AirportEdit'
+import NearbyAirplanes from './NearbyAirplanes'
 import Login from './Login'
 import './App.css';
 import './Zsebrief.css';
@@ -15,6 +16,7 @@ function App() {
         <Route path = "/" element={<Login />}/>
         <Route path = "/home" element={<Home />}/>
         <Route path = "/airportedit" element={<AirportEdit />}/>
+        <Route path = "/nearbyairplanes" element={<NearbyAirplanes />}/>
      </Routes>  
     </div>
   );

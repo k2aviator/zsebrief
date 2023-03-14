@@ -23,7 +23,7 @@ export default function AirportEdit(){
 
     const location = useLocation()
     const airportICAO = location.state.airportICAO
-
+    console.log(location)
 
     if (user){
     return(

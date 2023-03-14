@@ -117,7 +117,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
             Object.assign(target,source)
             //Object.assign(runways[i].push({"headingDiff" : runwaysAndWinds[i]})
         }
-        console.log("want to pass these runways to display", runways)
+        // console.log("want to pass these runways to display", runways)
         return runways
 
     }
@@ -133,6 +133,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     // console.log("less than 90 degrees", lessThanNinety)
 
     //Filter from less to most
+    let calmWindThreshold;
 
     //if the airport is showing winds
     if (airportWindValue === null || airportWindValue === undefined){
@@ -144,7 +145,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         if (calmWindRunway.length > 0){ //if a calm runway exists, do these calculations and show calm wind runway
             // DO THIS IF A CALM RUNWAY EXISTS
             const calmWindThreshold = calmWindRunway[0].CALM_WIND_THRESHOLD
-            console.log("calm stats exist... calm wind threshold ",calmWindThreshold, " | airport total wind is ", airportTotalWind)
+            // console.log("calm stats exist... calm wind threshold ",calmWindThreshold, " | airport total wind is ", airportTotalWind)
             //check to see if winds are less than the threshold
             if (airportTotalWind >= calmWindThreshold) {
                 //runwaysToDisplay = runways;
@@ -152,17 +153,19 @@ export default function GetAirportMETAR({airportICAO, runways}) {
                 // console.log("airport wind direction" , airportWindDirection)
                 calmStatus = "(winds not calm)"
                 runwaysToDisplay = lessThanNinety
+
             } else {
                 //filter table for calm wind runways
                 // console.log("display this table ",calmWindRunway)
                 runwaysToDisplay = calmWindRunway  
                 calmStatus = "(winds are calm)"
+
             }
 
             // console.log("runways to display ", runwaysToDisplay)
 
         } else { //DO THIS IF A CALM RUNWAY DOESN'T EXISTS
-            console.log("calm wind runway doesn't exist")
+            // console.log("calm wind runway doesn't exist")
             // runwaysToDisplay = runways;
             // calculateRunway(airportWindDirection)
             runwaysToDisplay = lessThanNinety
@@ -171,6 +174,20 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         }
     }
     
+    
+    const checkNanWinds = function(winds){
+        if ( isNaN(winds)) {
+            console.log("winds don't have a value", winds)
+            return 0
+        } else {
+            console.log("winds have a value", winds)
+            return winds
+
+        }
+
+    }
+
+
     //MAP Runways to display
     // console.log(runwaysToDisplay)
     const runwaysPrint = runwaysToDisplay.map((runway,index) =>{
@@ -178,30 +195,51 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         let runwayLength = runway.LENGTH_FT
         let runwayWidth = runway.WIDTH_FT
         let windOffset = runway.WIND_OFFSET
+        let trafficPatternDir = runway.TRAFFIC_PATTERN
 
+        // console.log(runway)
         return (
-            <div key={index}>
-                Runway: {runwayNumber} | Length by width: {runwayLength} x {runwayWidth} | Wind offset: {windOffset} degrees
-            </div>
+            <tr key={index}>
+                    <td>{runwayNumber} </td>
+                    <td>{runwayLength} x {runwayWidth}</td>
+                    <td>{checkNanWinds(windOffset)} degrees</td>
+                    <td>{trafficPatternDir}</td>
+            </tr>
         )
 
     })
 
+    //Exclude remarks part of the atis
+    let metarToDisplay;
+    const atisRemarkIndex = airportRawMetar.indexOf("RMK")
+    metarToDisplay = airportRawMetar.substring(0,atisRemarkIndex)
+    // console.log("airport raw metar", )
 
-    // Wind speed: {airportWindSpeed}<br></br>
-    // Wind direction: {airportWindDirection}<br></br>
-    // Total wind: {airportTotalWind}
+
     return (
         <div>
              <div>
-                <p>Airport weather:</p>
-                {airportRawMetar}<br></br>
+                <p className="headerText">WEATHER</p>
+                {metarToDisplay}<br></br>
                 Flight rules: {airportFlightRules}<br></br>
              
             </div>
             <div>
-                <p>Preferred runway(s) {calmStatus}:</p>
-                {runwaysPrint}
+                <p className="headerText">PREFERRED RUNWAY(S)</p><p>{calmStatus}:</p>
+                <table id="details">
+                    <thead>
+                        <tr>
+                            <th>Runway</th>
+                            <th>Length by width</th>
+                            <th>Wind offset</th>
+                            <th>Pattern direction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {runwaysPrint}
+                    </tbody>
+                </table>
+             
             </div>
         </div>
        
