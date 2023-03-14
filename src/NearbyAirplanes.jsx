@@ -242,7 +242,7 @@ export default function NearbyAirplanes(){
                         </td>
                         <td>{airplaneStatus}
                         </td>
-                        <td>
+                        <td><button onClick={trackPlane}>Track</button>
                         </td>
                     </tr>
                     )
