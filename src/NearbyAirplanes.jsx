@@ -3,6 +3,9 @@ import { getDatabase, ref, get, } from "firebase/database";
 import Header from './Header';
 import Login from './Login';
 import { distance } from './utilDistance'
+import DisplayPilotTable from './DisplayPilotTable'
+import DisplayPilotTableHead from './DisplayPilotTableHead'
+import Tracker from './Tracker'
 
 
 const vatsimURL = `https://data.vatsim.net/v3/vatsim-data.json`
@@ -191,102 +194,14 @@ export default function NearbyAirplanes(){
     let minors; 
     let noClosest;
 
-    const sortAndCopyTables = function (){
-        console.log("Function #5: Sort and copy tables")
-        console.log("pilots for majors filtering ", displayPilots)
-
-
-        // // console.log("pilots to display", displayPilots)
+    if (displayPilots){
         majors = displayPilots.filter(function(pilots) {
-           return pilots.CLOSEST  === "KPDX" || pilots.CLOSEST  === "KSEA" ;})
-        
-       console.log("display majors ", majors)
-
+            return pilots.CLOSEST  === "KPDX" || pilots.CLOSEST  === "KSEA" ;})
         minors = displayPilots.filter(function(pilots) {
             return !(pilots.CLOSEST  === "KPDX" || pilots.CLOSEST  === "KSEA" | pilots.CLOSEST === undefined) ;})
-        console.log("display minors ", minors)
-
         noClosest = displayPilots.filter(function(pilots) {
             return (pilots.CLOSEST === undefined); })
-
-        console.log("no closest airport ", noClosest)
-    }
-
-    //WANT TO DISPLAY TABLES for majors, minors, and noClosest
-
-    const trackPlane = function(){
-        console.log("track plane")
-        return <button>Track</button>
-    }
-
-    // CREATE TABLES BASED ON STATUS
-    let displayPilotsFixed;
-    
-    if (displayPilots){
-        displayPilotsFixed = displayPilots.map((airplane,index) =>{
-            let airplaneCallsign = airplane.callsign
-            let airplaneGroundSpeed = airplane.groundspeed
-            let airplaneLatitude = airplane.latitude
-            let airplaneLongitude = airplane.longitude
-            let airportClosest = airplane.CLOSEST
-            let airplaneStatus = airplane.STATUS
-            // console.log("airplane", airplane.callsign, airportClosest)
-            let airplaneOrigin;
-            let airplaneArrival;
-            if (airplane.flight_plan === null | airplane.flight_plan === undefined) {
-                airplaneOrigin = "NONE" 
-                airplaneArrival = "NONE" 
-                return (           
-                    <tr key={index}>
-                        <td>{airplaneCallsign}
-                        </td>
-                        <td>{airplaneLatitude}
-                        </td>
-                        <td>{airplaneLongitude}
-                        </td>
-                        <td>{airplaneGroundSpeed}
-                        </td>
-                        <td>{airplaneOrigin}
-                        </td>
-                        <td>{airplaneArrival}
-                        </td>
-                        <td>{airportClosest}
-                        </td>
-                        <td>{airplaneStatus}
-                        </td>
-                        <td><button onClick={trackPlane}>Track</button>
-                        </td>
-                    </tr>
-                    )
-            } else {
-                airplaneOrigin = airplane.flight_plan.departure
-                airplaneArrival = airplane.flight_plan.arrival
-                return (           
-                    <tr key={index}>
-                        <td>{airplaneCallsign}
-                        </td>
-                        <td>{airplaneLatitude}
-                        </td>
-                        <td>{airplaneLongitude}
-                        </td>
-                        <td>{airplaneGroundSpeed}
-                        </td>
-                        <td>{airplaneOrigin}
-                        </td>
-                        <td>{airplaneArrival}
-                        </td>
-                        <td>{airportClosest}
-                        </td>
-                        <td>{airplaneStatus}
-                        </td>
-                        <td><button onClick={trackPlane}>Track</button>
-                        </td>
-                    </tr>
-                        )
-            }
-        })
-    }
-
+    } 
 
 
     // console.log("pilots in range for if statement", pilotsInRange)
@@ -297,7 +212,8 @@ export default function NearbyAirplanes(){
         console.log("Function #6: FINALLY display pilots ")
     }
 
-
+    let timestamp1 = "2023-03-15T04:37:46.1558713Z"
+    let timestamp2 = "2023-03-15T01:56:40.0739964Z"
    
     const callVatsim = ()=> {
         console.log("calling vatsim")
@@ -315,8 +231,6 @@ export default function NearbyAirplanes(){
                 toggleLoading(false);
                 setHasError(true);
             })
-        //DO THIS WITH ASYNC AND WAIT 
-        //AWAIT GET DATA, THEN AWAIT GET DISTANCE..
         .then(()=>{
         if (airplanes !== undefined){
             getDistanceFromAirport()
@@ -333,9 +247,6 @@ export default function NearbyAirplanes(){
             setLoadSpeed(30000)
         }
         })
-        //.then(()=>{
-        //     sortAndCopyTables()
-        // })
         .then(stopFetchVatsim)
     }
  
@@ -346,12 +257,14 @@ export default function NearbyAirplanes(){
     const stopFetchVatsim = ()=>{
         clearInterval(fetchVatsim)
     }
-    // let airportsLookUp = airports.map(item => item.ICAO)
-   //  console.log(airportsLookUp)
 
 
 
-    //FUNCTION TO CALCULATE DISTANCE FROM AIRPLANE TO POINT OF REFERENCE
+
+    const trackPlane = function(airplane){
+        console.log("track plane", airplane.target)
+        return <button>Track</button>
+    }
 
 
     if (user){
@@ -359,36 +272,41 @@ export default function NearbyAirplanes(){
         <div className="body">
             <Header />
             <h3>Tracker</h3>
-            <h3>All planes</h3>
-            <table id="details">
+                <Tracker />
+            <h3>Minor Airports</h3>
+                 <table id="details">
                     <thead>
-                        <tr>
-                            <th>Callsign                              
-                            </th>
-                            <th>Lat.
-                            </th>
-                            <th>Long.
-                            </th>
-                            <th>GS
-                            </th>
-                            <th>Origin
-                            </th>
-                            <th>Dest.
-                            </th>
-                            <th>Closest
-                            </th>
-                            <th>Status
-                            </th>
-                            <th>Track
-                            </th>
-                        </tr>   
+                        <DisplayPilotTableHead/>
                     </thead>
                      {displayPilots &&
-                        <tbody>
-                            {displayPilotsFixed}
-                        </tbody>}
+                    <tbody>
+                        <DisplayPilotTable displayTable={minors} trackPlane={trackPlane}/>
+                    </tbody>
+                    }
+                </table>
+            <h3>No Nearby Airports</h3>
+                 <table id="details">
+                    <thead>
+                        <DisplayPilotTableHead/>
+                    </thead>
+                     {displayPilots &&
+                    <tbody>
+                        <DisplayPilotTable displayTable={noClosest} trackPlane={trackPlane}/>
+                    </tbody>
+                    }
                     
             </table>
+            <h3>Major Airports</h3>
+                 <table id="details">
+                    <thead>
+                        <DisplayPilotTableHead/>
+                    </thead>
+                     {displayPilots &&
+                    <tbody>
+                        <DisplayPilotTable displayTable={majors} trackPlane={trackPlane}/>
+                    </tbody>
+                    }
+                </table>
         </div>
       
     )
