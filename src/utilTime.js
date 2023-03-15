@@ -7,11 +7,10 @@ export const convertTime12to24 = (time12h) => {
         // console.log('length = 10');
         // console.log("time", time, "modifier", modifier)
         let [hours, minutes, secs] = time.split(':')
-        
         if (hours === '12' && modifier === 'AM') {
             hours = '00';
             timePstOutput = `${hours}${minutes}`
-        } else if (modifier === 'PM') {
+        } else if (modifier === 'P' || modifier === 'PM') {
             hours = parseInt(hours) + 12;
             //console.log(hours, minutes, secs)
             timePstOutput = `${hours}${minutes}`

@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.3.4",
     "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase": "^9.17.2",
     "firestore-export-import": "^1.3.5",
@@ -17,7 +18,8 @@
     "react-firebaseui": "^6.0.0",
     "react-router-dom": "^6.8.2",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zlib": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +44,24 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/k2aviator/zsebrief.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k2aviator/zsebrief/issues"
+  },
+  "homepage": "https://github.com/k2aviator/zsebrief#readme",
+  "headers": [
+    {"source":"http://localhost:3000", 
+    "headers" : [{
+      "key":"Access-Control-Allow-Origin", 
+      "value":"*"}] 
+    }
+  ]
 }

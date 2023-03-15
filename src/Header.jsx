@@ -8,7 +8,6 @@ import { convertTime12to24 } from './utilTime'
 import './Zsebrief.css';
 
 
-
 export default function Header() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState(false)
@@ -16,7 +15,6 @@ export default function Header() {
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
 
-    let timePstOutput;
 
     //Set user display name 
     useEffect(() =>{
