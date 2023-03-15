@@ -17,7 +17,7 @@ export default function NearbyAirplanes(){
     const [airplanes, setAirplanes] = useState(undefined)
     const [pilotsInRange, setPilotsInRange] = useState(undefined)
     const [displayPilots,setDisplayPilots] = useState(undefined)
-    const [loadSpeed, setLoadSpeed] = useState(500)
+    const [displayMajors,setDisplayMajors] = useState(undefined)
 
     //GET AIRPORT LIST FROM FIREBASE DATABASE
     useEffect(()=>{
@@ -44,8 +44,7 @@ export default function NearbyAirplanes(){
     const centerRadius = 350
 
     const getDistanceFromAirport = async function (){ //loops through all VATSIM planes to calculate distance from central location and adds DIST_ZSE
-        console.log("Function #1A - Get all airplane distances from center point")
-        // 1A GET DISTANCES FROM CENTER POINT
+        console.log("Function #1 - Get all airplane distances from center point")
         // console.log("distance from airport function", airplanes)
         for (var i = 0; i < airplanes.length; i++){
             let airplaneLatitude = airplanes[i].latitude
@@ -58,21 +57,25 @@ export default function NearbyAirplanes(){
             Object.assign(target,source)
         }
         // console.log("function 1 output ", airplanes)
+    }
 
-        // 1B BUILD A DISPLAY FOR PILOTS IN RANGE
+
+    const buildPilotsInRange = async function() {
+        console.log("Function #2 - Build pilots in range")
         //filter data for pilots in range
         let pilotsInRange = airplanes.filter(item => item.DIST_ZSE <= 350 && item.groundspeed <= 80)
         //Below: Exclude North of Canada border
         pilotsInRange = pilotsInRange.filter(item => item.latitude <= 49.002053 && item.latitude >= 40.333329)
         //Below: Exclude Victoria area
         pilotsInRange = pilotsInRange.filter(item => !((item.latitude <= 49.002053 && item.latitude >= 48.251827) && (item.longitude <= -123.218793 && item.longitude >= -123.960865)) )
-        console.log("Function #1B - Pilots table in range results ",  pilotsInRange)
+        console.log("Function #2 - Pilots table in range ",  pilotsInRange)
         setPilotsInRange(pilotsInRange)
-    
+       return pilotsInRange
     }
+
    
     const getClosestAirport = async function (){
-        console.log("Function #2 - Get closest airports for pilots in range")
+        console.log("Function #3 - Get closest airports for pilots in range")
         let airportList = airports
         // console.log("airports loop", airportList)
         // console.log(pilotsInRange)
@@ -190,7 +193,7 @@ export default function NearbyAirplanes(){
     let majors;
     let minors; 
     let noClosest;
-
+    
     const sortAndCopyTables = function (){
         console.log("Function #5: Sort and copy tables")
         console.log("pilots for majors filtering ", displayPilots)
@@ -213,6 +216,9 @@ export default function NearbyAirplanes(){
     }
 
     //WANT TO DISPLAY TABLES for majors, minors, and noClosest
+
+    console.log("majors outside the function ", majors)
+
 
     const trackPlane = function(){
         console.log("track plane")
@@ -317,31 +323,31 @@ export default function NearbyAirplanes(){
             })
         //DO THIS WITH ASYNC AND WAIT 
         //AWAIT GET DATA, THEN AWAIT GET DISTANCE..
+
         .then(()=>{
-        if (airplanes !== undefined){
+        if (airplanes !== undefined && airplanes.length > 0){
             getDistanceFromAirport()
         }
         })
         .then(()=>{
-        if (pilotsInRange !== undefined) {
-            getClosestAirport()
+        if (airplanes !== undefined && airplanes.length > 0){
+            buildPilotsInRange()
         }
         })
         .then(()=>{
-        if (pilotsInRange !== undefined) {
-            getFlightStatus()
-            setLoadSpeed(30000)
-        }
+            getClosestAirport()
         })
-        //.then(()=>{
-        //     sortAndCopyTables()
-        // })
+        .then(()=>{
+            getFlightStatus()
+        }).then(()=>{
+            sortAndCopyTables()
+        })
         .then(stopFetchVatsim)
     }
  
     
     const fetchVatsim = setInterval(() => 
-    callVatsim(),loadSpeed)
+    callVatsim(),10000)
 
     const stopFetchVatsim = ()=>{
         clearInterval(fetchVatsim)

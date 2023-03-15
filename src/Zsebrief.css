@@ -1,7 +1,6 @@
 
 /*BELOW: Key styling of page*/
 
-
 .logo-text {
   text-decoration: none; /* no underline */
   color:#3b3939;
@@ -11,6 +10,7 @@
 /* Page content */
 
 .body {
+  box-sizing: border-box;
   padding: 1.5rem;
 }
 

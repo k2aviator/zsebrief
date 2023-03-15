@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Nav from './x Nav';
 import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
-import Header from './Header';
 import Login from './Login'
 import firebase from 'firebase/compat/app'
-import './Zsebrief.css';
+import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
-
-//console.log("db auth ", db)
-//npm install --save moment react-moment
+import './Zsebrief.css';
 
 
-export default function Home() {
+
+export default function Header() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState(false)
     const [user, setUser] = useState({})
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
+
+    let timePstOutput;
 
     //Set user display name 
     useEffect(() =>{
@@ -49,19 +48,28 @@ export default function Home() {
     };
     }, []);
 
+    
+
 
     //Display home content
 
     if (user){
     return (
-        <div className='body'>
+        <div className="sticky-header">
             <div>
-                <Header />
+                <Link to="/home"><h1 className="logo-text">ZSEBRIEF</h1></Link>  
+                <Link to="/home">Home</Link>  | <Link to="/tracker">Tracker</Link>  
             </div>
             <div>
-                <GetAirportList pstTime={pstTime}/> 
+                <p>Welcome, {user && userName}! <br></br> 
+                Time is {time}Z | {pstTime} PST<br></br>
+                <button onClick={()=> {
+                    firebase.auth().signOut();
+                    navigate("/");
+                    }}>Sign out</button></p>
             </div>
         </div>
+         
     );} else {
     return(
         <Login />
