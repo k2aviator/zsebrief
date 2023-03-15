@@ -75,7 +75,10 @@
   
 
 
-/*Tower open and visual conditions*/
+/*Airport details box*/
+
+
+/*tower open*/
 
 .towerOpen{
   text-align:center;
@@ -93,41 +96,6 @@
   color: #3b3939;
   font-weight: bold;
 }
-
-.flightRules {
-  width:85px;
-
-}
-
-.skyVFR{
-  text-align:center;
-  width:50px;
-  background-color: #0011ff;
-  padding:2px;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-
-.skyMVFR{
-  text-align:center;
-  width:50px;
-  background-color: #1100ff;
-  background-image: linear-gradient(#0011ff,#1f1f1f);
-  padding:2px;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.skyIFR{
-  text-align:center;
-  width:50px;
-  background-color: #1f1f1f;
-  padding:2px;
-  color: #ffffff;
-  font-weight: bold;
-}
-
 
 /*Text headers*/
 
@@ -178,7 +146,7 @@
     background-color: #ffffff;
     justify-content: space-between;
     text-align:right;
-    top:10.5rem;
+    top:8.5rem;
     margin-bottom:.1rem;
     position: sticky;
   }

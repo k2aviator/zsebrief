@@ -4,7 +4,6 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     const [metar, setMetar] = useState(undefined)
     const [hasError, setHasError] = useState(false);
     const [loading,toggleLoading] = useState(true);
-    const [skyConditions,setSkyConditions] = useState(true);
 
     const avwxToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
     const avwxUrlCode = "https://avwx.rest/api/metar/"
@@ -216,33 +215,13 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     metarToDisplay = airportRawMetar.substring(0,atisRemarkIndex)
     // console.log("airport raw metar", )
 
-    
-    const evalSkyConditions = (airportFlightRules)=>{
-        if (airportFlightRules === "VFR"){
-           return "skyVFR"
-        }
-        else if (airportFlightRules === "MVFR"){
-            return "skyMVFR"
-        }
-        else if (airportFlightRules === "IFR"){
-            return "skyIFR"
-        }
-    }
 
     return (
         <div>
              <div>
                 <p className="headerText">WEATHER</p>
-                {metarToDisplay}
-                    <tbody>
-                        <tr>
-                            <td className="flightRules">Flight rules:</td>
-                            <td className={evalSkyConditions(airportFlightRules)}>{airportFlightRules}</td>
-                        </tr>
-                    </tbody>
-                
-                <br></br>
-                <br></br>
+                {metarToDisplay}<br></br>
+                Flight rules: {airportFlightRules}<br></br>
              
             </div>
             <div>
