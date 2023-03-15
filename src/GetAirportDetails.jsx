@@ -83,20 +83,20 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             
                         {airportOpen &&  
                         <div> 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className={setTowerStatus(towerOpen)}>{towerOpen}</td>
-                                    <td>{displayHours(airportHoursOpen)}-{airportHoursClose} (time now {pstTime})</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className={setTowerStatus(towerOpen)}>{towerOpen}</td>
+                                        <td>{displayHours(airportHoursOpen)}-{airportHoursClose} (time now {pstTime})</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         }
 
