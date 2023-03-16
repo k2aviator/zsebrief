@@ -25,7 +25,6 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const isTowerOpen = ()=>{
         if (airportHoursOpen === 2359){
             setTowerOpen("TWR OPEN")
-
         }
         else if (parseInt(pstTime) > airportHoursOpen) {
             if (parseInt(pstTime) < airportHoursClose){

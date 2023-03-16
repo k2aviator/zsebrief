@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import calmWindIcon from './icons/windcalm.svg'
+import medWindIcon from './icons/windmed.svg'
+import strongWindIcon from './icons/windstrong.svg'
+
+
+
+
+
+
+
 
 export default function GetAirportMETAR({airportICAO, runways}) {  
     const [metar, setMetar] = useState(undefined)
@@ -229,11 +239,24 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         }
     }
 
+    const setWindSock = (winds)=>{
+        let iconSrc = ""
+        if (winds <= 5){
+            return calmWindIcon
+            
+        } else if (winds <= 15){
+            return medWindIcon 
+
+        } else {
+            return strongWindIcon
+        }
+    }
+
     return (
         <div>
              <div>
                 <p className="headerText">WEATHER</p>
-                {metarToDisplay}
+                <p>{metarToDisplay}</p>
                     <tbody>
                         <tr>
                             <td className="flightRules">Flight rules:</td>
@@ -246,7 +269,8 @@ export default function GetAirportMETAR({airportICAO, runways}) {
              
             </div>
             <div>
-                <p className="headerText">PREFERRED RUNWAY(S)</p><p>{calmStatus}:</p>
+                <span className="headerText">PREFERRED RUNWAY(S)</span><span className="windsNotCalm">{calmStatus}</span> <img className="iconWindSock" src={setWindSock(airportTotalWind)}></img>
+                <p></p>
                 <table id="details">
                     <thead>
                         <tr>
