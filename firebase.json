@@ -14,7 +14,9 @@
       }
     ],
     "headers": [
-      {"source":"/service-workers.js", "headers" : [{"key":"Cache-Control", "value":"no-cache"}]}
-    ]
+      {"source":"/service-workers.js", "headers" : [{"key":"Cache-Control", "value":"no-cache"}]},
+      {"source":"https://zsebrief.web.app", "headers" : [{"key":"Access-Control-Allow-Origin", "value":"*"}]},
+      {"source":"**", "headers" : [{"key":"Access-Control-Allow-Origin", "value":"*"}]}
+    ]   
   }
 }
