@@ -36,10 +36,13 @@ export default function Login() {
             height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>       
             <div className='main-body'>
-        
-                <div className="header-logo">
+                  <div className="header-logo">
                     <img src={logo}></img>
-                    <p>Please sign-in:</p>
+
+                    <p>Welcome to ZSEBrief, a simple app designed to give Seattle Virtual ARTCC (ZSE) controllers visibility into the operations of over 30 airports while working Enroute or TRACON positions on the VATSIM network.</p>
+                    <p>In the Pacific Northwest the weather is dynamic and staying on top of which runways and procedures to use can be a burden, especially when you have a bustling sector. With a few clicks, ZSEBrief makes it possible to work your airports like a pro.</p>
+                    <p>Have a good shift and please sign-in to get started!</p>
+
                     <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /> 
                 </div>    
             </div>
