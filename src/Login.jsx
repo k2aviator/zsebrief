@@ -4,6 +4,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import './db'
 import './Zsebrief.css'
+import logo from './icons/zsebrief.png'
 
 //console.log("db auth ", db)
 
@@ -28,9 +29,11 @@ export default function Login() {
 
     return (
         <div className="body">
-            <h1>ZSEBRIEF</h1>
-            <p>Please sign-in:</p>
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />     
+            <div className="header-logo">
+                <img src={logo}></img>
+                <p>Please sign-in:</p>
+                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /> 
+            </div>    
         </div>
     );
 }

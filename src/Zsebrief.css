@@ -6,29 +6,119 @@
   color:#3b3939;
 }
 
+a:visited { 
+  text-decoration: none; 
+  color:#3b3939;
+ }
+
+ a:hover { 
+  text-decoration: none; 
+  color:#3b3939;
+ }
+ 
+ a:link { 
+  text-decoration: none; 
+  color:#3b3939;
+ }
+
+ a:active { 
+  text-decoration: none; 
+  color:#3b3939;
+ }
 
 /* Page content */
 
-.body {
-  box-sizing: border-box;
-  padding: 1.5rem;
+html, body {
+  height:100%;
+  min-width:500px;
+  width:75%;
+  max-width:900px
 }
 
-/* The sticky class is added to the header with JS when it reaches its scroll position */
+
+html {
+  display: table;
+  margin: auto;
+  background-color: #E6E4DE;
+}
+
+body {
+  display: table-cell;
+  vertical-align: top;
+}
+
+
+/* Navigation boxes*/
+
 .sticky-header{
   position: sticky;
-  background: #ffffff;
-  width:76%;
+  background: #E6E4DE;
   min-width: 500px;
   top: 0;
   padding-bottom: 3px;
 }
 
+
+
+.header-box-top{
+  display:flex;
+  justify-content:space-between;
+  font-size: 15px;
+  flex-direction:row;
+}
+
+.header-logo{
+  margin-top:15px;
+}
+
+.header-right-top{
+  display:flex;
+  flex-direction:row;
+  text-align: center;
+  
+}
+
+
+.header-box-bottom{
+  display:flex;
+  flex-direction:row;
+  justify-content:left;
+  margin-left:65px;
+  padding:5px;
+  font-size: 15px;
+ 
+  
+}
+
+.header-box-bottom-item{
+   margin-right:5%;
+}
+
+
+.header-welcome{
+  padding:5px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+}
+
+.header-signout{
+  padding:5px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+}
+
+
+
+
 /*Above styling of page
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible-expand {
-    background-color: #eee;
+    background-color: #E6E4DE;
     color: #3b3939;
     cursor: pointer;
     width: auto;
@@ -49,7 +139,7 @@
   
 
   .button {
-    background-color: #d2d1d1;
+    background-color: #BBBCB7;
     color: #3b3939;
     cursor: pointer;
     padding: 18px;
@@ -81,7 +171,7 @@
 .towerOpen{
   text-align:center;
   width:100px;
-  background-color: #04AA6D;
+  background-color: #88AF7F;
   padding:2px;
   color: #ffffff;
   font-weight: bold;
@@ -155,7 +245,7 @@
 #details {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  min-width: 500px;
+  min-width: 400px;
 
 }
 
@@ -164,7 +254,7 @@
   padding: 8px;
 }
 
-#details tr:nth-child(even){background-color: #f2f2f2;}
+#details tr:nth-child(even){background-color: #D4D2CB;}
 
 #details tr:hover {background-color: #ddd;}
 
@@ -172,7 +262,7 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #ebebeb;
+  background-color: #D4D2CB;
   color: rgba(90, 90, 90, 0.929);
 }
 
@@ -188,20 +278,17 @@
 
 
   .airport-details-collapse-button{
-    width:76%;
-    min-width: 500px;
-    background-color: #ffffff;
+    min-width: 400px;
+    background-color: #E6E4DE;
     justify-content: space-between;
     text-align:right;
-    top:10.5rem;
-    margin-bottom:.1rem;
+    top:7rem;
+    margin-bottom:1.0rem;
     position: sticky;
   }
 
-
   .airport-code-name {
-    width: 75%;
-    min-width: 500px;
+    min-width: 400px;
     padding:.1rem;
   }
 

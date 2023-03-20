@@ -7,9 +7,12 @@ import DisplayPilotTable from './DisplayPilotTable'
 import DisplayPilotTableHead from './DisplayPilotTableHead'
 import Tracker from './Tracker'
 
+//https://mysticcoders.com/blog/react-to-cors-with-express-proxy
 
-const vatsimURL = `https://data.vatsim.net/v3/vatsim-data.json`
-const vatusaURL = `https://api.vatusa.net/v2/public/planes`
+// const express = require('express')
+// const request = require('request')
+// const cors = require('cors')
+
 
 export default function NearbyAirplanes(){
 
@@ -20,7 +23,11 @@ export default function NearbyAirplanes(){
     const [airplanes, setAirplanes] = useState(undefined)
     const [pilotsInRange, setPilotsInRange] = useState(undefined)
     const [displayPilots,setDisplayPilots] = useState(undefined)
-    const [loadSpeed, setLoadSpeed] = useState(500)
+    const [loadSpeed, setLoadSpeed] = useState(10000)
+
+    //EXPRESS SETUP
+  
+
 
     //GET AIRPORT LIST FROM FIREBASE DATABASE
     useEffect(()=>{
@@ -214,39 +221,45 @@ export default function NearbyAirplanes(){
 
     let timestamp1 = "2023-03-15T04:37:46.1558713Z"
     let timestamp2 = "2023-03-15T01:56:40.0739964Z"
+
+    const vatsimURL = `https://data.vatsim.net/v3/vatsim-data.json`
+    const vatusaURL = `https://api.vatusa.net/v2/public/planes`
+
    
     const callVatsim = ()=> {
         console.log("calling vatsim")
-        fetch(vatsimURL,{
+        fetch(vatusaURL,{
         method : "GET",
         })
         .then(response => response.json())
         .then((data) => {
-            // console.log("request data", data.pilots)
+            console.log("request data", data.data)
             toggleLoading(false);  
-            setAirplanes(data.pilots)
+            setAirplanes(data.data)
             },
             (error)=>{
                 console.log(error)
                 toggleLoading(false);
                 setHasError(true);
+                
             })
         .then(()=>{
         if (airplanes !== undefined){
             getDistanceFromAirport()
+            // setLoadSpeed(10000);
         }
         })
-        .then(()=>{
-        if (pilotsInRange !== undefined) {
-            getClosestAirport()
-        }
-        })
-        .then(()=>{
-        if (pilotsInRange !== undefined) {
-            getFlightStatus()
-            setLoadSpeed(30000)
-        }
-        })
+        // .then(()=>{
+        // if (pilotsInRange !== undefined) {
+        //     getClosestAirport()
+        // }
+        // })
+        // .then(()=>{
+        // if (pilotsInRange !== undefined) {
+        //     getFlightStatus()
+        //     setLoadSpeed(10000)
+        // }
+        // })
         .then(stopFetchVatsim)
     }
  

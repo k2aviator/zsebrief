@@ -6,7 +6,7 @@ import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import './Zsebrief.css';
-
+import logo from './icons/zsebrief.png'
 
 
 export default function Header() {
@@ -56,19 +56,31 @@ export default function Header() {
     if (user){
     return (
         <div>
-            <div>
-                <Link to="/home"><h1 className="logo-text">ZSEBRIEF</h1></Link>  
-                <Link to="/home">Home</Link>  | <Link to="/tracker">Tracker</Link>  
+            <div className="header-box-top">
+          
+                <div className="header-logo">
+                    
+                    <Link to="/home"><img src={logo}></img></Link>  
+                </div>
+                <div className="header-right-top">
+                        <div className="header-welcome">
+                        Welcome, {user && userName}! <br></br>
+                        Time is {time}Z | {pstTime} PST
+                        </div>
+                        <div className="header-signout">
+                        <button onClick={()=> {
+                            firebase.auth().signOut();
+                            navigate("/");
+                            }}>Sign out</button>
+                        </div>
+                    </div>
             </div>
-            <div>
-                <p>Welcome, {user && userName}! <br></br> 
-                Time is {time}Z | {pstTime} PST<br></br>
-                <button onClick={()=> {
-                    firebase.auth().signOut();
-                    navigate("/");
-                    }}>Sign out</button></p>
+            <div className="header-box-bottom">
+                <div className="header-box-bottom-item"><Link to="/home">Home</Link> </div>
+                <div className="header-box-bottom-item"><Link to="/tracker">Tracker</Link></div>
             </div>
         </div>
+     
          
     );} else {
     return(

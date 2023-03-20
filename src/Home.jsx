@@ -54,7 +54,7 @@ export default function Home() {
 
     if (user){
     return (
-        <div className='body'>
+        <div className='main-body'>
             <div className="sticky-header">
                 <Header />
             </div>
