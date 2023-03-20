@@ -3,6 +3,7 @@ import Nav from './x Nav';
 import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
 import Header from './Header';
+import Footer from './Footer'
 import Login from './Login'
 import firebase from 'firebase/compat/app'
 import './Zsebrief.css';
@@ -54,14 +55,23 @@ export default function Home() {
 
     if (user){
     return (
-        <div className='main-body'>
-            <div className="sticky-header">
-                <Header />
+        <div>
+            <div className="header-nav">
             </div>
-            <div>
-                <GetAirportList pstTime={pstTime}/> 
+            <div className='main-body'>
+                <div className="sticky-header">
+                    <Header />
+                </div>
+                <div>
+                    <GetAirportList pstTime={pstTime}/> 
+                </div>
+            
+            </div>
+            <div className="footer">
+                <Footer/> 
             </div>
         </div>
+   
     );} else {
     return(
         <Login />

@@ -74,7 +74,7 @@ export default function GetAirportList({pstTime}) {
             <div className="airport-details-collapse-button">
                 <button className="button-collapse-all" onClick={toggleCollapseAll}>Collapse all</button>
             </div>
-            <div>
+            <div className="airport-details-container">
                 {airportList}
             </div>
         </div>

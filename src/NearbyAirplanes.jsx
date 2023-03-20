@@ -6,6 +6,7 @@ import { distance } from './utilDistance'
 import DisplayPilotTable from './DisplayPilotTable'
 import DisplayPilotTableHead from './DisplayPilotTableHead'
 import Tracker from './Tracker'
+import Footer from './Footer'
 
 //https://mysticcoders.com/blog/react-to-cors-with-express-proxy
 
@@ -282,44 +283,51 @@ export default function NearbyAirplanes(){
 
     if (user){
     return(
-        <div className="body">
-            <Header />
-            <h3>Tracker</h3>
-                <Tracker />
-            <h3>Minor Airports</h3>
-                 <table id="details">
-                    <thead>
-                        <DisplayPilotTableHead/>
-                    </thead>
-                     {displayPilots &&
-                    <tbody>
-                        <DisplayPilotTable displayTable={minors} trackPlane={trackPlane}/>
-                    </tbody>
-                    }
+        <div>
+            <div className="header-nav">
+            </div>
+            <div className='main-body'>
+                <Header />
+                <p className="headerText">TRACKER</p>
+                    <Tracker />
+                <p className="headerText">MINOR AIRPORTS</p>
+                    <table id="details">
+                        <thead>
+                            <DisplayPilotTableHead/>
+                        </thead>
+                        {displayPilots &&
+                        <tbody>
+                            <DisplayPilotTable displayTable={minors} trackPlane={trackPlane}/>
+                        </tbody>
+                        }
+                    </table>
+                <p className="headerText">NO NEARBY AIRPORTS</p>
+                    <table id="details">
+                        <thead>
+                            <DisplayPilotTableHead/>
+                        </thead>
+                        {displayPilots &&
+                        <tbody>
+                            <DisplayPilotTable displayTable={noClosest} trackPlane={trackPlane}/>
+                        </tbody>
+                        }
+                        
                 </table>
-            <h3>No Nearby Airports</h3>
-                 <table id="details">
-                    <thead>
-                        <DisplayPilotTableHead/>
-                    </thead>
-                     {displayPilots &&
-                    <tbody>
-                        <DisplayPilotTable displayTable={noClosest} trackPlane={trackPlane}/>
-                    </tbody>
-                    }
-                    
-            </table>
-            <h3>Major Airports</h3>
-                 <table id="details">
-                    <thead>
-                        <DisplayPilotTableHead/>
-                    </thead>
-                     {displayPilots &&
-                    <tbody>
-                        <DisplayPilotTable displayTable={majors} trackPlane={trackPlane}/>
-                    </tbody>
-                    }
-                </table>
+                <p className="headerText">MAJOR AIRPORTS</p>
+                    <table id="details">
+                        <thead>
+                            <DisplayPilotTableHead/>
+                        </thead>
+                        {displayPilots &&
+                        <tbody>
+                            <DisplayPilotTable displayTable={majors} trackPlane={trackPlane}/>
+                        </tbody>
+                        }
+                    </table>
+            </div>
+            <div className="footer">
+                <Footer/> 
+            </div>
         </div>
       
     )

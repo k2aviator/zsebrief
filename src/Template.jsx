@@ -5,7 +5,9 @@ export default function Template() {
     console.log("return something")
     let setSomething = "something"
     return (
-        setSomething
+        <div>
+        <p>Footer text</p>
+        </div>
     )
 
 }

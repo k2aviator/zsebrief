@@ -1,3 +1,11 @@
+/*
+Color palate
+
+Grey: #dadada
+Green:#738D5E
+Blue-green:#5A8895
+Blue: #71A2CD
+
 
 /*BELOW: Key styling of page*/
 
@@ -28,34 +36,101 @@ a:visited {
 
 /* Page content */
 
+/*
 html, body {
-  height:100%;
-  min-width:500px;
-  width:75%;
-  max-width:900px
-}
+  font-family: Arial;
+}*/
 
 
 html {
-  display: table;
-  margin: auto;
-  background-color: #E6E4DE;
+  background-color: #ffffff;
+  font-family: Arial;
+  position: relative;
+  min-height: 100vh;
 }
 
+/*
 body {
   display: table-cell;
   vertical-align: top;
-}
+}*/
 
+.main-body {
+  display: table;
+  margin: auto;
+  vertical-align: top;
+  height:100%;
+  min-width:500px;
+  width:900px;
+  max-width:900px;
+
+}
 
 /* Navigation boxes*/
 
 .sticky-header{
   position: sticky;
-  background: #E6E4DE;
+  background: #ffffff;
   min-width: 500px;
   top: 0;
   padding-bottom: 3px;
+}
+
+.header-nav {
+  width: 100%;
+  height: 15px;
+  padding-top:5px;
+  background-color: #5A8895;
+  color: rgb(182, 182, 182);
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+}
+
+.header-nav-center {
+  margin-left:15%;
+  display: table;
+  margin: auto;
+  vertical-align: top;
+  min-width:500px;
+  width:900px;
+  max-width:900px;
+
+}
+
+.footer {
+  padding-top:0px;
+  background-color: #5A8895;
+  color: rgb(218, 217, 217);
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 2.5rem;  
+}
+
+.footer-center {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  margin-left:15%;
+  padding-top:13px;
+  margin: auto;
+  vertical-align: top;
+  min-width:500px;
+  width:900px;
+  max-width:900px;
+
+}
+
+.footer-center-left {
+  display:flex;
+}
+
+.footer-center-right {
+  display:flex;
 }
 
 
@@ -118,7 +193,7 @@ body {
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible-expand {
-    background-color: #E6E4DE;
+    background-color: #edededea;
     color: #3b3939;
     cursor: pointer;
     width: auto;
@@ -139,8 +214,9 @@ body {
   
 
   .button {
-    background-color: #BBBCB7;
-    color: #3b3939;
+    background-color: #dadada;
+    color: #ffffff;
+    background-image: linear-gradient(0.75turn, #738D5E,#71a2cd);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -151,7 +227,11 @@ body {
   }
 
   .button-collapse-all {
-    color: #3b3939;
+    color: #ffffff;
+    background-color: #738d5e;
+    border:0px;
+    padding:5px
+  
   }
   
   /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -193,7 +273,7 @@ body {
 .skyVFR{
   text-align:center;
   width:50px;
-  background-color: #0011ff;
+  background-color: #71A2CD;
   padding:2px;
   color: #ffffff;
   font-weight: bold;
@@ -203,8 +283,7 @@ body {
 .skyMVFR{
   text-align:center;
   width:50px;
-  background-color: #1100ff;
-  background-image: linear-gradient(#0011ff,#1f1f1f);
+  background-image: linear-gradient(#71A2CD,#1f1f1f);
   padding:2px;
   color: #ffffff;
   font-weight: bold;
@@ -250,11 +329,11 @@ body {
 }
 
 #details td, #details th {
-  border: 1px solid #ddd;
+  border: 1px solid #dadada;
   padding: 8px;
 }
 
-#details tr:nth-child(even){background-color: #D4D2CB;}
+#details tr:nth-child(even){background-color: #dadada;}
 
 #details tr:hover {background-color: #ddd;}
 
@@ -262,7 +341,7 @@ body {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #D4D2CB;
+  background-color: #dadada;
   color: rgba(90, 90, 90, 0.929);
 }
 
@@ -275,11 +354,13 @@ body {
     flex-direction: row;
   } 
 
-
+  .airport-details-container {
+    margin-bottom:45px
+  }
 
   .airport-details-collapse-button{
     min-width: 400px;
-    background-color: #E6E4DE;
+    background-color: #ffffff;
     justify-content: space-between;
     text-align:right;
     top:7rem;
