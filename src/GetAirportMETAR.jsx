@@ -188,10 +188,10 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     
     const checkNanWinds = function(winds){
         if ( isNaN(winds)) {
-            console.log("winds don't have a value", winds)
+            // console.log("winds don't have a value", winds)
             return 0
         } else {
-            console.log("winds have a value", winds)
+            // console.log("winds have a value", winds)
             return winds
 
         }
@@ -257,15 +257,20 @@ export default function GetAirportMETAR({airportICAO, runways}) {
              <div>
                 <p className="headerText">WEATHER</p>
                 <p>{metarToDisplay}</p>
-                    <tbody>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td className="flightRules">Flight rules:</td>
                             <td className={evalSkyConditions(airportFlightRules)}>{airportFlightRules}</td>
                         </tr>
-                    </tbody>
-                
-                <br></br>
-                <br></br>
+                        </tbody>
+                    </table>
              
             </div>
             <div>
