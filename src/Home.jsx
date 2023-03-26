@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Nav from './x Nav';
 import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
 import Header from './Header';

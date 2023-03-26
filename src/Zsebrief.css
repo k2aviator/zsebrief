@@ -87,7 +87,7 @@ body {
   font-size: 12px;
 }
 
-.header-nav-center {
+/*.header-nav-center {
   margin-left:15%;
   display: table;
   margin: auto;
@@ -96,9 +96,10 @@ body {
   width:900px;
   max-width:900px;
 
-}
+}*/
 
 .footer {
+  display:flex;
   padding-top:0px;
   background-color: #5A8895;
   color: rgb(218, 217, 217);
@@ -107,7 +108,7 @@ body {
   font-size: 12px;
   position: absolute;
   bottom: 0px;
-  width: 100%;
+  width:100%;
   height: 2.5rem;  
 }
 
