@@ -113,7 +113,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                                         <td>{airspaceClass}</td>
                                     </tr>
                                     <tr>
-                                        <td>Elevation:</td>
+                                        <td>Elev:</td>
                                         <td>{airportElev}</td>
                                     </tr>
                                     <tr>
