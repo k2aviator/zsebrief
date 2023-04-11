@@ -77,7 +77,7 @@ export default function Header() {
             </div>
             <div className="header-box-bottom">
                 <div className="header-box-bottom-item"><Link to="/home">Home</Link> </div>
-                <div className="header-box-bottom-item"><Link to="/tracker">Tracker</Link></div>
+                {/* <div className="header-box-bottom-item"><Link to="/tracker">Tracker</Link></div> */}
             </div>
         </div>
      

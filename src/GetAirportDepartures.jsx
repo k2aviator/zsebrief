@@ -62,6 +62,12 @@ export default function GetAirportDepartures({airportICAO}) {
             } else if (departureType === "RNAV"){
                 phrase = `...via the ${departureName} ${departureNum} departure`
                 return phrase
+            } else if (departureType === "ODP_NAMED"){
+                phrase = `...via the ${departureName} ${departureNum} departure`
+                return phrase
+            } else if (departureType === "R/V_NO_DEP"){
+                phrase = `...via radar vectors to {FIX}, then as filed...`
+                return phrase
             }
         }
 
