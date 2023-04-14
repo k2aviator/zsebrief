@@ -10,11 +10,22 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const [open, setOpen] = useState(false)
     const [airportOpen,setAirportOpen] = useState(false) 
     const [towerOpen, setTowerOpen] = useState(false)
+    const hostName = window.location.hostname;
 
+    var dataLayer = window.dataLayer = window.dataLayer || [];
 
     const toggleOpen = () =>{
         setOpen(!open);
-        // console.log(airportICAO, airportTowered, airportHoursOpen)
+        console.log(airportICAO, airportName, airportTowered, airportHoursOpen, airspaceClass)
+        console.log("clicked on airport expand")
+        dataLayer.push({
+            'event': 'vpv',     
+            'vpv_page_path':`http://${hostName}/vpv/${airportICAO}-details` ,
+            'vpv_page_location': `/vpv/${airportICAO}-details`,
+            'vpv_page_title': `${airportICAO} | ${airportName}` ,
+            'vpv_hostname': hostName
+          });
+      
         isTowerOpen()
         if( airportTowered === "TRUE"){
             setAirportOpen(!airportOpen)
