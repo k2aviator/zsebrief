@@ -60,12 +60,14 @@ export default function GetAirportRunways({airportICAO}) {
         let runwayNumber = runway.RUNWAY
         let runwayCalmWind = runway.CALM_WIND_RUNWAY
         let runwayCalmWindThreshold = runway.CALM_WIND_THRESHOLD
+        let runwayODP = runway.ODP
 
         return (
             <tr key={index}>
                     <td>{runwayNumber}</td>
                     <td>{runway.LENGTH_FT} x {runway.WIDTH_FT}</td>
                     <td>{showCalmDetails(runwayCalmWind, runwayCalmWindThreshold)}</td>
+                    <td>{runwayODP}</td>
             </tr>
         )
     })
@@ -94,6 +96,7 @@ export default function GetAirportRunways({airportICAO}) {
                         <th>Runway</th>
                         <th>Length by width</th>
                         <th>Calm wind runway</th>
+                        <th>ODP (if available)</th>
                     </tr>
                 </thead>
                 <tbody>

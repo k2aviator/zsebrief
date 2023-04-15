@@ -65,6 +65,12 @@ export default function GetAirportDepartures({airportICAO}) {
             } else if (departureType === "ODP_NAMED"){
                 phrase = `...via the ${departureName} ${departureNum} departure`
                 return phrase
+            } else if (departureType === "ODP_NOT_NAMED"){
+                phrase = `Depart via the (airport name) (runway number) departure procedure`
+                return phrase
+            } else if (departureType === "RADIAL-TRANS"){
+                phrase = `...via the ${departureName} ${departureNum} departure`
+                return phrase
             } else if (departureType === "R/V_NO_DEP"){
                 phrase = `...via radar vectors to {FIX}, then as filed...`
                 return phrase
