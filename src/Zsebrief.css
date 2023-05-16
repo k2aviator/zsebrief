@@ -187,8 +187,6 @@ body {
 }
 
 
-
-
 /*Above styling of page
 
 /* Style the button that is used to open and close the collapsible content */
@@ -376,3 +374,21 @@ body {
   .airport-edit {
     width:4rem;
   }
+
+
+  /*airport-status-and-logos*/
+
+  .airport-status-logos {
+    display:flex;
+    flex-direction: row;
+    border: none;
+    justify-content: space-between;
+  } 
+
+   .airport-status {
+    border: none;
+   }
+
+   .airport-logos {
+    border: none;
+   }

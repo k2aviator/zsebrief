@@ -3,15 +3,25 @@ import GetAirportRunways from './GetAirportRunways'
 import GetAirportDepartures from './GetAirportDepartures'
 import { Link } from 'react-router-dom';
 
+
 //https://blog.openreplay.com/creating-a-collapsible-component-for-react/
 //Expand and collapse airports
 export default function GetAirportDetails({airportICAO, airportName, airportTowered, airportHoursOpen, airportHoursClose, airspaceClass, airportElev, pstTime}) {  
     //console.log(airportState)
     const [open, setOpen] = useState(false)
-    const [airportOpen,setAirportOpen] = useState(false) 
+    const [airportOpen,setAirportOpen] = useState(false)
+    const [airportLogo,setAirportLogo] = useState(false)
     const [towerOpen, setTowerOpen] = useState(false)
     const hostName = window.location.hostname;
 
+    const images = require.context('./logos-airports', false, /\.(png|jpe?g|svg)$/);
+
+    const imageFiles = images.keys().map((path) => {
+    const src = images(path);
+    const filename = path.replace('./', '');
+    
+    return { filename, src };
+  });
     var dataLayer = window.dataLayer = window.dataLayer || [];
 
     const toggleOpen = () =>{
@@ -25,13 +35,33 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
             'vpv_page_title': `${airportICAO} | ${airportName}` ,
             'vpv_hostname': hostName
           });
-      
+        
+
+        airportImage(airportICAO)
+    
         isTowerOpen()
         if( airportTowered === "TRUE"){
             setAirportOpen(!airportOpen)
     
         }
     }
+
+    const airportImage = (airportICAO)=>{
+        //console.log("airport image function")
+        let codePng = `${airportICAO}.png`
+        const indexMatch = imageFiles.findIndex(obj => codePng === obj.filename)   
+        //console.log("does the index match?", indexMatch)
+        if (indexMatch !== -1){
+            console.log(imageFiles[indexMatch].src)
+            setAirportLogo(!airportLogo)
+        } 
+    }
+
+    const airportImageLoc = (airportICAO)=>{
+        let codePng = `${airportICAO}.png`
+        const indexMatch = imageFiles.findIndex(obj => codePng === obj.filename)
+        return imageFiles[indexMatch].src   
+     }
 
     const isTowerOpen = ()=>{
         if (airportHoursOpen === 2359){
@@ -79,38 +109,21 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
 
     const roundElevation = (number)=>{
         return Math.ceil(number /100) * 100 + 1000;
-
-
     }
 
 
+
+    const imageDisplay = imageFiles[4].src
     return (
         <div className="airport-details-box">
             <div className="airport-code-name" onClick={()=>toggleOpen()}>
                 <div id="airportName" >
                     <button className="button">{airportICAO} | {airportName} </button>
                     {open && <div className="collapsible-expand">
-                            
-                        {airportOpen &&  
-                        <div> 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className={setTowerStatus(towerOpen)}>{towerOpen}</td>
-                                    <td>{displayHours(airportHoursOpen)}-{airportHoursClose} (time now {pstTime})</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                        }
-
-                        <div> 
+                        <div className="airport-status-logos" > 
+                           
+                            <div className="airport-status"> 
+                            {airportOpen &&  
                             <table>
                                 <thead>
                                     <tr>
@@ -120,20 +133,47 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Airspace:</td>
-                                        <td>{airspaceClass}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Elev:</td>
-                                        <td>{airportElev}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pattern Alt:</td>
-                                        <td>{roundElevation(airportElev)} (turbine: {roundElevation(airportElev)+500})</td>
+                                        <td className={setTowerStatus(towerOpen)}>{towerOpen}</td>
+                                        <td>{displayHours(airportHoursOpen)}-{airportHoursClose} (time now {pstTime})</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                             </table>
+                             
+                            }
+                            <div> 
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Airspace:</td>
+                                                <td>{airspaceClass}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Elev:</td>
+                                                <td>{airportElev}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pattern Alt:</td>
+                                                <td>{roundElevation(airportElev)} (turbine: {roundElevation(airportElev)+500})</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            </div>
+                            
+                            {airportLogo &&
+                              <div className="airport-logos">
+                                        <img src={airportImageLoc(airportICAO)}></img>
+                             </div>
+                          }
                         </div>
+                            
+              
            
                             <GetAirportRunways airportICAO={airportICAO}/>
                             <p></p>
