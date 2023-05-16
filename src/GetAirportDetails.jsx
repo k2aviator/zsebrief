@@ -52,7 +52,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
         const indexMatch = imageFiles.findIndex(obj => codePng === obj.filename)   
         //console.log("does the index match?", indexMatch)
         if (indexMatch !== -1){
-            console.log(imageFiles[indexMatch].src)
+            //console.log(imageFiles[indexMatch].src)
             setAirportLogo(!airportLogo)
         } 
     }

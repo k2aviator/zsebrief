@@ -14,7 +14,6 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     const [metar, setMetar] = useState(undefined)
     const [hasError, setHasError] = useState(false);
     const [loading,toggleLoading] = useState(true);
-    const [skyConditions,setSkyConditions] = useState(true);
 
     const avwxToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
     const avwxUrlCode = "https://avwx.rest/api/metar/"
@@ -46,38 +45,49 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         return <p>Has error!</p>
     }
 
-    // console.log("airport metar" ,metar)
+    //console.log("airport metar" ,metar)
+
     const airportRawMetar = metar.raw
     const airportFlightRules = metar.flight_rules 
     // eslint-disable-next-line
     let airportWindSpeed;
     // eslint-disable-next-line
-    let airportWindValue = null;
+    let airportWindValue = 0;
     let airportWindDirection;
+
 
     //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
 
-    if (metar.wind_speed.value !== null || metar.wind_speed !== null || metar.wind_speed.value !== undefined || metar.wind_speed !== undefined){
-        // eslint-disable-next-line
+    if (!metar.wind_speed){
+        console.log("wind speed doesn't exist in metar")
+        airportWindSpeed = 0
+    } else {
+        console.log("wind value exists ", metar.wind_speed.value)
         airportWindSpeed = metar.wind_speed.value
+
     }
-    if (metar.wind_direction){
+
+    if (!metar.wind_direction){
+        console.log("wind direction does not exist")
+        airportWindDirection = 0
+    } else {
+        //console.log("wind directions exists ", metar.wind_direction)
         airportWindValue = metar.wind_direction
+
     }
-    if (metar.wind_direction.value){
-        airportWindDirection = metar.wind_direction.value
-    } 
+
     let airportTotalWind = 0
 
-    if (metar.wind_gust){
-        airportTotalWind = metar.wind_gust.value
-        // console.log("gusts are present - use this", airportTotalWind)
+    if (!metar.wind_gust){
+        //console.log("wind gust doesn't exist")
+        airportTotalWind = 0
     } else {
-        airportTotalWind = metar.wind_speed.value
-        // console.log("no gusts are present")
+        //console.log("wind gust exists - use this value: ", metar.wind_gust.value)
+        airportTotalWind = metar.wind_gust.value
+
     }
+
   
-   
     //filter for airport selected
     const calmWindRunway= runways.filter(function(runways) {
         return runways.CALM_WIND_RUNWAY === 'TRUE';
@@ -240,7 +250,6 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     }
 
     const setWindSock = (winds)=>{
-        let iconSrc = ""
         if (winds <= 5){
             return calmWindIcon
             
