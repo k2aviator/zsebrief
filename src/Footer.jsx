@@ -2,8 +2,6 @@ import React from 'react';
 import './Zsebrief.css';
 
 export default function Template() {  
-    console.log("return something")
-    let setSomething = "something"
     return (
 
         <div className="footer-center">

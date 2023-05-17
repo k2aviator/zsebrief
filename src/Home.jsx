@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Nav from './x Nav';
-import { useNavigate } from 'react-router-dom';
+// DELETE import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
 import Header from './Header';
 import Footer from './Footer'
@@ -14,31 +13,30 @@ import { convertTime12to24 } from './utilTime'
 
 
 export default function Home() {
-    const navigate = useNavigate();
-    const [userName, setUserName] = useState(false)
+    // DELETE const [userName, setUserName] = useState(false)
     const [user, setUser] = useState({})
-    const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
+    // DELETE const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
 
     //Set user display name 
     useEffect(() =>{
         const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
             setUser(user)
-            setUserName(user.displayName)
+            //DELETE setUserName(user.displayName)
         })
 
         return () => unregisterAuthObserver();
     },[user])
 
 
-    //Set zulu time
-    useEffect(() => {
-        const interval = setInterval(() => 
-        setTime(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22)), 1000);
-        return () => {
-          clearInterval(interval);
-        };
-      }, []);
+    // DELETE Set zulu time
+    // useEffect(() => {
+    //     const interval = setInterval(() => 
+    //     setTime(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22)), 1000);
+    //     return () => {
+    //       clearInterval(interval);
+    //     };
+    //   }, []);
 
      //Set PST Time
     useEffect(() => {

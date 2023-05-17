@@ -113,7 +113,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
 
 
 
-    const imageDisplay = imageFiles[4].src
+    // const imageDisplay = imageFiles[4].src
     return (
         <div className="airport-details-box">
             <div className="airport-code-name" onClick={()=>toggleOpen()}>
@@ -168,7 +168,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             
                             {airportLogo &&
                               <div className="airport-logos">
-                                        <img src={airportImageLoc(airportICAO)}></img>
+                                        <img alt="airport logo" src={airportImageLoc(airportICAO)}></img>
                              </div>
                           }
                         </div>

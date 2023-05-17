@@ -4,12 +4,6 @@ import medWindIcon from './icons/windmed.svg'
 import strongWindIcon from './icons/windstrong.svg'
 
 
-
-
-
-
-
-
 export default function GetAirportMETAR({airportICAO, runways}) {  
     const [metar, setMetar] = useState(undefined)
     const [hasError, setHasError] = useState(false);
@@ -50,7 +44,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     const airportRawMetar = metar.raw
     const airportFlightRules = metar.flight_rules 
     // eslint-disable-next-line
-    let airportWindSpeed;
+    // let airportWindSpeed;
     // eslint-disable-next-line
     let airportWindValue;
     let airportWindDirection;
@@ -58,14 +52,14 @@ export default function GetAirportMETAR({airportICAO, runways}) {
 
     //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
 
-    if (!metar.wind_speed){
-        //console.log("wind speed doesn't exist in metar")
-        airportWindSpeed = 0
-    } else {
-        //console.log("wind value exists ", metar.wind_speed.value)
-        airportWindSpeed = metar.wind_speed.value
+    // if (!metar.wind_speed){
+    //     //console.log("wind speed doesn't exist in metar")
+    //     airportWindSpeed = 0
+    // } else {
+    //     //console.log("wind value exists ", metar.wind_speed.value)
+    //     airportWindSpeed = metar.wind_speed.value
 
-    }
+    // }
 
     if (!metar.wind_direction){
         //console.log("wind direction does not exist")
@@ -151,7 +145,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     // console.log("less than 90 degrees", lessThanNinety)
 
     //Filter from less to most
-    let calmWindThreshold;
+    // let calmWindThreshold;
 
     //if the airport is showing winds
     //console.log("airport wind value is ", airportWindValue)
@@ -283,7 +277,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
              
             </div>
             <div>
-                <span className="headerText">PREFERRED RUNWAY(S)</span><span className="windsNotCalm">{calmStatus}</span> <img className="iconWindSock" src={setWindSock(airportTotalWind)}></img>
+                <span className="headerText">PREFERRED RUNWAY(S)</span><span className="windsNotCalm">{calmStatus}</span> <img alt="wind sock" className="iconWindSock" src={setWindSock(airportTotalWind)}></img>
                 <p></p>
                 <table id="details">
                     <thead>

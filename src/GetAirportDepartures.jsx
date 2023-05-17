@@ -44,12 +44,12 @@ export default function GetAirportDepartures({airportICAO}) {
         let departureNum = departure.NUM
         let departureType = departure.TYPE
         let departureRunway = departure.RWY_SPECIFIC
-        let departureTopAltListed = departure.TOP_ALT_LISTED
-        let departureNeedForInterim = departure.NEED_FOR_INTERIM_ALT
+        // let departureTopAltListed = departure.TOP_ALT_LISTED
+        //let departureNeedForInterim = departure.NEED_FOR_INTERIM_ALT
         let departureClimb = departure.CLIMB
         let departureTopAlt = departure.TOP_ALT
         let departureExpectCruise = departure.EXPECT_CRUISE
-        let departureUpdated = departure.LAST_UPDATED
+        // let departureUpdated = departure.LAST_UPDATED
 
 
         //Departure clearance phraseology 

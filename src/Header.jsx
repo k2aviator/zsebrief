@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GetAirportList from './GetAirportList';
+// DELETE import GetAirportList from './GetAirportList';
 import Login from './Login'
 import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom';
@@ -15,8 +15,6 @@ export default function Header() {
     const [user, setUser] = useState({})
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
-
-    let timePstOutput;
 
     //Set user display name 
     useEffect(() =>{
@@ -57,10 +55,10 @@ export default function Header() {
     return (
         <div>
             <div className="header-box-top">
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
+            height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
                 <div className="header-logo">   
-                    <Link to="/home"><img src={logo}></img></Link>  
+                    <Link to="/home"><img alt="zse brief logo" src={logo}></img></Link>  
                 </div>
                 <div className="header-right-top">
                         <div className="header-welcome">
