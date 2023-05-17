@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          cd C:\\Users\\chsmith6\\Documents\\github-classroom\\zsebrief
+      - run: cd Documents && cd github-classroom && cd zsebrief
       - run: npm install
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
