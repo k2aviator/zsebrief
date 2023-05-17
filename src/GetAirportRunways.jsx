@@ -41,14 +41,13 @@ export default function GetAirportRunways({airportICAO}) {
 
     const showCalmDetails = (runwayCalmWind,runwayCalmWindThreshold) => {
         let calmDetails = "";
-        
+        //console.log("runway calm wind ", runwayCalmWind)
         if (runwayCalmWind === "TRUE"){
             calmDetails = `YES: ${runwayCalmWindThreshold} KTS`
-            // console.log("new function ", runwayCalmWind, runwayCalmWindThreshold)
-       
+            //console.log("yes, calm ", runwayCalmWind, runwayCalmWindThreshold)
             return calmDetails
         } else {
-            // console.log("new function ", runwayCalmWind, runwayCalmWindThreshold)
+            //console.log("no, not calm ", runwayCalmWind, runwayCalmWindThreshold)
             calmDetails = ""
             return calmDetails
         }

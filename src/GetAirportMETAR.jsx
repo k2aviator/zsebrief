@@ -52,41 +52,41 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     // eslint-disable-next-line
     let airportWindSpeed;
     // eslint-disable-next-line
-    let airportWindValue = 0;
+    let airportWindValue;
     let airportWindDirection;
 
 
     //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
 
     if (!metar.wind_speed){
-        console.log("wind speed doesn't exist in metar")
+        //console.log("wind speed doesn't exist in metar")
         airportWindSpeed = 0
     } else {
-        console.log("wind value exists ", metar.wind_speed.value)
+        //console.log("wind value exists ", metar.wind_speed.value)
         airportWindSpeed = metar.wind_speed.value
 
     }
 
     if (!metar.wind_direction){
-        console.log("wind direction does not exist")
+        //console.log("wind direction does not exist")
         airportWindDirection = 0
     } else {
-        //console.log("wind directions exists ", metar.wind_direction)
-        airportWindValue = metar.wind_direction
-
+        //console.log("wind directions exists ", metar.wind_direction.value)
+        airportWindDirection = metar.wind_direction.value
     }
 
-    let airportTotalWind = 0
+    let airportTotalWind;
 
     if (!metar.wind_gust){
         //console.log("wind gust doesn't exist")
-        airportTotalWind = 0
+        airportTotalWind = metar.wind_speed.value
     } else {
         //console.log("wind gust exists - use this value: ", metar.wind_gust.value)
         airportTotalWind = metar.wind_gust.value
-
     }
 
+    //console.log("airport wind gust value ", airportTotalWind)
+    airportWindValue = airportTotalWind
   
     //filter for airport selected
     const calmWindRunway= runways.filter(function(runways) {
@@ -106,21 +106,18 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         }
         runways.forEach(function (runway) {
             const runwayHeading = runway.TRUE_HEADING
+            //console.log("airport wind direction ", airportWindDirection)
+            //console.log("runway heading ", runwayHeading)
             GetHeadingDiff(airportWindDirection,runwayHeading)
-            //console.log(windDiff)
-            //runwaysAndWinds.push(runwayWindDiff)
-        })        
-        // console.log("winds array ", runwaysAndWinds)
-        // console.log("runways array", runways)
-
-      
-
+       })        
+        
         let minimum = Math.min(...runwaysAndWinds)
         let minIndex = runwaysAndWinds.indexOf(minimum)
-        // console.log("min index is ", runways[minIndex])             
+        //console.log("min index is ", minIndex)
+        //console.log("filtered runways are", runways[minIndex])             
         
         runwaysToDisplay  = [runways[minIndex]]
-        // console.log("in function runways to display", runwaysToDisplay)
+        //console.log("in function runways to display", runwaysToDisplay)
         const runwayLength = runways.length
 
         addRunwayDiff(runwaysAndWinds, runwayLength)
@@ -128,11 +125,11 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     }
 
     const addRunwayDiff = function(runwaysAndWinds){
-        // console.log("runway length" , runwayLength)
+        //console.log("runway length" , runwayLength)
         for (var i = 0; i < runways.length; i++){
-            // console.log(i)
-            // console.log("runway", runways[i])
-            // console.log("runways and winds", runwaysAndWinds[i])
+            //console.log(i)
+            //console.log("runway", runways[i])
+            //console.log("runways and winds", runwaysAndWinds[i])
             const target = runways[i];
             const source = {"WIND_OFFSET" : runwaysAndWinds[i]}
             Object.assign(target,source)
@@ -157,16 +154,18 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     let calmWindThreshold;
 
     //if the airport is showing winds
+    //console.log("airport wind value is ", airportWindValue)
+
     if (airportWindValue === null || airportWindValue === undefined){
-        // console.log("no winds reported", airportWindValue)
+        //console.log("no winds reported", airportWindValue)
         runwaysToDisplay = runways;
         // calmStatus = "no winds reported"
     } else {
-        // console.log("winds are reported", airportWindValue)
+        //console.log("winds are reported", airportWindValue)
         if (calmWindRunway.length > 0){ //if a calm runway exists, do these calculations and show calm wind runway
             // DO THIS IF A CALM RUNWAY EXISTS
             const calmWindThreshold = calmWindRunway[0].CALM_WIND_THRESHOLD
-            // console.log("calm stats exist... calm wind threshold ",calmWindThreshold, " | airport total wind is ", airportTotalWind)
+            //console.log("calm stats exist... calm wind threshold ",calmWindThreshold, " | airport total wind is ", airportTotalWind)
             //check to see if winds are less than the threshold
             if (airportTotalWind >= calmWindThreshold) {
                 //runwaysToDisplay = runways;
@@ -197,11 +196,11 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     
     
     const checkNanWinds = function(winds){
-        if ( isNaN(winds)) {
-            // console.log("winds don't have a value", winds)
+        if (isNaN(winds)) {
+             //console.log("winds don't have a value", winds)
             return 0
         } else {
-            // console.log("winds have a value", winds)
+             //console.log("winds have a value", winds)
             return winds
 
         }
@@ -210,7 +209,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
 
 
     //MAP Runways to display
-    // console.log(runwaysToDisplay)
+    //console.log("runways to display" , runwaysToDisplay)
     const runwaysPrint = runwaysToDisplay.map((runway,index) =>{
         let runwayNumber = runway.RUNWAY
         let runwayLength = runway.LENGTH_FT
@@ -218,7 +217,8 @@ export default function GetAirportMETAR({airportICAO, runways}) {
         let windOffset = runway.WIND_OFFSET
         let trafficPatternDir = runway.TRAFFIC_PATTERN
 
-        // console.log(runway)
+        //console.log("runway number", runwayNumber)
+        //console.log("wind offset" , windOffset)
         return (
             <tr key={index}>
                     <td>{runwayNumber} </td>
