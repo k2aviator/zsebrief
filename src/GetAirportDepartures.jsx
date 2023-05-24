@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, get } from "firebase/database";
 
 export default function GetAirportDepartures({airportICAO}) {  
     
@@ -7,25 +6,28 @@ export default function GetAirportDepartures({airportICAO}) {
     const [isLoading, setIsLoading] = useState(true);
     const [departures, setDepartures] = useState([]);
 
-    useEffect(()=>{
-    
-        const db = getDatabase();
-        const departuresdb = ref(db,'departures/');
-     
 
-        get(departuresdb).then((snapshot) => {
-            //console.log(snapshot.val());
-            setIsLoading(false);
-                if(snapshot.exists()){
-                    console.log("data exists")
-                    setDepartures(snapshot.val())
-                } else {
-                    console.log("no data exists")
-                    setHasError(true)
-                }         
-            }).then(
-            )
-        }, [])
+    //MONGO DB GET DEPARTURES
+
+    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
+    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures"
+    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+
+    useEffect(()=>{
+        fetch(mongoDepartureURL)
+        .then(response => response.json())
+        .then((data) => {
+            setDepartures(data);
+            setIsLoading(false);   
+            },
+            (error)=>{
+                console.log(error)
+                setIsLoading(false);
+                setHasError(true);
+            })  
+        }, [mongoDepartureURL])
+    
+
 
     //filter for airport selected
     const varAirportSelected = departures.filter(function(departures) {
