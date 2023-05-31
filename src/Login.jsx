@@ -1,6 +1,4 @@
 import React from 'react';
-import firebase from 'firebase/compat/app';
-import './db'
 import './Zsebrief.css'
 import logo from './icons/zsebrief.png'
 import Signin from './Signin'

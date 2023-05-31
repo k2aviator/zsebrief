@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'firebase/compat/auth';
-import './db'
 import './Zsebrief.css'
 import logo from './icons/zsebrief.png'
 import Footer from './Footer'
@@ -10,7 +9,6 @@ export default function Signup() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [submitMessage, setSubmitMessage] = useState("")
-    const [submitReady, setSubmitReady] = useState()
     const [emailError, setEmailError] = useState()
     const [passwordError, setPasswordError] = useState()
     const mongoSignupURL = "https://zsebrief-backend-production.up.railway.app/login/signup"

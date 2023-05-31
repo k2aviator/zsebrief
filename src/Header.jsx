@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 // DELETE import GetAirportList from './GetAirportList';
 // DELETE import Login from './Login'
 // DELETE import firebase from 'firebase/compat/app'
@@ -10,9 +10,6 @@ import logo from './icons/zsebrief.png'
 
 
 export default function Header() {
-    const navigate = useNavigate();
-    const [userName, setUserName] = useState(false)
-    const [user, setUser] = useState({})
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
 

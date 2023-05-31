@@ -194,7 +194,6 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                 setUpdatedAirport(false)
               }
         }).catch (error => {
-            console.log(error)
         })
     }
     fetchData()
@@ -218,7 +217,6 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         let airportElev = airport.ELEV
         let airportNotes = decodeURIComponent(airport.NOTES)
         let airportUpdated = airport.UPDATED
-        let airportLAT = airport.LAT
         let airportUpdatedBy = airport.UPDATED_BY
         return(
             <div>

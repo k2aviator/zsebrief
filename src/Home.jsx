@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-// DELETE import { useNavigate } from 'react-router-dom';
 import GetAirportList from './GetAirportList';
 import Header from './Header';
 import Footer from './Footer'
-import Login from './Login'
-// DELETE import firebase from 'firebase/compat/app'
 import './Zsebrief.css';
 import { convertTime12to24 } from './utilTime'
 
@@ -13,9 +10,6 @@ import { convertTime12to24 } from './utilTime'
 
 
 export default function Home() {
-    // DELETE const [userName, setUserName] = useState(false)
-    const [user, setUser] = useState({})
-    // DELETE const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
 
      //Set PST Time
@@ -31,7 +25,6 @@ export default function Home() {
 
     //Display home content
 
-    if (user){
     return (
         <div>
             <div className="header-nav">
@@ -49,10 +42,5 @@ export default function Home() {
                 <Footer/> 
             </div>
         </div>
-   
-    );} else {
-    return(
-        <Login />
-    )
-    }
+    );
 }

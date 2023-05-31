@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'firebase/compat/auth';
 import './db'
 import './Zsebrief.css'
@@ -9,7 +9,6 @@ export default function Signin() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [submitMessage, setSubmitMessage] = useState("")
-    const [submitReady, setSubmitReady] = useState()
     const [emailError, setEmailError] = useState()
     const [passwordError, setPasswordError] = useState()
  

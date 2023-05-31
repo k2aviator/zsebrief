@@ -43,7 +43,8 @@ export default function AirportDisplayOverview({airportICAO}) {
             <div key={index}>
             <form>
                 <label><b>{airportICAO}: {airportName}</b></label><br></br>
-                <label>Last updated {airportUpdated}</label><br></br>
+                <label>Last updated: {airportUpdated}</label><br></br>
+                <label>Updated by: {airportUpdatedBy}</label><br></br>
                 <label>Elevation: {airportElev} </label><br></br>
                 <label>Airspace Class: {airportClass} </label><br></br>
                 <label>Towered: {airportTowered}</label><br></br>
