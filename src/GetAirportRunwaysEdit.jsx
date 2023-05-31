@@ -43,8 +43,7 @@ export default function GetAllAirportRunways({airportICAO}) {
     })
     
     //MAP Airport Runways
-
-    console.log(varAirportSelected)
+    //console.log(varAirportSelected)
 
     const runwaysList = varAirportSelected.map((runway,index) =>{
         let runwayCalmWind = runway.CALM_WIND_RUNWAY

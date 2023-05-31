@@ -52,7 +52,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
         return (
                 <div key={index}> 
-                    <form>
+                    <form >
                         <label>Last updated {departureUpdated}</label><br></br>
                         <label>Database id {departureId}</label><br></br>
                         <label>Name </label><input type="text" id="departureName" size="25" placeholder={departureName} /><br></br>
@@ -82,14 +82,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
     return (
         <div>
-            <table id="details">
-
-                <tbody>
-                    {departuresList}
-                </tbody>
-                <br></br>
-                <p></p>
-            </table>
-         </div>
+            {departuresList}
+        </div>
     );
 }  

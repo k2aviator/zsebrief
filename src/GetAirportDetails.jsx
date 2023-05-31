@@ -25,15 +25,17 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
      const [isAdminRole, setIsAdminRole] = useState('false')
      var token = localStorage.getItem('token');
      //console.log("run is admin function... token is ", token)
-     const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin"
-
+     //const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PROD URL
+     const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
+        
      useEffect(() => {
          const fetchData = async () => {
              
              fetch(mongoIsAdminURL, {
              method:'POST', 
-             headers: {
-                 'token':token
+             headers:  {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Set the Authorization header with the token
                  },
              }).then(response=> response.json()
              ).then(data=>{
@@ -41,7 +43,6 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                  const isAdmin = data.admin
                  setIsAdminRole(isAdmin)
              }).catch (error => {
-                 console.log(error)
              })
          }
          fetchData()
@@ -52,8 +53,8 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
 
     const toggleOpen = () =>{
         setOpen(!open);
-        console.log(airportICAO, airportName, airportTowered, airportHoursOpen, airspaceClass)
-        console.log("clicked on airport expand")
+        //console.log(airportICAO, airportName, airportTowered, airportHoursOpen, airspaceClass)
+        //console.log("clicked on airport expand")
         dataLayer.push({
             'event': 'vpv',     
             'vpv_page_path':`http://${hostName}/vpv/${airportICAO}-details` ,

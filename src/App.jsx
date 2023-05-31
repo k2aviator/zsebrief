@@ -26,13 +26,6 @@ function App() {
     
   }
 
-  // const AuthRoute = ({ path, element }) => {
-  //   if (!isAuthenticated) {
-  //     return <Navigate to="/login" replace />;
-  //   }
-  //     return <Route path={path} element={element} />;
-  // };
-
   return (
     <div>
      <Routes>

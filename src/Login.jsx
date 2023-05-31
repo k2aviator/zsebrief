@@ -2,11 +2,7 @@ import React from 'react';
 import './Zsebrief.css'
 import logo from './icons/zsebrief.png'
 import Signin from './Signin'
-// DELETE import Header from './Header';
 import Footer from './Footer'
-
-//console.log("db auth ", db)
-
 
 
 export default function Login() {

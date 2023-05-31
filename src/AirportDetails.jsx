@@ -17,15 +17,17 @@ export default function AirportEdit(){
 
     var token = localStorage.getItem('token');
     //console.log("run is admin function... token is ", token)
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin"
+    //const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
+    const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
     
     useEffect(() => {
         const fetchData = async () => {
             
             fetch(mongoIsAdminURL, {
             method:'POST', 
-            headers: {
-                'token':token
+            headers:  {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}` // Set the Authorization header with the token
                 },
             }).then(response=> response.json()
             ).then(data=>{
@@ -33,7 +35,6 @@ export default function AirportEdit(){
                 const isAdmin = data.admin
                 setIsAdminRole(isAdmin)
             }).catch (error => {
-                console.log(error)
             })
         }
         fetchData()
