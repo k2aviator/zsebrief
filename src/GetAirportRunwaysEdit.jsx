@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase,  ref,  get } from "firebase/database";
-
 
 export default function GetAllAirportRunways({airportICAO}) {  
             
@@ -8,37 +6,35 @@ export default function GetAllAirportRunways({airportICAO}) {
     const [isLoading, setIsLoading] = useState(true);
     const [runways, setRunways] = useState([])
 
+     //MONGO DB GET RUNWAYS
+
+    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
+    const mongoRunwaysURL = "https://zsebrief-backend-production.up.railway.app/runways"
+    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+
     useEffect(()=>{
+        fetch(mongoRunwaysURL)
+        .then(response => response.json())
+        .then((data) => {
+            setRunways(data);
+            setIsLoading(false);   
+            },
+            (error)=>{
+                console.log(error)
+                setIsLoading(false);
+                setHasError(true);
+            })  
+        }, [mongoRunwaysURL])
     
-        const db = getDatabase();
-        const runwaysdb = ref(db,'runways/');
-     
-        //Read database
-
-        get(runwaysdb).then((snapshot) => {
-            //console.log(snapshot.val());
-            setIsLoading(false);
-                if(snapshot.exists()){
-                    // console.log("data exists")
-                    setRunways(snapshot.val())
-                } else {
-                    // console.log("no data exists")
-                    setHasError(true)
-                }         
-            }).then(
-            )
-        }, [])
-
-
     //Write to database
 
-    for (const [index, value] of runways.entries()){
-        // console.log(index,value)
-        const target = value;
-        // console.log("target", target)
-        const source = {"INDEX" : index}
-        Object.assign(target,source)
-    }
+    // for (const [index, value] of runways.entries()){
+    //     // console.log(index,value)
+    //     const target = value;
+    //     // console.log("target", target)
+    //     const source = {"INDEX" : index}
+    //     Object.assign(target,source)
+    // }
 
 
     const varAirportSelected = runways.filter(function(runways, index) {
