@@ -392,3 +392,43 @@ body {
    .airport-logos {
     border: none;
    }
+
+   /*Details and edit page*/
+
+   .details-margin-top{
+   margin-top:25px
+   }
+
+
+   /*form validation*/
+
+   .input-error
+  {
+  border:1px solid red;
+  }
+
+
+  .input-valid
+  {
+  border:1px solid green;
+  }
+
+
+  /*form spacing and line height*/
+
+  form label {
+    line-height: 1.6;
+  }
+  
+  form input, form textarea {
+    line-height: 1.4;
+  }
+
+  /*Announcement*/
+  .yellow-ribbon {
+    background-color: grey;
+    color: white;
+    margin-top: 0px;
+    padding: 1px;
+    text-align: center;
+  }

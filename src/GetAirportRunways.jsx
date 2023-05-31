@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, get } from "firebase/database";
 import GetAirportMETAR from './GetAirportMETAR'
 
 
@@ -9,25 +8,29 @@ export default function GetAirportRunways({airportICAO}) {
     const [isLoading, setIsLoading] = useState(true);
     const [runways, setRunways] = useState([]);
 
-    useEffect(()=>{
-    
-        const db = getDatabase();
-        const runwaysdb = ref(db,'runways/');
-     
+    //MONGO DB GET RUNWAYS
 
-        get(runwaysdb).then((snapshot) => {
-            //console.log(snapshot.val());
-            setIsLoading(false);
-                if(snapshot.exists()){
-                    // console.log("data exists")
-                    setRunways(snapshot.val())
-                } else {
-                    // console.log("no data exists")
-                    setHasError(true)
-                }         
-            }).then(
-            )
-        }, [])
+    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
+    const mongoRunwayURL = "https://zsebrief-backend-production.up.railway.app/runways"
+    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+
+    useEffect(()=>{
+        fetch(mongoRunwayURL)
+        .then(response => response.json())
+        .then((data) => {
+            setRunways(data);
+            setIsLoading(false);   
+            },
+            (error)=>{
+                console.log(error)
+                setIsLoading(false);
+                setHasError(true);
+            })  
+        }, [mongoRunwayURL])
+    
+
+
+
 
     //filter for airport selected
     const varAirportSelected = runways.filter(function(runways) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import GetAirportRunways from './GetAirportRunways'
 import GetAirportDepartures from './GetAirportDepartures'
 import { Link } from 'react-router-dom';
@@ -19,9 +19,35 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const imageFiles = images.keys().map((path) => {
     const src = images(path);
     const filename = path.replace('./', '');
-    
-    return { filename, src };
-  });
+
+     return { filename, src };});
+
+     const [isAdminRole, setIsAdminRole] = useState('false')
+     var token = localStorage.getItem('token');
+     //console.log("run is admin function... token is ", token)
+     const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin"
+
+     useEffect(() => {
+         const fetchData = async () => {
+             
+             fetch(mongoIsAdminURL, {
+             method:'POST', 
+             headers: {
+                 'token':token
+                 },
+             }).then(response=> response.json()
+             ).then(data=>{
+                 //console.log("returned data is ", data.admin)
+                 const isAdmin = data.admin
+                 setIsAdminRole(isAdmin)
+             }).catch (error => {
+                 console.log(error)
+             })
+         }
+         fetchData()
+ 
+     }, [token]);
+
     var dataLayer = window.dataLayer = window.dataLayer || [];
 
     const toggleOpen = () =>{
@@ -113,6 +139,10 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
 
 
 
+
+
+    
+
     // const imageDisplay = imageFiles[4].src
     return (
         <div className="airport-details-box">
@@ -180,8 +210,14 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             <GetAirportDepartures airportICAO={airportICAO}/>
                             <p></p>
                         <div>
-                            <Link to="/airportedit" state={{airportICAO}}> <button>All Rwy Details</button></Link>
+                            <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>View All Airport Details</button></Link><br></br>
+                            {isAdminRole && <div>
+                            <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button>Edit General Airport Information</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button>Edit Runway Information</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button>Edit Departure Information</button></Link><br></br>
+                             </div>}
                         </div>
+                           
                     </div>}
                 </div> 
             </div>

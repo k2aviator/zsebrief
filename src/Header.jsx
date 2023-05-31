@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // DELETE import GetAirportList from './GetAirportList';
-import Login from './Login'
-import firebase from 'firebase/compat/app'
+// DELETE import Login from './Login'
+// DELETE import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import './Zsebrief.css';
@@ -15,17 +15,6 @@ export default function Header() {
     const [user, setUser] = useState({})
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
-
-    //Set user display name 
-    useEffect(() =>{
-        const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-            setUser(user)
-            setUserName(user.displayName)
-        })
-
-        return () => unregisterAuthObserver();
-    },[user])
-
 
     //Set zulu time
     useEffect(() => {
@@ -46,30 +35,35 @@ export default function Header() {
     };
     }, []);
 
-    
+    //Logout
+
+    const signOut = ()=> {
+        localStorage.removeItem('token');
+        setTimeout(() => {
+            // Redirect the user to the desired page
+            window.location.href = '/';
+          }, 1000);
+    }
 
 
     //Display home content
-
-    if (user){
+    
     return (
         <div>
             <div className="header-box-top">
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
             height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
+ 
                 <div className="header-logo">   
                     <Link to="/home"><img alt="zse brief logo" src={logo}></img></Link>  
                 </div>
+      
                 <div className="header-right-top">
                         <div className="header-welcome">
-                        Welcome, {user && userName}! <br></br>
                         Time is {time}Z | {pstTime} PST
                         </div>
                         <div className="header-signout">
-                        <button onClick={()=> {
-                            firebase.auth().signOut();
-                            navigate("/");
-                            }}>Sign out</button>
+                        <button onClick={signOut}>Sign out</button>
                         </div>
                     </div>
             </div>
@@ -78,11 +72,5 @@ export default function Header() {
                 {/* <div className="header-box-bottom-item"><Link to="/tracker">Tracker</Link></div> */}
             </div>
         </div>
-     
-         
-    );} else {
-    return(
-        <Login />
     )
-    }
 }

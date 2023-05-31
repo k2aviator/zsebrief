@@ -4,7 +4,7 @@ import GetAirportList from './GetAirportList';
 import Header from './Header';
 import Footer from './Footer'
 import Login from './Login'
-import firebase from 'firebase/compat/app'
+// DELETE import firebase from 'firebase/compat/app'
 import './Zsebrief.css';
 import { convertTime12to24 } from './utilTime'
 
@@ -18,26 +18,6 @@ export default function Home() {
     // DELETE const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
 
-    //Set user display name 
-    useEffect(() =>{
-        const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-            setUser(user)
-            //DELETE setUserName(user.displayName)
-        })
-
-        return () => unregisterAuthObserver();
-    },[user])
-
-
-    // DELETE Set zulu time
-    // useEffect(() => {
-    //     const interval = setInterval(() => 
-    //     setTime(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22)), 1000);
-    //     return () => {
-    //       clearInterval(interval);
-    //     };
-    //   }, []);
-
      //Set PST Time
     useEffect(() => {
     const pstInterval = setInterval(() => 
@@ -47,7 +27,7 @@ export default function Home() {
         clearInterval(pstInterval);
     };
     }, []);
-
+    
 
     //Display home content
 
