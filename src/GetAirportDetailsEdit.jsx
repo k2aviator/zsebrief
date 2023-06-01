@@ -153,9 +153,9 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     overviewFormData.push({"ICAO":airportICAO})
 
     //submit date (doing this in the backend instead - 5/31/23)
-    // const currentDate = new Date();
-    // const formattedTimestamp = currentDate.toISOString();
-    // overviewFormData.push({"UPDATED":formattedTimestamp})
+    const currentDate = new Date();
+    const formattedTimestamp = currentDate.toISOString();
+    overviewFormData.push({"UPDATED":formattedTimestamp})
 
     //show array to be pushed
     //console.log("array to submit to MONGODB ", overviewFormData)
