@@ -147,8 +147,13 @@ export default function GetAirportDetailsEdit({airportICAO}) {
 
     //sanitize notes field
 
-    const sanitizedNotes = encodeURIComponent(notesInput.value)
-    overviewFormData.push({"NOTES":sanitizedNotes})
+    if (notesInput.value.length === 0){
+        console.log("no field entered, use placeholder value")
+        overviewFormData.push({"NOTES":notesInput.placeholder})
+    } else {
+        const sanitizedNotes = encodeURIComponent(notesInput.value)
+        overviewFormData.push({"NOTES":sanitizedNotes})
+    }
 
     //push airport ICAO 
     overviewFormData.push({"ICAO":airportICAO})
@@ -158,19 +163,11 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     const formattedTimestamp = currentDate.toISOString();
     overviewFormData.push({"UPDATED":formattedTimestamp})
 
-    //show array to be pushed
-    //console.log("array to submit to MONGODB ", overviewFormData)
 
-    //submit to mongo DB
-    //mongo expects:
-    //PUT request pointing towards /airports/:CODE
-    //token in req.headers.authorization
-    //airport details in request body
     var token = localStorage.getItem('token');
-    //console.log("token is ", token)
 
-    //const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports" // PRODUCTION URL
-    const mongoAirportURL = "http://localhost:3000/airports" //TEST URL
+    const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports" // PRODUCTION URL
+    //const mongoAirportURL = "http://localhost:3000/airports" //TEST URL
     // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
 
