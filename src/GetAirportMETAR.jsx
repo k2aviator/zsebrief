@@ -52,14 +52,6 @@ export default function GetAirportMETAR({airportICAO, runways}) {
 
     //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
 
-    // if (!metar.wind_speed){
-    //     //console.log("wind speed doesn't exist in metar")
-    //     airportWindSpeed = 0
-    // } else {
-    //     //console.log("wind value exists ", metar.wind_speed.value)
-    //     airportWindSpeed = metar.wind_speed.value
-
-    // }
 
     if (!metar.wind_direction){
         //console.log("wind direction does not exist")
@@ -70,6 +62,11 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     }
 
     let airportTotalWind;
+
+    if (!metar.wind_speed){
+        //console.log("wind speed doesn't exist in metar")
+        airportTotalWind = 0
+    } 
 
     if (!metar.wind_gust){
         //console.log("wind gust doesn't exist")

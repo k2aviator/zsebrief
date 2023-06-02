@@ -99,7 +99,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                 overviewFormData.push({"TOWERED":toweredInput.placeholder})
             } else {
                 console.log("use stored value")
-                overviewFormData.push({"TOWERED":toweredInput.value})
+                const toweredValue = toweredInput.value
+                overviewFormData.push({TOWERED: toweredValue})
             }
             
             
@@ -175,10 +176,10 @@ export default function GetAirportDetailsEdit({airportICAO}) {
 
     const fetchData = async () => {
              
-        //console.log(overviewFormData)
+       console.log("data to send in put " , overviewFormData)
         fetch(`${mongoAirportURL}/${airportICAO}`, {
         method:'PUT',
-        body: JSON.stringify(overviewFormData),
+        body: overviewFormData,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Set the Authorization header with the token
