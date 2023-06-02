@@ -76,10 +76,10 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         } else {
             classInput.setCustomValidity('');
             if (classInput.value.length === 0){
-                console.log("no field entered, use placeholder value")
+                //console.log("no field entered, use placeholder value")
                 overviewFormData.push({"AIRSPACE_CLASS":classInput.placeholder})
             } else {
-                console.log("use stored value")
+                //console.log("use stored value")
                 overviewFormData.push({"AIRSPACE_CLASS":classInput.value})
             }
             
@@ -88,17 +88,17 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     
     //validate towered
     var toweredValid = /^(TRUE|FALSE){0,1}$/i.test(toweredInput.value);
-    console.log("towered ", toweredInput.value, " is valid? ", toweredValid)
+    //console.log("towered ", toweredInput.value, " is valid? ", toweredValid)
         if (!toweredValid) {
             toweredInput.setCustomValidity('Enter TRUE or FALSE');
             return false;
         } else {
             toweredInput.setCustomValidity('');
             if (toweredInput.value.length === 0){
-                console.log("no field entered, use placeholder value")
+                //console.log("no field entered, use placeholder value")
                 overviewFormData.push({"TOWERED":toweredInput.placeholder})
             } else {
-                console.log("use stored value")
+                //console.log("use stored value")
                 const toweredValue = toweredInput.value
                 overviewFormData.push({TOWERED: toweredValue})
             }
@@ -169,17 +169,27 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     var token = localStorage.getItem('token');
     //console.log("token is ", token)
 
-    const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports" // PRODUCTION URL
-    
-    //const mongoAirportURL = "http://localhost:3000/airports" //TEST URL
+    //const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports" // PRODUCTION URL
+    const mongoAirportURL = "http://localhost:3000/airports" //TEST URL
     // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+
+
+    //reduce the array 
+
+    const transformedOverviewFormData = overviewFormData.reduce((result, item) => {
+    const key = Object.keys(item)[0]; // Assuming each object has only one key
+    const value = item[key];
+    result[key] = value;
+    return result;
+    }, {});
+
 
     const fetchData = async () => {
              
-       console.log("data to send in put " , overviewFormData)
+       //console.log("data to send in put " , JSON.stringify(transformedOverviewFormData))
         fetch(`${mongoAirportURL}/${airportICAO}`, {
         method:'PUT',
-        body: overviewFormData,
+        body: JSON.stringify(transformedOverviewFormData),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Set the Authorization header with the token
@@ -220,8 +230,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         let airportUpdated = airport.UPDATED
         let airportUpdatedBy = airport.UPDATED_BY
         return(
-            <div>
-                <div key={index}>
+            <div key={index}>
                     <form id="airportOverviewForm" onSubmit = {handleAirportOverviewSubmit}>
                         <label><b>{airportICAO}: {airportName}</b></label><br></br>
                         <label>Last updated {airportUpdated}</label><br></br>
@@ -236,7 +245,6 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                         <button type="submit">Submit</button>
                         <p></p>
                     </form>
-                </div>
                 <div>
                     {updatedAirport ===true  && <p>Success: aiport details have been updated!</p>
         

@@ -86,7 +86,7 @@ export default function Signin() {
                 setSubmitMessage(`Error logging in`)
             } else {
                 setSubmitMessage("Login succesful: redirecting you to homepage")
-                console.log("response is ", data.token)
+                //console.log("response is ", data.token)
                 localStorage.setItem("token", data.token)
                 setTimeout(() => {
                     // Redirect the user to the desired page
