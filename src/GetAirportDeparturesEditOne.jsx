@@ -224,8 +224,8 @@ export default function GetAirportDetailsEditOne() {
 
     var token = localStorage.getItem('token');
 
-    //const mongoDeparturesURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
-    const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
+    const mongoDeparturesURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
+    //const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
 
     //reduce the array 
 
@@ -281,7 +281,7 @@ export default function GetAirportDetailsEditOne() {
     let departureClimb = departure.CLIMB
     let departureTopAlt = departure.TOP_ALT
     let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
-    let departureUpdated = departure.LAST_UPDATED
+    let departureUpdated = departure.UPDATED
     
     if (isLoading) {
         return <p>loading...</p>
