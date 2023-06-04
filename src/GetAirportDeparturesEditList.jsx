@@ -67,9 +67,8 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
     //MAP Airport Runways
     const departuresList = varAirportSelected.map((departure,index) =>{
-        // let departureICAO = departure.ICAO
-        // let departureProcedure = departure.PROCEDURE
         let departureId = departure._id
+        let departureUpdatedBy = departure.UPDATED_BY
         let departureName = departure.NAME
         let departureNum = departure.NUM
         let departureType = departure.TYPE
@@ -78,13 +77,14 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
         let departureNeedForInterim = departure.NEED_FOR_INTERIM_ALT
         let departureClimb = departure.CLIMB
         let departureTopAlt = departure.TOP_ALT
-        let departureExpectCruise = departure.EXPECT_CRUISE
-        let departureUpdated = departure.LAST_UPDATED
+        let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
+        let departureUpdated = departure.UPDATED
 
         return (
                 <div key={index}> 
                     <form >
                         <label>Last updated: {departureUpdated}</label><br></br>
+                        <label>Updated by {departureUpdatedBy}</label><br></br>
                         <label>Database id: {departureId}</label>&nbsp; {isAdminRole &&  <span><Link to={`/details/${airportICAO}/departures/${departureId}`} state={{airportICAO, departureId}}> <button>Edit departure</button></Link><br></br></span> }
                         <label>Name: {departureName} </label><br></br>
                         <label>Number: {departureNum}</label><br></br>
