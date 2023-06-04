@@ -6,6 +6,7 @@ import AirportEdit from './AirportDetails'
 import AirportEditOverview from './AirportEditOverview'
 import AirportEditRunways from './AirportEditRunways'
 import AirportEditDepartures from './AirportEditDepartures'
+import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne'
 import Login from './Login'
 import './App.css';
 import './Zsebrief.css';
@@ -37,6 +38,7 @@ function App() {
         <Route path = "/details/:icao/overview" element={isAuthenticated() === true ? <AirportEditOverview/>: <Navigate to="/" replace />}/>
         <Route path = "/details/:icao/runways" element={isAuthenticated() === true ? <AirportEditRunways/>: <Navigate to="/" replace />}/>
         <Route path = "/details/:icao/departures" element={isAuthenticated() === true ? <AirportEditDepartures/>: <Navigate to="/" replace />}/>
+        <Route path = "/details/:icao/departures/:id" element={isAuthenticated() === true ? <GetAirportDeparturesEditOne/>: <Navigate to="/" replace />}/>
      </Routes>  
     </div>
   );

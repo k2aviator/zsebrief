@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
 import GetAllAirportRunwaysEdit from './GetAirportRunwaysEdit'
 import AirportDisplayOverview from './AirportDisplayOverview'
-import GetAirportDeparturesEdit from './GetAirportDeparturesEdit'
+import GetAirportDeparturesEdit from './GetAirportDeparturesEditList'
 import Header from './Header';
 import Footer from './Footer'
 import { Link } from 'react-router-dom';
@@ -77,10 +77,6 @@ export default function AirportEdit(){
                        
                     </div>
                     <GetAirportDeparturesEdit airportICAO={airportICAO}/>
-                    {isAdminRole && <div>
-                            <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button>Edit Departure Information</button></Link>
-                        </div>}
-                    &nbsp;<br></br>
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                 </div>

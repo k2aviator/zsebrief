@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
-// DELETE import GetAirportList from './GetAirportList';
-// DELETE import Login from './Login'
-// DELETE import firebase from 'firebase/compat/app'
 import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import './Zsebrief.css';
