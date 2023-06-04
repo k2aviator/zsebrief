@@ -35,7 +35,7 @@ export default function GetAirportDetailsEditOne() {
             setIsLoading(false);
             setHasError(true);
         })  
-    }, [])
+    }, [mongoDepartureById])
 
 
     const handleDepartureEdit = (event)=>{
@@ -220,7 +220,7 @@ export default function GetAirportDetailsEditOne() {
     const formattedTimestamp = currentDate.toISOString();
     departureFormData.push({"UPDATED":formattedTimestamp})
 
-    console.log("departureFormData so far ", departureFormData)
+    //console.log("departureFormData so far ", departureFormData)
 
     var token = localStorage.getItem('token');
 
@@ -239,7 +239,7 @@ export default function GetAirportDetailsEditOne() {
 
     const fetchData = async () => {
              
-       console.log("data to send in put " , JSON.stringify(transformedDepartureFormData))
+       //console.log("data to send in put " , JSON.stringify(transformedDepartureFormData))
         fetch(`${mongoDeparturesURL}/${departureId}`, {
         method:'PUT',
         body: JSON.stringify(transformedDepartureFormData),
@@ -269,7 +269,7 @@ export default function GetAirportDetailsEditOne() {
       }
     }
  
-    let departureICAO = departure.ICAO
+    // let departureICAO = departure.ICAO
     // let departureProcedure = departure.PROCEDURE
     let departureUpdatedBy = departure.UPDATED_BY
     let departureName = departure.NAME
