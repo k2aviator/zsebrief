@@ -132,8 +132,8 @@ export default function GetAirportDetailsEditOne() {
     }, [token]);
 
     //MONGO DB GET DEPARTURES
-    //const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION
-    const mongoDepartureURL = "http://localhost:3000/departures" //TEST
+    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION
+    //const mongoDepartureURL = "http://localhost:3000/departures" //TEST
 
     //MONGO DB GET BY DEPARTURE ID
     const mongoDepartureById = `https://zsebrief-backend-production.up.railway.app/departures/${departureId}`//PRODUCTION
