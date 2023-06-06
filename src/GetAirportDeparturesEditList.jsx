@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function GetAirportDeparturesEdit({airportICAO}) {
 
@@ -7,10 +8,14 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [departures, setDepartures] = useState([]);
+    // eslint-disable-next-line no-unused-vars
     const [isAdminRole, setIsAdminRole] = useState('false')
     
+    if (!airportICAO){
+        console.log("airport ICAO not defined")
+    }
+
     //MONGO DB GET ISADMIN
-    
 
     var token = localStorage.getItem('token');
     //console.log("run is admin function... token is ", token)
@@ -31,6 +36,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
                 //console.log("returned data is ", data.admin)
                 const isAdmin = data.admin
                 setIsAdminRole(isAdmin)
+                // eslint-disable-next-line no-unused-vars
             }).catch (error => {
             })
         }
@@ -38,8 +44,10 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
     }, [token]);
     
-   //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures"
+
+    //MONGO DB GET DEPARTURES
+    //const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION
+    const mongoDepartureURL = "http://localhost:3000/departures" //TEST
 
     useEffect(()=>{
         fetch(mongoDepartureURL)
@@ -85,7 +93,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
                     <form >
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
-                        <label>Database id: {departureId}</label>&nbsp; {isAdminRole &&  <span><Link to={`/details/${airportICAO}/departures/${departureId}`} state={{airportICAO, departureId}}> <button>Edit departure</button></Link><br></br></span> }
+                        <label>Database id: {departureId}</label>&nbsp; {isAdminRole &&  <span><Link to={`/details/${airportICAO}/departures/${departureId}`} state={{airportICAO, departureId}}> <button>Edit departure</button></Link></span> } <br></br>
                         <label>Name: {departureName} </label><br></br>
                         <label>Number: {departureNum}</label><br></br>
                         <label>Type: {departureType}</label><br></br>
@@ -115,6 +123,14 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
     return (
         <div>
             {departuresList}
+            &nbsp;<br></br>
+            &nbsp;<br></br>      
         </div>
     );
 }  
+
+
+GetAirportDeparturesEdit.propTypes = {
+    airportICAO: PropTypes.string.isRequired,
+    // other prop types
+  };

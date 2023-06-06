@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom';
 
 export default function AirportEdit(){
 
-   
+    const [hasError, setHasError] = useState(false);
+    
     const location = useLocation()
     const airportICAO = location.state.airportICAO
 
@@ -35,6 +36,8 @@ export default function AirportEdit(){
                 const isAdmin = data.admin
                 setIsAdminRole(isAdmin)
             }).catch (error => {
+                console.log(error)
+                setHasError(true);
             })
         }
         fetchData()
@@ -74,7 +77,10 @@ export default function AirportEdit(){
                         </div>}
                     <div>
                         <h4>All departure information:</h4> 
-                       
+                        {isAdminRole && <div>
+                        <Link to={`/details/${airportICAO}/departures/add-new`} state={{airportICAO}}> <button>Add new departure</button></Link><br></br>
+                        <p></p>
+                        </div>}           
                     </div>
                     <GetAirportDeparturesEdit airportICAO={airportICAO}/>
                     &nbsp;<br></br>

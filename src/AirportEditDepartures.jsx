@@ -9,7 +9,7 @@ export default function AirportEditDepartures(){
 
     const location = useLocation()
     const airportICAO = location.state.airportICAO
- 
+
     return (
         <div>
             <div className="header-nav">
@@ -20,7 +20,8 @@ export default function AirportEditDepartures(){
                 <Header />
                 </div>
                     <div className="details-margin-top">
-                        <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>Back to all details</button></Link><br></br>            
+                        <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>Back to all details</button></Link>&nbsp;
+                        <Link to={`/details/${airportICAO}/departures/add-new`} state={{airportICAO}}> <button>Add new departure</button></Link>           
                     </div>
                     <div>
                         <h3>Departure Information for {airportICAO}</h3>

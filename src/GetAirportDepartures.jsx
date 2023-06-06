@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 export default function GetAirportDepartures({airportICAO}) {  
     
@@ -113,7 +114,7 @@ export default function GetAirportDepartures({airportICAO}) {
                     <td>{depPhraseology(departureType)}</td>
                     <td>{departureClimb}</td>
                     <td>{depClimbPhraseology(departureTopAlt)}</td>
-                    <td>{departureExpectCruise}</td>
+                    <td>{decodeURIComponent(departureExpectCruise)}</td>
                 </tr>
         )
     })
@@ -148,3 +149,7 @@ export default function GetAirportDepartures({airportICAO}) {
          </div>
     );
 }
+
+GetAirportDepartures.propTypes = {
+    airportICAO: PropTypes.string.isRequired,
+  };

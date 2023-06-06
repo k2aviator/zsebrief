@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GetAirportDetails from './GetAirportDetails'
+import PropTypes from 'prop-types';
 
 
 export default function GetAirportList({pstTime}) {  
@@ -31,8 +32,9 @@ export default function GetAirportList({pstTime}) {
         }, [mongoAirportURL])
     
 
+    const airportsSorted = airports.sort((a, b) => a.ICAO.localeCompare(b.ICAO));
     // MAP AIRPORTS TO AIRPORT LIST
-    const airportList = airports.map((airport,index) =>{
+    const airportList = airportsSorted.map((airport,index) =>{
         let airportICAO = airport.ICAO
         let airportName = airport.NAME
         let airportTowered = airport.TOWERED
@@ -76,3 +78,9 @@ export default function GetAirportList({pstTime}) {
         </div>
     );
 }
+
+GetAirportList.propTypes = {
+    airportICAO: PropTypes.string.isRequired,
+    pstTime: PropTypes.string.isRequired
+    // other prop types
+  };

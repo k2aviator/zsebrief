@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 
 export default function GetAllAirportRunways({airportICAO}) {  
             
@@ -25,16 +27,6 @@ export default function GetAllAirportRunways({airportICAO}) {
                 setHasError(true);
             })  
         }, [mongoRunwaysURL])
-    
-    //Write to database
-
-    // for (const [index, value] of runways.entries()){
-    //     // console.log(index,value)
-    //     const target = value;
-    //     // console.log("target", target)
-    //     const source = {"INDEX" : index}
-    //     Object.assign(target,source)
-    // }
 
 
     const varAirportSelected = runways.filter(function(runways, index) {
@@ -109,3 +101,7 @@ export default function GetAllAirportRunways({airportICAO}) {
         </div>
     );
 }
+
+GetAllAirportRunways.propTypes = {
+    airportICAO: PropTypes.string.isRequired,
+  };

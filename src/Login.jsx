@@ -11,7 +11,7 @@ export default function Login() {
     return (
         <div>
             <div className="yellow-ribbon">
-            <p>UPDATE: Please create a new account with the "Create account button" as the backend changed on 5/31/23.</p>
+            <p>UPDATE: Please create a new account with the 'Create account button' as the backend changed on 5/31/23.</p>
             </div>
             <div className="header-nav">
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
