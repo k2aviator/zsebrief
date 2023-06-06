@@ -12,8 +12,8 @@ export default function AdminDepsByDClass(){
     
     //MONGO DB GET CLASS B DEPARTURES
 
-    //const mongoDepByClassURL = "https://zsebrief-backend-production.up.railway.app/admin/deps-by-class/" //PRODUCTION
-    const mongoDepByClassURL = "http://localhost:3000/admin/deps-by-class/" //TEST
+    const mongoDepByClassURL = "https://zsebrief-backend-production.up.railway.app/admin/deps-by-class/" //PRODUCTION
+    //const mongoDepByClassURL = "http://localhost:3000/admin/deps-by-class/" //TEST
 
     useEffect(()=>{
         fetch(`${mongoDepByClassURL}D`)
