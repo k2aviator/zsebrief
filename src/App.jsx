@@ -70,8 +70,7 @@ function App() {
         <Route path = "/details/:icao/departures/:id" element={isAdminRole === true ? <GetAirportDeparturesEditOne/>: <Navigate to="/" replace />}/>
         <Route path = "/admin/deps-by-class/d" element={isAdminRole === true ? <AdminDepsByDClass />: <Navigate to="/" replace />}/>
         <Route path = "/admin/deps-by-class/c" element={isAdminRole === true ? <AdminDepsByCClass />: <Navigate to="/" replace />}/>
-        <Route path = "/admin/deps-by-class/b" element={isAdminRole === true ? <AdminDepsByBClass />: <Navigate to="/" replace />}/>
-      </Routes>  
+        <Route path = "/admin/deps-by-class/b" element={isAdminRole === true ? <AdminDepsByBClass />: <Navigate to="/" replace />}/>      </Routes>  
     </div>
   );
 }

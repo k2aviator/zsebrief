@@ -1,5 +1,5 @@
 export const depPhraseology = (departureType, departureName, departureNum, departureTopAlt) => {
-    console.log("function inputs are ", departureType, departureName, departureNum, departureTopAlt)
+    //console.log("function inputs are ", departureType, departureName, departureNum, departureTopAlt)
     let returnArray = []
     let phrase = ""
     if (departureType === "R/V"){
@@ -28,6 +28,6 @@ export const depPhraseology = (departureType, departureName, departureNum, depar
 
     returnArray.push(climbPhrase)
 
-    console.log("return array is ", returnArray)
+    // console.log("return array is ", returnArray)
     return returnArray
 }

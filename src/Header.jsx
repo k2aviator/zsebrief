@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
+import UtilAdminRole from './UtilAdminRole';
 import './Zsebrief.css';
 import logo from './icons/zsebrief.png'
 
@@ -9,34 +10,8 @@ export default function Header() {
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
     const [showDropdown, setShowDropdown] = useState(false);
-    const [isAdminRole, setIsAdminRole] = useState('false')
-
-    var token = localStorage.getItem('token');
-
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
-    //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            
-            fetch(mongoIsAdminURL, {
-            method:'POST', 
-            headers:  {
-               'Content-Type': 'application/json',
-               'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-                },
-            }).then(response=> response.json()
-            ).then(data=>{
-                //console.log("returned data is ", data.admin)
-                const isAdmin = data.admin
-                setIsAdminRole(isAdmin)
-            }).catch (error => {
-                console.error('An error occurred:', error);
-            })
-        }
-        fetchData()
-
-    }, [token]);
+   
+    const isAdminRole = UtilAdminRole()
 
     //Set zulu time
     useEffect(() => {
@@ -108,7 +83,7 @@ export default function Header() {
                                 onMouseLeave={toggleDropdown}
                                 >
                                 {/* <Link to="/admin">Admin</Link> */}
-                                Admin
+                                Admin - Departures
                                 {showDropdown && (
                                     <div className="dropdown-content">
                                     <ul>
@@ -121,11 +96,11 @@ export default function Header() {
                                         <li>
                                         <Link to="/admin/deps-by-class/d">Class D Deps</Link>
                                         </li>
-                                      
                                     </ul>
                                     </div>
                                 )}
                                 </li>
+                                
                             )}
                             </ul>
                         </nav>

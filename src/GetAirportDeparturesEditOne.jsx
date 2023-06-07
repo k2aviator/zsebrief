@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { depPhraseology } from './utilDepPhraseology'
+import UtilAdminRole from './UtilAdminRole';
 import Header from './Header';
 import Footer from './Footer'
 
-export default function GetAirportDetailsEditOne() {  
+export default function GetAirportDeparturesEditOne() {  
     const navigate = useNavigate()
     // eslint-disable-next-line no-unused-vars
+    const isAdminRole = UtilAdminRole()
+    var token = localStorage.getItem('token')
     const location = useLocation()
     const routerLocation = useLocation();
     const { airportICAO, departureId } = routerLocation.state;
@@ -15,14 +18,13 @@ export default function GetAirportDetailsEditOne() {
     const [departureDeleted, setDepartureDeleted] = useState(false);
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    // eslint-disable-next-line no-unused-vars
-    const [isAdminRole, setIsAdminRole] = useState(false)
     const [previewType, setPreviewType] = useState()
     const [previewPhrase, setPreviewPhrase] = useState()
     const [previewTopAlt, setPreviewTopAlt] = useState()
     const [previewClimbPhrase, setPreviewClimbPhrase] = useState()
-    const [previewExpectedCruise, setPreviewExpectedCruise] = useState()
+    const [previewExpectedCruise, setPreviewExpectedCruise] = useState();
 
+    
 
     function backToAirportOverview({airportICAO}) {
 
@@ -100,36 +102,6 @@ export default function GetAirportDetailsEditOne() {
         };
       }, []);
 
-
-    console.log(previewTopAlt)
-    //MONGO DB GET ISADMIN
-
-    var token = localStorage.getItem('token');
-    //console.log("run is admin function... token is ", token)
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
-    //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            
-            fetch(mongoIsAdminURL, {
-            method:'POST', 
-            headers:  {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-                },
-            }).then(response=> response.json()
-            ).then(data=>{
-                //console.log("returned data is ", data.admin)
-                const isAdmin = data.admin
-                setIsAdminRole(isAdmin)
-            }).catch (error => {
-                console.error('An error occurred:', error);
-            })
-        }
-        fetchData()
-
-    }, [token]);
 
     //MONGO DB GET DEPARTURES
     const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION

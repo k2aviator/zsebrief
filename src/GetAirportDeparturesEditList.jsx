@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import UtilAdminRole from './UtilAdminRole';
+
 
 export default function GetAirportDeparturesEdit({airportICAO}) {
 
@@ -8,42 +10,12 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [departures, setDepartures] = useState([]);
-    // eslint-disable-next-line no-unused-vars
-    const [isAdminRole, setIsAdminRole] = useState('false')
+    const isAdminRole = UtilAdminRole()
     
     if (!airportICAO){
         console.log("airport ICAO not defined")
     }
 
-    //MONGO DB GET ISADMIN
-
-    var token = localStorage.getItem('token');
-    //console.log("run is admin function... token is ", token)
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
-    //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            
-            fetch(mongoIsAdminURL, {
-            method:'POST', 
-            headers:  {
-               'Content-Type': 'application/json',
-               'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-                },
-            }).then(response=> response.json()
-            ).then(data=>{
-                //console.log("returned data is ", data.admin)
-                const isAdmin = data.admin
-                setIsAdminRole(isAdmin)
-                // eslint-disable-next-line no-unused-vars
-            }).catch (error => {
-            })
-        }
-        fetchData()
-
-    }, [token]);
-    
 
     //MONGO DB GET DEPARTURES
     const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION

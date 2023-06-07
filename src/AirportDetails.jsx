@@ -3,48 +3,21 @@ import { useLocation } from 'react-router-dom'
 import GetAllAirportRunwaysEdit from './GetAirportRunwaysEdit'
 import AirportDisplayOverview from './AirportDisplayOverview'
 import GetAirportDeparturesEdit from './GetAirportDeparturesEditList'
+import UtilAdminRole from './UtilAdminRole';
 import Header from './Header';
 import Footer from './Footer'
 import { Link } from 'react-router-dom';
 
 export default function AirportEdit(){
 
-    // eslint-disable-line
+    /* eslint-disable */ 
     const [hasError, setHasError] = useState(false);
+    /* eslint-enable */
     
     const location = useLocation()
     const airportICAO = location.state.airportICAO
+    const isAdminRole = UtilAdminRole()
 
-    const [isAdminRole, setIsAdminRole] = useState('false')
-
-    var token = localStorage.getItem('token');
-    //console.log("run is admin function... token is ", token)
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
-    //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            
-            fetch(mongoIsAdminURL, {
-            method:'POST', 
-            headers:  {
-               'Content-Type': 'application/json',
-               'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-                },
-            }).then(response=> response.json()
-            ).then(data=>{
-                //console.log("returned data is ", data.admin)
-                const isAdmin = data.admin
-                setIsAdminRole(isAdmin)
-            }).catch (error => {
-                console.log(error)
-                setHasError(true);
-            })
-        }
-        fetchData()
-
-    }, [token]);
-    
     return (
         <div>
             <div className="header-nav">
