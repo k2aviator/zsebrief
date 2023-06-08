@@ -15,5 +15,8 @@ module.exports = {
         "react"
     ],
     "rules": {
+        "react/no-unescaped-entities":1,
+        "react/prop-types": 1,
+        "no-unused-vars":1
     }
 }
