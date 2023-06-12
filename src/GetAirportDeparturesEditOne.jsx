@@ -21,10 +21,31 @@ export default function GetAirportDeparturesEditOne() {
     const [previewType, setPreviewType] = useState()
     const [previewPhrase, setPreviewPhrase] = useState()
     const [previewTopAlt, setPreviewTopAlt] = useState()
+    const [previewTopAltListed, setPreviewTopAltListed] = useState()
     const [previewClimbPhrase, setPreviewClimbPhrase] = useState()
+    const [previewNeedForInterim, setPreviewNeedForInterim] = useState()
     const [previewExpectedCruise, setPreviewExpectedCruise] = useState();
 
-    
+    //FORM Interactive Elements
+    const [depTypeOption, setDepTypeOption] = useState('');
+    const [icaoTowered, setIcaoTowered] = useState('');
+    const [formData, setFormData] = useState([])
+
+
+    //HANDLE DROP DOWN FUNCTIONALITY
+    const handleDropDown = (event, keyName) => {
+        const key = keyName;
+        const value = event.target.value;
+        const existingKeyValuePair = formData.find((item) => Object.prototype.hasOwnProperty.call(item,key));
+        if (existingKeyValuePair) {
+            // Update the existing key-value pair
+            existingKeyValuePair[key] = value;
+            setFormData([...formData]);
+            } else {
+            // Add a new key-value pair to the array
+            setFormData(prevData => [...prevData, { [key]: value }]);
+            }
+    }    
 
     function backToAirportOverview({airportICAO}) {
 
@@ -117,7 +138,9 @@ export default function GetAirportDeparturesEditOne() {
         setDeparture(data);
         setPreviewType(data.TYPE)
         setPreviewClimbPhrase(data.CLIMB)
+        setPreviewTopAltListed(data.TOP_ALT_LISTED)
         setPreviewExpectedCruise(decodeURIComponent(data.EXPECT_CRUISE))
+        setPreviewNeedForInterim(data.NEED_FOR_INTERIM_ALT)
         let [clearPhrase, climbPhrase] = depPhraseology(data.TYPE, data.NAME, data.NUM, data.TOP_ALT)
         setPreviewPhrase(clearPhrase)
         setPreviewTopAlt(climbPhrase)
@@ -152,238 +175,166 @@ export default function GetAirportDeparturesEditOne() {
         backToAirportOverview({airportICAO})
     }
 
+     //BEGIN HANDLE DEPARTURE OVERVIEW EDIT/SUBMIT 
+
     const handleDepartureEdit = (event)=>{
-    
-    event.preventDefault();
-    var airportOverviewForm = document.getElementById('departureEditForm');
-
-    //identify all form elements
-    const depNameInput = document.getElementById('depName')
-    const depNumberInput = document.getElementById('depNumber')
-    const depTypeInput = document.getElementById('depType')
-    const depRwySpecificInput = document.getElementById('depRwySpecific')
-    const depTopAltListedInput = document.getElementById('depTopAltListed')
-    const depTopAltInput = document.getElementById('depTopAlt')
-    const depInterimAltInput = document.getElementById('depInterimAlt')
-    const depClimbInsInput = document.getElementById('depClimbIns')
-    const depExpectedCruiseInput = document.getElementById('depExpectedCruise')
-
-    //clear validity statements
-    //array to submit
-
-    var departureFormData = []
-
-    console.log("handle departure edit function")
-
-    //validate departure name
-    var depNameValid = /^[A-Za-z\s]*$/.test(depNameInput.value);
-        if (!depNameValid) {
-            depNameInput.setCustomValidity('Enter only letters');
-            depNameInput.reportValidity();
-            return false;
-        } else {
-            depNameInput.setCustomValidity('');
-            if (depNameInput.value.length === 0){
-                departureFormData.push({"NAME":depNameInput.placeholder})
-            } else {
-                departureFormData.push({"NAME":depNameInput.value})
-            }
-
-        }
-
-    //validate number
-    var depNumberValid = /^[0-9]{0,2}$/.test(depNumberInput.value);
-         if (!depNumberValid) {
-            depNumberInput.setCustomValidity('Enter B, C, D, or E');
-            return false;
-        } else {
-            depNumberInput.setCustomValidity('');
-            if (depNumberInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({"NUM":depNumberInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                departureFormData.push({"NUM":depNumberInput.value})
-            }
-        }
-
-  
-    // validate type
-    var depTypeValid = /^(|R\/V|R\/V_NO_DEP|RNAV|ODP_NAMED|ODP_NOT_NAMED|RADIAL-TRANS)*$/i.test(depTypeInput.value);
-        if (!depTypeValid)  {
-            depTypeInput.setCustomValidity('Enter TRUE or FALSE');
-            return false;
-        } else {
-            depTypeInput.setCustomValidity('');
-            if (depTypeInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({TYPE:depTypeInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depTypeValue = depTypeInput.value
-                departureFormData.push({TYPE: depTypeValue})
-            }
-            
-            
-        }
-
-
-    // validate runway specific
-        var depRwyValid = /^[A-Za-z0-9]{0,3}$/i.test(depRwySpecificInput.value);
-        if (!depRwyValid)  {
-            depRwySpecificInput.setCustomValidity('Enter R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS');
-            return false;
-        } else {
-            depRwySpecificInput.setCustomValidity('');
-            if (depRwySpecificInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({RWY_SPECIFIC:depRwySpecificInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depRwyValue = depRwySpecificInput.value
-                departureFormData.push({RWY_SPECIFIC: depRwyValue})
-            }
-        }
-
-
-    // validate top altitude
-    var depTopAltListedValid = /^(|YES|NO)$/i.test(depTopAltListedInput.value);
-    if (!depTopAltListedValid)  {
-        depTopAltListedInput.setCustomValidity('Enter YES or NO');
-        return false;
-    } else {
-        depTopAltListedInput.setCustomValidity('');
-        if (depTopAltListedInput.value.length === 0){
-            //console.log("no field entered, use placeholder value")
-            departureFormData.push({TOP_ALT_LISTED:depTopAltListedInput.placeholder})
-        } else {
-            //console.log("use stored value")
-            const depTopAltListedValue = depTopAltListedInput.value
-            departureFormData.push({TOP_ALT_LISTED: depTopAltListedValue})
-        }
-    }
-
-    // validate top alt
-    var depTopAltValid = /^[0-9]{0,5}$/i.test(depTopAltInput.value);
-    if (!depTopAltValid)  {
-        depTopAltInput.setCustomValidity('Display in thousands of feet with no comma: for example, 5k would be 5000');
-        return false;
-    } else {
-        depTopAltInput.setCustomValidity('');
-        if (depTopAltInput.value.length === 0){
-            //console.log("no field entered, use placeholder value")
-            departureFormData.push({TOP_ALT:depTopAltInput.placeholder})
-        } else {
-            //console.log("use stored value")
-            const depTopAltValue = depTopAltInput.value
-            departureFormData.push({TOP_ALT: depTopAltValue})
-        }
-    }
-    
-    // validate interim alt
-    var depInterimAltValid = /^(|YES|NO)$/i.test(depInterimAltInput.value);
-    if (!depInterimAltValid)  {
-        depInterimAltInput.setCustomValidity('Options: YES, NO, or leave empty');
-        return false;
-    } else {
-        depInterimAltInput.setCustomValidity('');
-        if (depInterimAltInput.value.length === 0){
-            //console.log("no field entered, use placeholder value")
-            departureFormData.push({NEED_FOR_INTERIM_ALT:depInterimAltInput.placeholder})
-        } else {
-            //console.log("use stored value")
-            const depInterimAltValue = depInterimAltInput.value
-            departureFormData.push({NEED_FOR_INTERIM_ALT: depInterimAltValue})
-        }
-    }
-    
-
-    // validate climb instructions
-    var depClimbInsValid = /^(|MAINTAIN|CLB VIA SID|CLB VIA SID, EXCEPT MAINTAIN)$/i.test(depClimbInsInput.value);
-    if (!depClimbInsValid)  {
-        depClimbInsInput.setCustomValidity('Options: YES, NO, or leave empty');
-        return false;
-    } else {
-        depClimbInsInput.setCustomValidity('');
-        if (depClimbInsInput.value.length === 0){
-            //console.log("no field entered, use placeholder value")
-            departureFormData.push({CLIMB:depClimbInsInput.placeholder})
-        } else {
-            //console.log("use stored value")
-            const depClimbInsValue= depClimbInsInput.value
-            departureFormData.push({CLIMB: depClimbInsValue})
-        }
-    }
-    
         
-    //sanitze and encode expected cruise
-    if (depExpectedCruiseInput.value.length === 0){
-        departureFormData.push({EXPECT_CRUISE:depExpectedCruiseInput.placeholder})
-    } else {
-        const sanitizedNotes = encodeURIComponent(depExpectedCruiseInput.value)
-        departureFormData.push({EXPECT_CRUISE:sanitizedNotes})
-    }
+        event.preventDefault();
+        var airportOverviewForm = document.getElementById('departureEditForm');
+
+        //identify all form elements
+        const depNameInput = document.getElementById('depName')
+        const depNumberInput = document.getElementById('depNumber')
+        const depTypeInput = document.getElementById('depType')
+        const depRwySpecificInput = document.getElementById('depRwySpecific')
+        const depTopAltListedInput = document.getElementById('depTopAltListed')
+        const depTopAltInput = document.getElementById('depTopAlt')
+        const depInterimAltInput = document.getElementById('depInterimAlt')
+        const depClimbInsInput = document.getElementById('depClimbIns')
+        const depExpectedCruiseInput = document.getElementById('depExpectedCruise')
+
+        //clear validity statements
+        //array to submit
+
+        var departureFormData = formData;
+
+        // console.log("departure form data", departureFormData)
+        
+        //validate departure name
+        var depNameValid = /^[A-Za-z\s]*$/.test(depNameInput.value);
+            if (!depNameValid) {
+                depNameInput.setCustomValidity('Enter only letters');
+                depNameInput.reportValidity();
+                return false;
+            } else {
+                depNameInput.setCustomValidity('');
+                if (depNameInput.value.length === 0){
+                    departureFormData.push({"NAME":depNameInput.placeholder})
+                } else {
+                    departureFormData.push({"NAME":depNameInput.value})
+                }
+
+            }
+
+        //validate number
+        var depNumberValid = /^[0-9]{0,2}$/.test(depNumberInput.value);
+            if (!depNumberValid) {
+                depNumberInput.setCustomValidity('Enter B, C, D, or E');
+                return false;
+            } else {
+                depNumberInput.setCustomValidity('');
+                if (depNumberInput.value.length === 0){
+                    //console.log("no field entered, use placeholder value")
+                    departureFormData.push({"NUM":depNumberInput.placeholder})
+                } else {
+                    //console.log("use stored value")
+                    departureFormData.push({"NUM":depNumberInput.value})
+                }
+            }
 
 
-    //push airport ICAO 
-    departureFormData.push({ICAO:airportICAO})
-    departureFormData.push({PROCEDURE:"PROCEDURE"})
+        // validate runway specific
+            var depRwyValid = /^[A-Za-z0-9]{0,3}$/i.test(depRwySpecificInput.value);
+            if (!depRwyValid)  {
+                depRwySpecificInput.setCustomValidity('Enter R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS');
+                return false;
+            } else {
+                depRwySpecificInput.setCustomValidity('');
+                if (depRwySpecificInput.value.length === 0){
+                    //console.log("no field entered, use placeholder value")
+                    departureFormData.push({RWY_SPECIFIC:depRwySpecificInput.placeholder})
+                } else {
+                    //console.log("use stored value")
+                    const depRwyValue = depRwySpecificInput.value
+                    departureFormData.push({RWY_SPECIFIC: depRwyValue})
+                }
+            }
 
-    //push date
-    const currentDate = new Date();
-    const formattedTimestamp = currentDate.toISOString();
-    departureFormData.push({"UPDATED":formattedTimestamp})
+        // validate top alt
+        var depTopAltValid = /^[0-9]{0,5}$/i.test(depTopAltInput.value);
+        if (!depTopAltValid)  {
+            depTopAltInput.setCustomValidity('Display in thousands of feet with no comma: for example, 5k would be 5000');
+            return false;
+        } else {
+            depTopAltInput.setCustomValidity('');
+            if (depTopAltInput.value.length === 0){
+                //console.log("no field entered, use placeholder value")
+                departureFormData.push({TOP_ALT:depTopAltInput.placeholder})
+            } else {
+                //console.log("use stored value")
+                const depTopAltValue = depTopAltInput.value
+                departureFormData.push({TOP_ALT: depTopAltValue})
+            }
+        }
+            
+        //sanitze and encode expected cruise
+        if (depExpectedCruiseInput.value.length === 0){
+            departureFormData.push({EXPECT_CRUISE:depExpectedCruiseInput.placeholder})
+        } else {
+            const sanitizedNotes = encodeURIComponent(depExpectedCruiseInput.value)
+            departureFormData.push({EXPECT_CRUISE:sanitizedNotes})
+        }
 
-    //console.log("departureFormData so far ", departureFormData)
+        //push airport ICAO 
+        departureFormData.push({ICAO:airportICAO})
+        departureFormData.push({PROCEDURE:"PROCEDURE"})
 
-    var token = localStorage.getItem('token');
+        //push date
+        const currentDate = new Date();
+        const formattedTimestamp = currentDate.toISOString();
+        departureFormData.push({"UPDATED":formattedTimestamp})
 
-    const mongoDeparturesURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
-    //const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
+        //console.log("departureFormData so far ", departureFormData)
 
-    //reduce the array 
+        var token = localStorage.getItem('token');
 
-    const transformedDepartureFormData = departureFormData.reduce((result, item) => {
-    const key = Object.keys(item)[0]; // Assuming each object has only one key
-    const value = item[key];
-    result[key] = value;
-    return result;
-    }, {});
+        const mongoDeparturesURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
+        //const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
+
+        //reduce the array 
+
+        const transformedDepartureFormData = departureFormData.reduce((result, item) => {
+        const key = Object.keys(item)[0]; // Assuming each object has only one key
+        const value = item[key];
+        result[key] = value;
+        return result;
+        }, {});
 
 
-    const fetchData = async () => {
-             
-       //console.log("data to send in put " , JSON.stringify(transformedDepartureFormData))
-        fetch(`${mongoDeparturesURL}/${departureId}`, {
-        method:'PUT',
-        body: JSON.stringify(transformedDepartureFormData),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-             },
-        }).then(response=> response.json()
-        ).then(data=>{
-            if (data !== null) {
-                //console.log("returned data is ", JSON.stringify(data));
-                setUpdatedDeparture(true)
-                refreshPage()
-              } else {
-                // console.log("No data returned from the server");
-                setUpdatedDeparture(false)
-              }
-        }).catch (error => {
-            console.error('An error occurred:', error);
-        })
-    }
-    fetchData()
+        const fetchData = async () => {
+                
+        //console.log("data to send in put " , JSON.stringify(transformedDepartureFormData))
+            fetch(`${mongoDeparturesURL}/${departureId}`, {
+            method:'PUT',
+            body: JSON.stringify(transformedDepartureFormData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Set the Authorization header with the token
+                },
+            }).then(response=> response.json()
+            ).then(data=>{
+                if (data !== null) {
+                    //console.log("returned data is ", JSON.stringify(data));
+                    setUpdatedDeparture(true)
+                    refreshPage()
+                } else {
+                    // console.log("No data returned from the server");
+                    setUpdatedDeparture(false)
+                }
+            }).catch (error => {
+                console.error('An error occurred:', error);
+            })
+        }
+        fetchData()
 
-    //RETURN the departure by ID
+        //RETURN the departure by ID
 
-    for (var i = 0; i < airportOverviewForm.elements.length; i++) {
-        airportOverviewForm.elements[i].setCustomValidity('');
-      }
-    }
- 
+        for (var i = 0; i < airportOverviewForm.elements.length; i++) {
+            airportOverviewForm.elements[i].setCustomValidity('');
+        }
+        }
+     //END HANDLE DEPARTURE OVERVIEW EDIT/SUBMIT 
+
     // let departureICAO = departure.ICAO
     // let departureProcedure = departure.PROCEDURE
     let departureUpdatedBy = departure.UPDATED_BY
@@ -430,14 +381,36 @@ export default function GetAirportDeparturesEditOne() {
                         <label>Database id: {departureId}</label><br></br>
                         <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$"/> &nbsp; Text only<br></br>
                         <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}"/><br></br>
-                        <label>Type: </label><input type="text" id="depType" size="15" placeholder={departureType} pattern="^(|R/V|R/V_NO_DEP|RNAV|ODP_NAMED|ODP_NOT_NAMED|RADIAL-TRANS)$" /> &nbsp; Options: R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS<br></br>
+                        <label>Type: </label>
+                        <select id="depTypeOption" value={previewType} onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value)}}>
+                            <option value="R/V">R/V</option>
+                            <option value="R/V_NO_DEP">R/V_NO_DEP</option>
+                            <option value="RNAV">RNAV</option>
+                            <option value="ODP_NAMED">ODP_NAMED</option>
+                            <option value="ODP_NOT_NAMED">ODP_NOT_NAMED</option>
+                            <option value="RADIAL-TRANS">RADIAL-TRANS</option>
+                        </select><br></br>
                         <label>Runway Specific: </label><input type="text" id="depRwySpecific" size="2" placeholder={departureRunway} pattern ="^[A-Za-z0-9]{0,3}$"/> &nbsp; If runway specific, enter runway (e.g, 16L, 14, 2)<br></br>
-                        <label>Top alt listed?  </label><input type="text" id="depTopAltListed" size="2" placeholder={departureTopAltListed} pattern="^(|YES|NO)$" /> &nbsp; Options: YES, NO, or leave empty<br></br>
-                         &nbsp;<br></br>
+                        <label>Top alt listed? </label>
+                         <select id="depTopAltListed" value={previewTopAltListed} onChange={(event) => {handleDropDown(event, "TOP_ALT_LISTED"); setPreviewTopAltListed(event.target.value)}}>
+                            <option value="NA"></option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select><br></br>
                         <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$"/> <br></br> Thousands of feet with no comma: for example, 5k would be 5000. If "TOP ALT" is listed on the chart, include "(DON'T STATE)" after altitude. For example, "5000 (DON'T STATE)"<br></br>                        
                         &nbsp;<br></br>
-                        <label>Need for interim alt? </label><input type="text" id="depInterimAlt" size="2" placeholder={departureNeedForInterim} pattern="^(|YES|NO)$" /> &nbsp; Options: YES, NO, or leave empty<br></br>
-                        <label>Climb instruction: </label><input type="text" id="depClimbIns" size="20" placeholder={departureClimb} pattern="^(|MAINTAIN|CLB VIA SID|CLB VIA SID, EXCEPT MAINTAIN)$"/> &nbsp; Options: "MAINTAIN", "CLB VIA SID", "CLB VIA SID, EXCEPT MAINTAIN", or empty<br></br>
+                        <label>Need for interim alt? </label>
+                        <select id="depNeedForInterim" value={previewNeedForInterim} onChange={(event) => {handleDropDown(event, "NEED_FOR_INTERIM_ALT"); setPreviewNeedForInterim(event.target.value)}}>
+                            <option value="NA"></option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select><br></br>
+                        <label>Climb instruction: </label>
+                        <select id="depClimbInstruction" value={previewClimbPhrase} onChange={(event) => {handleDropDown(event, "CLIMB"); setPreviewClimbPhrase(event.target.value)}}>
+                            <option value="MAINTAIN">MAINTAIN</option>
+                            <option value="CLB VIA SID">CLB VIA SID</option>
+                            <option value="CLB VIA SID, EXCEPT MAINTAIN">CLB VIA SID, EXCEPT MAINTAIN</option>
+                        </select><br></br>
                         <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} /> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
                         <button type="submit">Submit</button>{updatedDeparture ===true  && <p>Success: departure has been updated.</p>}
@@ -473,7 +446,7 @@ export default function GetAirportDeparturesEditOne() {
                     &nbsp;<br></br>
  
                     Caution: &nbsp; 
-                    <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp; Delete departure</button>{departureDeleted ===true  && <p>Success: departure deleted.</p>}
+                    <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p>Success: departure deleted.</p>}
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     &nbsp;<br></br>

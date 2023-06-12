@@ -78,9 +78,3 @@ export default function GetAirportList({pstTime}) {
         </div>
     );
 }
-
-GetAirportList.propTypes = {
-    airportICAO: PropTypes.string.isRequired,
-    pstTime: PropTypes.string.isRequired
-    // other prop types
-  };
