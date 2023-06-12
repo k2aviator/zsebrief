@@ -5,9 +5,6 @@ import Footer from './Footer'
 import './Zsebrief.css';
 import { convertTime12to24 } from './utilTime'
 
-//console.log("db auth ", db)
-//npm install --save moment react-moment
-
 
 export default function Home() {
     const [pstTime, setPstTime] = useState()
