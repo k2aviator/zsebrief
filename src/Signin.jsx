@@ -112,7 +112,7 @@ export default function Signin() {
                 </form>
                 &nbsp;<br></br>
                 {submitMessage &&  
-                <p>{submitMessage}</p>}
+                <p id="success-message">{submitMessage}</p>}
             </div>  
         );
 }

@@ -186,7 +186,7 @@ export default function GetAirportDeparturesAddOne() {
 
         //reduce the array 
 
-        //console.log("departure form data before reduction", departureFormData)
+        console.log("departure form data before reduction", departureFormData)
 
         const transformedDepartureFormData = departureFormData.reduce((result, item) => {
         const key = Object.keys(item)[0]; // Assuming each object has only one key
@@ -317,7 +317,7 @@ export default function GetAirportDeparturesAddOne() {
                         <p></p>  
                     </form>
                 </div>
-                {addedDeparture ===true  && <p>Success: new departure has been created!</p>}
+                {addedDeparture ===true  && <p id="success-message">Success: new departure has been created!</p>}
                 <div className="phraseologyPreview">
                         <p className="headerText">Phraseology Preview</p>
                         <table id="details">

@@ -381,7 +381,7 @@ export default function GetAirportDeparturesEditOne() {
                         </select><br></br>
                         <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
-                        <button type="submit">Submit</button>{updatedDeparture ===true  && <p>Success: departure has been updated.</p>}
+                        <button type="submit">Submit</button>{updatedDeparture ===true  && <p id="success-message">Success: departure has been updated.</p>}
                         <p></p>  
                     </form>
                 </div>
@@ -413,7 +413,7 @@ export default function GetAirportDeparturesEditOne() {
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     Caution: &nbsp; 
-                    <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p>Success: departure deleted.</p>}
+                    <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p id="success-message">Success: departure deleted.</p>}
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     &nbsp;<br></br>
