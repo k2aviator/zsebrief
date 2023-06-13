@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { depPhraseology } from './utilDepPhraseology'
 import UtilAdminRole from './UtilAdminRole';
@@ -16,63 +16,97 @@ export default function GetAirportDeparturesAddOne() {
     const [addedDeparture, setAddedDeparture] = useState(false)
     // eslint-disable-next-line no-unused-vars
     const isAdminRole = UtilAdminRole()
+    const [hasError, setHasError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [previewType, setPreviewType] = useState()
     const [previewPhrase, setPreviewPhrase] = useState()
-    const [previewTopAlt, setPreviewTopAlt] = useState()
+    const [previewTopAltListed, setPreviewTopAltListed] = useState()
     const [previewClimbPhrase, setPreviewClimbPhrase] = useState()
     const [previewExpectedCruise, setPreviewExpectedCruise] = useState()
+    const [runwayList, setRunwayList] = useState();
+    const [previewDepRunway, setPreviewDepRunway] = useState()
+    const [previewNeedForInterim, setPreviewNeedForInterim] = useState()
+    const [previewName, setPreviewName] = useState()
+    const [previewNum, setPreviewNum] = useState()
+    const [previewTopAlt, setPreviewTopAlt] = useState()
+
+    //FORM Interactive Elements
+    const [formData, setFormData] = useState([])
+
+    //MONGO DB GET RUNWAYS LIST
+    // const mongoDepartureById = `https://zsebrief-backend-production.up.railway.app/runways`//PRODUCTION
+    const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
+    useEffect(()=>{
+    fetch(mongoRunwaysById)
+    .then(response => response.json())
+    .then((data) => {
+        setRunwayList(data)
+        setIsLoading(false);   
+        },
+        (error)=>{
+            console.log(error)
+            setIsLoading(false);
+            setHasError(true);
+        })  
+        }, [])
+
+    //
+
+    //HANDLE DROP DOWN FUNCTIONALITY
+
+    const handleDropDown = useCallback((event, keyName) => {
+        const key = keyName;
+        const value = event.target.value;
+        const existingKeyValuePair = formData.find((item) => Object.prototype.hasOwnProperty.call(item, key));
+        if (existingKeyValuePair) {
+          // Update the existing key-value pair
+          existingKeyValuePair[key] = value;
+          setFormData([...formData]);
+        } else {
+          // Add a new key-value pair to the array
+          setFormData(prevData => [...prevData, { [key]: value }]);
+        }
+      }, [formData]);
 
     //Departure Phraseology Preview Function
-    let depType;
-    let depName;
-    let depNumber;
-    let depTopAlt;
-    let depClimbIns;
-    let depExectedCruise;
+    const [depType, setDepType] = useState('');
+    const [depName, setDepName] = useState('');
+    const [depNumber, setDepNumber] = useState('');
+    const [depTopAlt, setDepTopAlt] = useState('');
+    const [depClimbIns, setDepClimbIns] = useState('');
+    const [depExpectedCruise, setDepExpectedCruise] = useState('');
+    const [depTopAltListed, setDepTopAltListed] = useState('');
+   
+    //BEGIN PHRASEOLOGY BUILDER FUNCTION
 
     useEffect(() => {
         function handlePhraseologyBuilder(event, fieldName) {
           const value = event.target.value;
           // Handle the input change here, including the field name
-          if (fieldName === "depType"){
-            depType = value;
-        //     console.log("in function dep type", depType);
-         } else if (fieldName === "depName") {
-            depName = value;
+          if (fieldName === "depType") {
+            setDepType(value);
+          } else if (fieldName === "depName") {
+            setDepName(value);
           } else if (fieldName === "depNumber") {
-            depNumber = value;
+            setDepNumber(value);
           } else if (fieldName === "depTopAlt") {
-            depTopAlt = value;
+            setDepTopAlt(value);
           } else if (fieldName === "depClimbIns") {
-            depClimbIns = value;
+            setDepClimbIns(value);
           } else if (fieldName === "depExpectedCruise") {
-            depExectedCruise = value;
-          }
-          const [clearPhrase, climbPhrase] = depPhraseology(depType, depName, depNumber, depTopAlt)
-          setPreviewPhrase(clearPhrase)
-          setPreviewTopAlt(climbPhrase)
-          setPreviewClimbPhrase(depClimbIns)
-          setPreviewType(depType)
-          setPreviewExpectedCruise(depExectedCruise)
-        }
-        
-
-        function addEventListenersWhenLoaded() {
-          const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depClimbIns', 'depExpectedCruise'];
-          inputElementIds.forEach((inputElementId) => {
-            const inputElement = document.getElementById(inputElementId);
-            if (inputElement) {
-              inputElement.addEventListener('input', (event) => handlePhraseologyBuilder(event, inputElementId));
-            } else {
-              setTimeout(addEventListenersWhenLoaded, 100); // Retry after a short delay if the element is not available yet
-            }
-          });
+            setDepExpectedCruise(value);
+          } 
         }
       
-        addEventListenersWhenLoaded();
+        const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depClimbIns', 'depExpectedCruise'];
+        inputElementIds.forEach((inputElementId) => {
+          const inputElement = document.getElementById(inputElementId);
+          if (inputElement) {
+            inputElement.addEventListener('input', (event) => handlePhraseologyBuilder(event, inputElementId));
+          }
+        });
       
         return () => {
-          const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depRwySpecific'];
           inputElementIds.forEach((inputElementId) => {
             const inputElement = document.getElementById(inputElementId);
             if (inputElement) {
@@ -81,7 +115,17 @@ export default function GetAirportDeparturesAddOne() {
           });
         };
       }, []);
-    
+
+    //END PHRASEOLOGY BUILDER FUNCTION
+
+    //Handle phraseology preview
+    function buildPhraseology(previewType){
+        // console.log("preview type is ", previewType)
+        const [climbPhraseBuilder, expectedCruiseBuilder] = depPhraseology(previewType, previewName, previewNum, previewTopAlt)
+        setPreviewPhrase(climbPhraseBuilder);
+        setPreviewExpectedCruise(expectedCruiseBuilder);
+    }
+
     function refreshPage() {
         setAddedDeparture(true)
         setTimeout(() => {
@@ -111,148 +155,8 @@ export default function GetAirportDeparturesAddOne() {
 
         var departureFormData = []
 
-        //validate departure name
-        var depNameValid = /^[A-Za-z\s]*$/.test(depNameInput.value);
-            if (!depNameValid) {
-                depNameInput.setCustomValidity('Enter only letters');
-                depNameInput.reportValidity();
-                return false;
-            } else {
-                depNameInput.setCustomValidity('');
-                if (depNameInput.value.length === 0){
-                    departureFormData.push({"NAME":depNameInput.placeholder})
-                } else {
-                    departureFormData.push({"NAME":depNameInput.value})
-                }
-
-            }
-
-        //validate number
-        var depNumberValid = /^[0-9]{0,2}$/.test(depNumberInput.value);
-            if (!depNumberValid) {
-                depNumberInput.setCustomValidity('Enter B, C, D, or E');
-                return false;
-            } else {
-                depNumberInput.setCustomValidity('');
-                if (depNumberInput.value.length === 0){
-                    //console.log("no field entered, use placeholder value")
-                    departureFormData.push({"NUM":depNumberInput.placeholder})
-                } else {
-                    //console.log("use stored value")
-                    departureFormData.push({"NUM":depNumberInput.value})
-                }
-            }
-
-    
-        // validate type
-        var depTypeValid = /^(|R\/V|R\/V_NO_DEP|RNAV|ODP_NAMED|ODP_NOT_NAMED|RADIAL-TRANS)*$/i.test(depTypeInput.value);
-            if (!depTypeValid)  {
-                depTypeInput.setCustomValidity('Enter TRUE or FALSE');
-                return false;
-            } else {
-                depTypeInput.setCustomValidity('');
-                if (depTypeInput.value.length === 0){
-                    //console.log("no field entered, use placeholder value")
-                    departureFormData.push({TYPE:depTypeInput.placeholder})
-                } else {
-                    //console.log("use stored value")
-                    const depTypeValue = depTypeInput.value
-                    departureFormData.push({TYPE: depTypeValue})
-                }
-                
-                
-            }
-
-
-        // validate runway specific
-            var depRwyValid = /^[A-Za-z0-9]{0,3}$/i.test(depRwySpecificInput.value);
-            if (!depRwyValid)  {
-                depRwySpecificInput.setCustomValidity('Enter R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS');
-                return false;
-            } else {
-                depRwySpecificInput.setCustomValidity('');
-                if (depRwySpecificInput.value.length === 0){
-                    //console.log("no field entered, use placeholder value")
-                    departureFormData.push({RWY_SPECIFIC:depRwySpecificInput.placeholder})
-                } else {
-                    //console.log("use stored value")
-                    const depRwyValue = depRwySpecificInput.value
-                    departureFormData.push({RWY_SPECIFIC: depRwyValue})
-                }
-            }
-
-
-        // validate top altitude
-        var depTopAltListedValid = /^(|YES|NO)$/i.test(depTopAltListedInput.value);
-        if (!depTopAltListedValid)  {
-            depTopAltListedInput.setCustomValidity('Enter YES or NO');
-            return false;
-        } else {
-            depTopAltListedInput.setCustomValidity('');
-            if (depTopAltListedInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({TOP_ALT_LISTED:depTopAltListedInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depTopAltListedValue = depTopAltListedInput.value
-                departureFormData.push({TOP_ALT_LISTED: depTopAltListedValue})
-            }
-        }
-
-        // validate top alt
-        var depTopAltValid = /^[0-9]{0,5}$/i.test(depTopAltInput.value);
-        if (!depTopAltValid)  {
-            depTopAltInput.setCustomValidity('Display in thousands of feet with no comma: for example, 5k would be 5000');
-            return false;
-        } else {
-            depTopAltInput.setCustomValidity('');
-            if (depTopAltInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({TOP_ALT:depTopAltInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depTopAltValue = depTopAltInput.value
-                departureFormData.push({TOP_ALT: depTopAltValue})
-            }
-        }
-        
-        // validate interim alt
-        var depInterimAltValid = /^(|YES|NO)$/i.test(depInterimAltInput.value);
-        if (!depInterimAltValid)  {
-            depInterimAltInput.setCustomValidity('Options: YES, NO, or leave empty');
-            return false;
-        } else {
-            depInterimAltInput.setCustomValidity('');
-            if (depInterimAltInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({NEED_FOR_INTERIM_ALT:depInterimAltInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depInterimAltValue = depInterimAltInput.value
-                departureFormData.push({NEED_FOR_INTERIM_ALT: depInterimAltValue})
-            }
-        }
-        
-
-        // validate climb instructions
-        var depClimbInsValid = /^(|MAINTAIN|CLB VIA SID|CLB VIA SID, EXCEPT MAINTAIN)$/i.test(depClimbInsInput.value);
-        if (!depClimbInsValid)  {
-            depClimbInsInput.setCustomValidity('Options: YES, NO, or leave empty');
-            return false;
-        } else {
-            depClimbInsInput.setCustomValidity('');
-            if (depClimbInsInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({CLIMB:depClimbInsInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depClimbInsValue= depClimbInsInput.value
-                departureFormData.push({CLIMB: depClimbInsValue})
-            }
-        }
-        
             
-        //sanitze and encode expected cruise
+        //sanitize and encode expected cruise
         if (depExpectedCruiseInput.value.length === 0){
             departureFormData.push({EXPECT_CRUISE:depExpectedCruiseInput.placeholder})
         } else {
@@ -320,7 +224,8 @@ export default function GetAirportDeparturesAddOne() {
         }
     }
     //End handle departure add function
- 
+
+
     // let departureICAO = departure.ICAO
     // let departureProcedure = departure.PROCEDURE
     let departureUpdatedBy = departure.UPDATED_BY
@@ -335,6 +240,18 @@ export default function GetAirportDeparturesAddOne() {
     let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
     let departureUpdated = departure.UPDATED
     
+    let runwayListForm; 
+
+    if (runwayList) {
+        runwayListForm = runwayList.map((runway,index) =>{
+            const runwaySelect = runway.RUNWAY
+            return(
+                <option key={index} value={runwaySelect}>{runwaySelect}</option>
+            )
+            })
+    }
+
+
     return (
         <div>
             <div className='main-body'>
@@ -352,17 +269,44 @@ export default function GetAirportDeparturesAddOne() {
                     <form id="departureAddForm" onSubmit = {handleDepartureAdd}>
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
-                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$"/> &nbsp; Text only<br></br>
-                        <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}"/><br></br>
-                        <label>Type: </label><input type="text" id="depType" size="4" placeholder={departureType} pattern="^(R/V|R/V_NO_DEP|RNAV|ODP_NAMED|ODP_NOT_NAMED|RADIAL-TRANS)$" /> &nbsp; Options: R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS<br></br>
-                        <label>Runway Specific: </label><input type="text" id="depRwySpecific" size="2" placeholder={departureRunway} pattern ="^[A-Za-z0-9]{0,3}$"/> &nbsp; If runway specific, enter runway (e.g, 16L, 14, 2)<br></br>
-                        <label>Top alt listed?  </label><input type="text" id="depTopAltListed" size="2" placeholder={departureTopAltListed} pattern="^(|YES|NO)$" /> &nbsp; Options: YES, NO, or leave empty<br></br>
-                        &nbsp;<br></br>
-                        <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$"/> <br></br> Thousands of feet with no comma: for example, 5k would be 5000. If "TOP ALT" is listed on the chart, include "(DON'T STATE)" after altitude. For example, "5000 (DON'T STATE)"<br></br>                        
-                        &nbsp;<br></br>                     
-                        <label>Need for interim alt? </label><input type="text" id="depInterimAlt" size="2" placeholder={departureNeedForInterim} pattern="^(|YES|NO)$" /> &nbsp; Options: YES, NO, or leave empty<br></br>
-                        <label>Climb instruction: </label><input type="text" id="depClimbIns" size="20" placeholder={departureClimb} pattern="^(|MAINTAIN|CLB VIA SID|CLB VIA SID, EXCEPT MAINTAIN)$"/> &nbsp; Options: "MAINTAIN", "CLB VIA SID", "CLB VIA SID, EXCEPT MAINTAIN", or empty<br></br>
-                        <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} /> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
+                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$" onChange={(event) => {handleDropDown(event, "NAME"); setPreviewName(event.target.value)}}/> &nbsp; Text only<br></br>
+                        <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}" onChange={(event) => {handleDropDown(event, "NUM"); setPreviewNum(event.target.value)}}/><br></br>                        
+                        <label>Type: </label>
+                        <select id="depTypeOption" onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value),  buildPhraseology(event.target.value)}}>
+                          <option value=""></option>
+                            <option value="R/V">R/V</option>
+                            <option value="R/V_NO_DEP">R/V_NO_DEP</option>
+                            <option value="RNAV">RNAV</option>
+                            <option value="ODP_NAMED">ODP_NAMED</option>
+                            <option value="ODP_NOT_NAMED">ODP_NOT_NAMED</option>
+                            <option value="RADIAL-TRANS">RADIAL-TRANS</option>
+                        </select><br></br>
+                        <label>Runway Specific: </label> 
+                        <select id="depRwySpecific" value={previewDepRunway} onChange={(event) => {handleDropDown(event, "RUNWAY"); setPreviewDepRunway(event.target.value)}}>
+                            <option value=""></option>
+                            {runwayListForm}
+                        </select><br></br>
+                        <label>Top alt listed? </label>
+                         <select id="depTopAltListed" value={previewTopAltListed} onChange={(event) => {handleDropDown(event, "TOP_ALT_LISTED"); setPreviewTopAltListed(event.target.value)}}>
+                            <option value="NA"></option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select><br></br>
+                        <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$" onChange={(event) => {handleDropDown(event, "TOP_ALT"); setPreviewTopAlt(event.target.value)}}/> Thousands of feet with no comma: for example, 5k would be 5000.<br></br>                    
+                        <label>Need for interim alt? </label>
+                        <select id="depNeedForInterim" value={previewNeedForInterim} onChange={(event) => {handleDropDown(event, "NEED_FOR_INTERIM_ALT"); setPreviewNeedForInterim(event.target.value)}}>
+                            <option value="NA"></option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select><br></br>
+                        <label>Climb instruction: </label>
+                        <select id="depClimbInstruction" value={previewClimbPhrase} onChange={(event) => {handleDropDown(event, "CLIMB"); setPreviewClimbPhrase(event.target.value)}}>
+                            <option value=""></option>
+                            <option value="MAINTAIN">MAINTAIN</option>
+                            <option value="CLB VIA SID">CLB VIA SID</option>
+                            <option value="CLB VIA SID, EXCEPT MAINTAIN">CLB VIA SID, EXCEPT MAINTAIN</option>
+                        </select><br></br>
+                        <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
                         <button type="submit">Submit</button>
                         <p></p>  
@@ -386,8 +330,8 @@ export default function GetAirportDeparturesAddOne() {
                                 <td>{previewType}</td>    
                                 <td>{previewPhrase}</td>
                                 <td>{previewClimbPhrase}</td>
-                                <td>{previewTopAlt}</td>
-                                <td>{previewExpectedCruise}</td>
+                                <td>{previewTopAlt} {previewTopAltListed === "YES" && <span>(Don't state)</span>}</td>
+                                <td>{depExpectedCruise}</td>
                             </tr>
                             </tbody>
                         </table>

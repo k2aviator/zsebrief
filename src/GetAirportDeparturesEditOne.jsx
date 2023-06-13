@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo} from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { depPhraseology } from './utilDepPhraseology'
 import UtilAdminRole from './UtilAdminRole';
@@ -21,31 +21,35 @@ export default function GetAirportDeparturesEditOne() {
     const [previewType, setPreviewType] = useState()
     const [previewPhrase, setPreviewPhrase] = useState()
     const [previewTopAlt, setPreviewTopAlt] = useState()
+    const [previewDepRunway, setPreviewDepRunway] = useState()
     const [previewTopAltListed, setPreviewTopAltListed] = useState()
     const [previewClimbPhrase, setPreviewClimbPhrase] = useState()
     const [previewNeedForInterim, setPreviewNeedForInterim] = useState()
     const [previewExpectedCruise, setPreviewExpectedCruise] = useState();
+    const [previewName, setPreviewName] = useState()
+    const [previewNum, setPreviewNum] = useState()
+    const [runwayList, setRunwayList] = useState();
 
     //FORM Interactive Elements
-    const [depTypeOption, setDepTypeOption] = useState('');
-    const [icaoTowered, setIcaoTowered] = useState('');
     const [formData, setFormData] = useState([])
 
 
     //HANDLE DROP DOWN FUNCTIONALITY
-    const handleDropDown = (event, keyName) => {
+
+    const handleDropDown = useCallback((event, keyName) => {
         const key = keyName;
         const value = event.target.value;
-        const existingKeyValuePair = formData.find((item) => Object.prototype.hasOwnProperty.call(item,key));
+        const existingKeyValuePair = formData.find((item) => Object.prototype.hasOwnProperty.call(item, key));
         if (existingKeyValuePair) {
-            // Update the existing key-value pair
-            existingKeyValuePair[key] = value;
-            setFormData([...formData]);
-            } else {
-            // Add a new key-value pair to the array
-            setFormData(prevData => [...prevData, { [key]: value }]);
-            }
-    }    
+          // Update the existing key-value pair
+          existingKeyValuePair[key] = value;
+          setFormData([...formData]);
+        } else {
+          // Add a new key-value pair to the array
+          setFormData(prevData => [...prevData, { [key]: value }]);
+        }
+      }, [formData]);
+      
 
     function backToAirportOverview({airportICAO}) {
 
@@ -62,58 +66,44 @@ export default function GetAirportDeparturesEditOne() {
     }
         
     
-    //Departure Phraseology Preview Function
-    let depType;
-    let depName;
-    let depNumber;
-    let depTopAlt;
-    let depClimbIns;
-    let depExpectedCruise;
+    const [depType, setDepType] = useState('');
+    const [depName, setDepName] = useState('');
+    const [depNumber, setDepNumber] = useState('');
+    const [depTopAlt, setDepTopAlt] = useState('');
+    const [depClimbIns, setDepClimbIns] = useState('');
+    const [depExpectedCruise, setDepExpectedCruise] = useState('');
+    const [depTopAltListed, setDepTopAltListed] = useState('');
+   
+    //BEGIN PHRASEOLOGY BUILDER FUNCTION
 
     useEffect(() => {
         function handlePhraseologyBuilder(event, fieldName) {
           const value = event.target.value;
           // Handle the input change here, including the field name
-          if (fieldName === "depType"){
-            depType = value;
-        //     console.log("in function dep type", depType);
-         } else if (fieldName === "depName") {
-            depName = value;
+          if (fieldName === "depType") {
+            setDepType(value);
+          } else if (fieldName === "depName") {
+            setDepName(value);
           } else if (fieldName === "depNumber") {
-            depNumber = value;
+            setDepNumber(value);
           } else if (fieldName === "depTopAlt") {
-            depTopAlt = value;
+            setDepTopAlt(value);
           } else if (fieldName === "depClimbIns") {
-            depClimbIns = value;
+            setDepClimbIns(value);
           } else if (fieldName === "depExpectedCruise") {
-            depExpectedCruise = value;
-          }
-          const [clearPhrase, climbPhrase] = depPhraseology(depType, depName, depNumber, depTopAlt)
-          setPreviewPhrase(clearPhrase)
-          setPreviewTopAlt(climbPhrase)
-          setPreviewClimbPhrase(depClimbIns)
-          setPreviewType(depType)
-          setPreviewExpectedCruise(depExpectedCruise)
-          
-        }
-        
-
-        function addEventListenersWhenLoaded() {
-          const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depClimbIns', 'depExpectedCruise'];
-          inputElementIds.forEach((inputElementId) => {
-            const inputElement = document.getElementById(inputElementId);
-            if (inputElement) {
-              inputElement.addEventListener('input', (event) => handlePhraseologyBuilder(event, inputElementId));
-            } else {
-              setTimeout(addEventListenersWhenLoaded, 100); // Retry after a short delay if the element is not available yet
-            }
-          });
+            setDepExpectedCruise(value);
+          } 
         }
       
-        addEventListenersWhenLoaded();
+        const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depClimbIns', 'depExpectedCruise'];
+        inputElementIds.forEach((inputElementId) => {
+          const inputElement = document.getElementById(inputElementId);
+          if (inputElement) {
+            inputElement.addEventListener('input', (event) => handlePhraseologyBuilder(event, inputElementId));
+          }
+        });
       
         return () => {
-          const inputElementIds = ['depType', 'depName', 'depNumber', 'depTopAlt', 'depRwySpecific'];
           inputElementIds.forEach((inputElementId) => {
             const inputElement = document.getElementById(inputElementId);
             if (inputElement) {
@@ -122,6 +112,17 @@ export default function GetAirportDeparturesEditOne() {
           });
         };
       }, []);
+
+    //END PHRASEOLOGY BUILDER FUNCTION
+
+    //Handle phraseology preview
+    function buildPhraseology(previewType){
+        // console.log("preview type is ", previewType)
+        const [climbPhraseBuilder, expectedCruiseBuilder] = depPhraseology(previewType, previewName, previewNum, previewTopAlt)
+        setPreviewPhrase(climbPhraseBuilder);
+        setPreviewExpectedCruise(expectedCruiseBuilder);
+    }
+
 
 
     //MONGO DB GET DEPARTURES
@@ -139,6 +140,7 @@ export default function GetAirportDeparturesEditOne() {
         setPreviewType(data.TYPE)
         setPreviewClimbPhrase(data.CLIMB)
         setPreviewTopAltListed(data.TOP_ALT_LISTED)
+        setPreviewDepRunway(data.RWY_SPECIFIC)
         setPreviewExpectedCruise(decodeURIComponent(data.EXPECT_CRUISE))
         setPreviewNeedForInterim(data.NEED_FOR_INTERIM_ALT)
         let [clearPhrase, climbPhrase] = depPhraseology(data.TYPE, data.NAME, data.NUM, data.TOP_ALT)
@@ -151,8 +153,27 @@ export default function GetAirportDeparturesEditOne() {
             setIsLoading(false);
             setHasError(true);
         })  
-    }, [departureId, depType, depName, depNumber, depTopAlt])
+    }, [])
 
+
+    //MONGO DB GET RUNWAYS LIST
+    const mongoRunwaysById = `https://zsebrief-backend-production.up.railway.app/runways/numbers/${airportICAO}`//PRODUCTION
+    //const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
+    useEffect(()=>{
+    fetch(mongoRunwaysById)
+    .then(response => response.json())
+    .then((data) => {
+        setRunwayList(data)
+        setIsLoading(false);   
+        },
+        (error)=>{
+            console.log(error)
+            setIsLoading(false);
+            setHasError(true);
+        })  
+        }, [])
+
+    //
 
     const handleDepartureDelete = (event, departureId)=>{
         event.preventDefault();
@@ -199,7 +220,7 @@ export default function GetAirportDeparturesEditOne() {
         var departureFormData = formData;
 
         // console.log("departure form data", departureFormData)
-        
+
         //validate departure name
         var depNameValid = /^[A-Za-z\s]*$/.test(depNameInput.value);
             if (!depNameValid) {
@@ -232,24 +253,6 @@ export default function GetAirportDeparturesEditOne() {
                 }
             }
 
-
-        // validate runway specific
-            var depRwyValid = /^[A-Za-z0-9]{0,3}$/i.test(depRwySpecificInput.value);
-            if (!depRwyValid)  {
-                depRwySpecificInput.setCustomValidity('Enter R/V, R/V_NO_DEP, RNAV, ODP_NAMED, ODP_NOT_NAMED, OR RADIAL-TRANS');
-                return false;
-            } else {
-                depRwySpecificInput.setCustomValidity('');
-                if (depRwySpecificInput.value.length === 0){
-                    //console.log("no field entered, use placeholder value")
-                    departureFormData.push({RWY_SPECIFIC:depRwySpecificInput.placeholder})
-                } else {
-                    //console.log("use stored value")
-                    const depRwyValue = depRwySpecificInput.value
-                    departureFormData.push({RWY_SPECIFIC: depRwyValue})
-                }
-            }
-
         // validate top alt
         var depTopAltValid = /^[0-9]{0,5}$/i.test(depTopAltInput.value);
         if (!depTopAltValid)  {
@@ -267,7 +270,7 @@ export default function GetAirportDeparturesEditOne() {
             }
         }
             
-        //sanitze and encode expected cruise
+        //sanitize and encode expected cruise
         if (depExpectedCruiseInput.value.length === 0){
             departureFormData.push({EXPECT_CRUISE:depExpectedCruiseInput.placeholder})
         } else {
@@ -349,9 +352,17 @@ export default function GetAirportDeparturesEditOne() {
     let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
     let departureUpdated = departure.UPDATED
 
+    let runwayListForm; 
 
-   
-    
+    if (runwayList) {
+        runwayListForm = runwayList.map((runway,index) =>{
+            const runwaySelect = runway.RUNWAY
+            return(
+                <option key={index} value={runwaySelect}>{runwaySelect}</option>
+            )
+            })
+    }
+ 
     if (isLoading) {
         return <p>loading...</p>
     }
@@ -379,10 +390,11 @@ export default function GetAirportDeparturesEditOne() {
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
                         <label>Database id: {departureId}</label><br></br>
-                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$"/> &nbsp; Text only<br></br>
-                        <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}"/><br></br>
+                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$" onChange={(event) => {handleDropDown(event, "NAME"); setPreviewName(event.target.value)}}/> &nbsp; Text only<br></br>
+                        <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}" onChange={(event) => {handleDropDown(event, "NUM"); setPreviewNum(event.target.value)}}/><br></br>
                         <label>Type: </label>
-                        <select id="depTypeOption" value={previewType} onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value)}}>
+                        <select id="depTypeOption" value={previewType} onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value),  buildPhraseology(event.target.value)}}>
+                            <option value=""></option>
                             <option value="R/V">R/V</option>
                             <option value="R/V_NO_DEP">R/V_NO_DEP</option>
                             <option value="RNAV">RNAV</option>
@@ -390,15 +402,18 @@ export default function GetAirportDeparturesEditOne() {
                             <option value="ODP_NOT_NAMED">ODP_NOT_NAMED</option>
                             <option value="RADIAL-TRANS">RADIAL-TRANS</option>
                         </select><br></br>
-                        <label>Runway Specific: </label><input type="text" id="depRwySpecific" size="2" placeholder={departureRunway} pattern ="^[A-Za-z0-9]{0,3}$"/> &nbsp; If runway specific, enter runway (e.g, 16L, 14, 2)<br></br>
+                        <label>Runway Specific: </label> 
+                        <select id="depRwySpecific" value={previewDepRunway} onChange={(event) => {handleDropDown(event, "RUNWAY"); setPreviewDepRunway(event.target.value)}}>
+                            <option value=""></option>
+                            {runwayListForm}
+                        </select><br></br>
                         <label>Top alt listed? </label>
                          <select id="depTopAltListed" value={previewTopAltListed} onChange={(event) => {handleDropDown(event, "TOP_ALT_LISTED"); setPreviewTopAltListed(event.target.value)}}>
                             <option value="NA"></option>
                             <option value="YES">YES</option>
                             <option value="NO">NO</option>
                         </select><br></br>
-                        <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$"/> <br></br> Thousands of feet with no comma: for example, 5k would be 5000. If "TOP ALT" is listed on the chart, include "(DON'T STATE)" after altitude. For example, "5000 (DON'T STATE)"<br></br>                        
-                        &nbsp;<br></br>
+                        <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$" onChange={(event) => {handleDropDown(event, "TOP_ALT"); setPreviewTopAlt(event.target.value)}}/> Thousands of feet with no comma: for example, 5k would be 5000.<br></br>                    
                         <label>Need for interim alt? </label>
                         <select id="depNeedForInterim" value={previewNeedForInterim} onChange={(event) => {handleDropDown(event, "NEED_FOR_INTERIM_ALT"); setPreviewNeedForInterim(event.target.value)}}>
                             <option value="NA"></option>
@@ -411,7 +426,7 @@ export default function GetAirportDeparturesEditOne() {
                             <option value="CLB VIA SID">CLB VIA SID</option>
                             <option value="CLB VIA SID, EXCEPT MAINTAIN">CLB VIA SID, EXCEPT MAINTAIN</option>
                         </select><br></br>
-                        <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} /> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
+                        <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
                         <button type="submit">Submit</button>{updatedDeparture ===true  && <p>Success: departure has been updated.</p>}
                         <p></p>  
@@ -434,7 +449,7 @@ export default function GetAirportDeparturesEditOne() {
                                 <td>{previewType}</td>    
                                 <td>{previewPhrase}</td>
                                 <td>{previewClimbPhrase}</td>
-                                <td>{previewTopAlt}</td>
+                                <td>{previewTopAlt} {previewTopAltListed === "YES" && <span>(Don't state)</span>}</td>
                                 <td>{previewExpectedCruise}</td>
                             </tr>
                             </tbody>
