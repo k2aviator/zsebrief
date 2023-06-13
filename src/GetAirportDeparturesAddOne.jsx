@@ -34,8 +34,8 @@ export default function GetAirportDeparturesAddOne() {
     const [formData, setFormData] = useState([])
 
     //MONGO DB GET RUNWAYS LIST
-    // const mongoDepartureById = `https://zsebrief-backend-production.up.railway.app/runways`//PRODUCTION
-    const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
+    const mongoRunwaysById = `https://zsebrief-backend-production.up.railway.app/runways/numbers/${airportICAO}`//PRODUCTION
+    //const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
     useEffect(()=>{
     fetch(mongoRunwaysById)
     .then(response => response.json())
@@ -133,6 +133,8 @@ export default function GetAirportDeparturesAddOne() {
           }, 2000); // Refresh after 3 seconds (3000 milliseconds)
       }
 
+
+
     //Begin handle departure add function
     const handleDepartureAdd = (event)=>{
         
@@ -153,7 +155,8 @@ export default function GetAirportDeparturesAddOne() {
         //clear validity statements
         //array to submit
 
-        var departureFormData = []
+        //console.log("form data thus far ", formData)
+        var departureFormData = formData
 
             
         //sanitize and encode expected cruise
@@ -182,6 +185,8 @@ export default function GetAirportDeparturesAddOne() {
         //const mongoDeparturesAddURL = "http://localhost:3000/departures" //TEST URL
 
         //reduce the array 
+
+        //console.log("departure form data before reduction", departureFormData)
 
         const transformedDepartureFormData = departureFormData.reduce((result, item) => {
         const key = Object.keys(item)[0]; // Assuming each object has only one key

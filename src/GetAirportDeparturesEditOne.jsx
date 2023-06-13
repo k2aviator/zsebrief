@@ -218,58 +218,7 @@ export default function GetAirportDeparturesEditOne() {
         //array to submit
 
         var departureFormData = formData;
-
-        // console.log("departure form data", departureFormData)
-
-        //validate departure name
-        var depNameValid = /^[A-Za-z\s]*$/.test(depNameInput.value);
-            if (!depNameValid) {
-                depNameInput.setCustomValidity('Enter only letters');
-                depNameInput.reportValidity();
-                return false;
-            } else {
-                depNameInput.setCustomValidity('');
-                if (depNameInput.value.length === 0){
-                    departureFormData.push({"NAME":depNameInput.placeholder})
-                } else {
-                    departureFormData.push({"NAME":depNameInput.value})
-                }
-
-            }
-
-        //validate number
-        var depNumberValid = /^[0-9]{0,2}$/.test(depNumberInput.value);
-            if (!depNumberValid) {
-                depNumberInput.setCustomValidity('Enter B, C, D, or E');
-                return false;
-            } else {
-                depNumberInput.setCustomValidity('');
-                if (depNumberInput.value.length === 0){
-                    //console.log("no field entered, use placeholder value")
-                    departureFormData.push({"NUM":depNumberInput.placeholder})
-                } else {
-                    //console.log("use stored value")
-                    departureFormData.push({"NUM":depNumberInput.value})
-                }
-            }
-
-        // validate top alt
-        var depTopAltValid = /^[0-9]{0,5}$/i.test(depTopAltInput.value);
-        if (!depTopAltValid)  {
-            depTopAltInput.setCustomValidity('Display in thousands of feet with no comma: for example, 5k would be 5000');
-            return false;
-        } else {
-            depTopAltInput.setCustomValidity('');
-            if (depTopAltInput.value.length === 0){
-                //console.log("no field entered, use placeholder value")
-                departureFormData.push({TOP_ALT:depTopAltInput.placeholder})
-            } else {
-                //console.log("use stored value")
-                const depTopAltValue = depTopAltInput.value
-                departureFormData.push({TOP_ALT: depTopAltValue})
-            }
-        }
-            
+           
         //sanitize and encode expected cruise
         if (depExpectedCruiseInput.value.length === 0){
             departureFormData.push({EXPECT_CRUISE:depExpectedCruiseInput.placeholder})
@@ -296,12 +245,16 @@ export default function GetAirportDeparturesEditOne() {
 
         //reduce the array 
 
+
+        console.log("departure form data before reduction", departureFormData)
+
         const transformedDepartureFormData = departureFormData.reduce((result, item) => {
         const key = Object.keys(item)[0]; // Assuming each object has only one key
         const value = item[key];
         result[key] = value;
         return result;
         }, {});
+
 
 
         const fetchData = async () => {
@@ -459,7 +412,6 @@ export default function GetAirportDeparturesEditOne() {
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     &nbsp;<br></br>
- 
                     Caution: &nbsp; 
                     <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p>Success: departure deleted.</p>}
                     &nbsp;<br></br>
