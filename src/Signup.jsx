@@ -107,14 +107,14 @@ export default function Signup() {
                         <input type="text" id="email" size="25" placeholder="Enter your email address" value={email} onChange={handleEmailChange}/><br></br>
                         &nbsp;<br></br>
                         <label>Password</label><br></br>
-                        <input type="text" id="password" size="25" placeholder="Enter your password" value={password} onChange={handlePasswordChange}/><br></br>
+                        <input type="password" id="password" size="25" placeholder="Enter your password" value={password} onChange={handlePasswordChange}/><br></br>
                         <button type="submit">Submit</button>
                     </form>
                     &nbsp;<br></br>
-                    {submitMessage &&  
-                    <p>{submitMessage}</p>
-                    }
-                 
+                    {submitMessage.includes("succesful") &&  
+                    <p id="success-message">{submitMessage}</p>}
+                    {submitMessage.includes("Error") &&  
+                    <p id="error-message">{submitMessage}</p>}
                 </div>
             </div>
             <div className="footer">

@@ -107,12 +107,14 @@ export default function Signin() {
                     <input type="text" id="email" className="" size="25" placeholder="Enter your email address" value={email} onChange={handleEmailChange}/><br></br>
                     &nbsp;<br></br>
                     <label>Password</label><br></br>
-                    <input type="text" id="password" className="" size="25" placeholder="Enter your password" value={password} onChange={handlePasswordChange}/><br></br>
+                    <input type="password" id="password" className="" size="25" placeholder="Enter your password" value={password} onChange={handlePasswordChange}/><br></br>
                     <button type="submit">Submit</button>
                 </form>
                 &nbsp;<br></br>
-                {submitMessage &&  
+                {submitMessage.includes("succesful") &&  
                 <p id="success-message">{submitMessage}</p>}
+                {submitMessage.includes("Error") &&  
+                <p id="error-message">{submitMessage}</p>}
             </div>  
         );
 }
