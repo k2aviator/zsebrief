@@ -247,7 +247,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
             </form>
         </div>
         <div>
-            {updatedAirport ===true  && <p>Success: aiport details have been updated!</p>}
+            {updatedAirport ===true  && <p id="success-message">Success: airport details have been updated!</p>}
         </div>
     </div>
     )
