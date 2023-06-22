@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import GetAirportDetails from './GetAirportDetails'
 import PropTypes from 'prop-types';
-
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportList({pstTime}) {  
    
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [airports, setAirports] = useState([])
-
+    const { themeName, toggleTheme } = useContext(ThemeContext)
 
 
     //MONGO DB GET AIRPORTS
@@ -59,9 +61,11 @@ export default function GetAirportList({pstTime}) {
     }
 
     const toggleCollapseAll = () =>{
-        const allExpandedElements = document.querySelectorAll("div.collapsible-expand")
+        console.log("function")
+        const allExpandedElements = document.querySelectorAll("div[class^='collapsible-expand']");
+        console.log("all expanded elements are ", allExpandedElements)
         allExpandedElements.forEach((element) => {
-            element.className = "collapsible-hidden";
+            element.classList.add("hidden");
         });
 
     }
@@ -70,7 +74,7 @@ export default function GetAirportList({pstTime}) {
 
         <div className="airport-details">
             <div className="airport-details-collapse-button">
-                <button className="button-collapse-all" onClick={toggleCollapseAll}>Collapse all</button>
+                <button className={`button-collapse-all-${themeName}`} onClick={toggleCollapseAll}>Collapse all</button>
             </div>
             <div className="airport-details-container">
                 {airportList}

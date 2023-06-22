@@ -13,7 +13,7 @@ export default function Login() {
             <div className="yellow-ribbon">
             <p>UPDATE: Please create a new account with the 'Create account button' as the backend changed on 5/31/23.</p>
             </div>
-            <div className="header-nav">
+            <div className="header-nav-light">
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
             height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
             </div>       
@@ -29,7 +29,7 @@ export default function Login() {
                     <p>Don't have an account? <a href="signup"><button> Create account</button></a></p>
                 </div>
             </div>
-            <div className="footer">
+            <div className="footer-light">
                 <Footer/> 
             </div>
         </div>

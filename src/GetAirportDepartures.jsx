@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
+
 
 export default function GetAirportDepartures({airportICAO}) {  
     
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [departures, setDepartures] = useState([]);
-
+    const { themeName, toggleTheme } = useContext(ThemeContext)
 
     //MONGO DB GET DEPARTURES
 
@@ -131,8 +135,8 @@ export default function GetAirportDepartures({airportICAO}) {
 
     return (
         <div>
-            <p className="headerText">DEPARTURES</p>
-            <table id="details">
+            <p className={`headerText-${themeName}`}>DEPARTURES</p>
+            <table className={`details-${themeName}`}>
                 <thead>
                     <tr>
                         <th>Type</th>

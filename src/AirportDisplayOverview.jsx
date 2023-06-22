@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,  useContext  } from 'react';
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function AirportDisplayOverview({airportICAO}) {  
     const [airports, setAirports] = useState([])
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
+    
     
     //MONGO DB GET AIRPORTS
     const mongoAirportsURL = "https://zsebrief-backend-production.up.railway.app/airports"

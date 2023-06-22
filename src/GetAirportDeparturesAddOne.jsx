@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext  } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { depPhraseology } from './utilDepPhraseology'
 import UtilAdminRole from './UtilAdminRole';
 import Header from './Header';
 import Footer from './Footer'
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportDeparturesAddOne() {  
     const navigate = useNavigate()
@@ -29,6 +32,8 @@ export default function GetAirportDeparturesAddOne() {
     const [previewName, setPreviewName] = useState()
     const [previewNum, setPreviewNum] = useState()
     const [previewTopAlt, setPreviewTopAlt] = useState()
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
     //FORM Interactive Elements
     const [formData, setFormData] = useState([])
@@ -258,14 +263,16 @@ export default function GetAirportDeparturesAddOne() {
 
 
     return (
-        <div>
+      <div className={`parent-${themeName}`}>
+        <div className={`header-nav-${themeName}`}>
+          </div>
             <div className='main-body'>
-                <div className="sticky-header">
+            <div className={`sticky-header-${themeName}`}>
                     <Header />
                 </div>
                 <div className="details-margin-top">
-                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>Back to all details</button></Link>            
-                    <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button>Back to {airportICAO} departures</button></Link>
+                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>Back to all details</button></Link>            
+                    <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button className={buttonDark}>Back to {airportICAO} departures</button></Link>
                 </div>
                 <div>
                 <h3>Add new departure</h3>
@@ -313,14 +320,14 @@ export default function GetAirportDeparturesAddOne() {
                         </select><br></br>
                         <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
-                        <button type="submit">Submit</button>
+                        <button type="submit" className={buttonDark}>Submit</button>
                         <p></p>  
                     </form>
                 </div>
                 {addedDeparture ===true  && <p id="success-message">Success: new departure has been created!</p>}
-                <div className="phraseologyPreview">
-                        <p className="headerText">Phraseology Preview</p>
-                        <table id="details">
+                <div className={`phraseologyPreview-${themeName}`}>
+                        <p className={`headerText-${themeName}`}>Phraseology Preview</p>
+                        <table className={`details-${themeName}`}>
                         <thead>
                             <tr>
                                 <th>Type</th>
@@ -342,7 +349,7 @@ export default function GetAirportDeparturesAddOne() {
                         </table>
                 </div>
             </div>
-            <div className="footer">
+            <div className={`footer-${themeName}`}>
                     <Footer/> 
             </div> 
         </div>

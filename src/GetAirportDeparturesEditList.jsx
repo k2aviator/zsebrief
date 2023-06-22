@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import UtilAdminRole from './UtilAdminRole';
-
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportDeparturesEdit({airportICAO}) {
 
@@ -11,6 +13,8 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
     const [isLoading, setIsLoading] = useState(true);
     const [departures, setDepartures] = useState([]);
     const isAdminRole = UtilAdminRole()
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
     
     if (!airportICAO){
         console.log("airport ICAO not defined")
@@ -65,7 +69,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
                     <form >
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
-                        <label>Database id: {departureId}</label>&nbsp; {isAdminRole &&  <span><Link to={`/details/${airportICAO}/departures/${departureId}`} state={{airportICAO, departureId}}> <button>Edit departure</button></Link></span> } <br></br>
+                        <label>Database id: {departureId}</label>&nbsp; {isAdminRole &&  <span><Link to={`/details/${airportICAO}/departures/${departureId}`} state={{airportICAO, departureId}}> <button className={buttonDark}>Edit departure</button></Link></span> } <br></br>
                         <label>Name: {departureName} </label><br></br>
                         <label>Number: {departureNum}</label><br></br>
                         <label>Type: {departureType}</label><br></br>

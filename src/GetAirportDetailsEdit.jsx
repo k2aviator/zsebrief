@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportDetailsEdit({airportICAO}) {  
     const [airports, setAirports] = useState([])
@@ -12,6 +15,9 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     const [icaoClass, setIcaoClass] = useState('');
     const [icaoTowered, setIcaoTowered] = useState('');
     const [formData, setFormData] = useState([])
+
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
     
     setTimeout(() => {
         const icaoClassInput = document.getElementById("icaoClass")
@@ -242,7 +248,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                 }
                 <label>Notes: </label><input type="text" id="airportNotes" size="40" placeholder={airportNotes} /><br></br>
                 <br></br>
-                <button type="submit">Submit</button>
+                <button type="submit" className={buttonDark}>Submit</button>
                 <p></p>
             </form>
         </div>

@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
+import ThemeContext, {ThemeController} from './ThemeContext'
 import { Link } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import UtilAdminRole from './UtilAdminRole';
+import useTheme from './useTheme';
+import Button from './Button'
 import './Zsebrief.css';
 import logo from './icons/zsebrief.png'
 
@@ -10,7 +13,10 @@ export default function Header() {
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
     const [showDropdown, setShowDropdown] = useState(false);
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
    
+
     const isAdminRole = UtilAdminRole()
 
     //Set zulu time
@@ -47,18 +53,30 @@ export default function Header() {
         setShowDropdown(prevState => !prevState);
       };
 
+
+    //Dark mode button
+    function Form() {
+        return (
+            <form>
+                <Button />
+            </form>
+        )
+
+    }
+
     //Display home content
-    
+
     return (
         <header>
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
             height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
             <div>
-                <div className="header-box-top">
+                <div className={`header-box-top-${themeName}`}>
+                {/* <div className="header-box-top"> */}
               
     
                     <div className="header-logo">   
-                        <Link to="/home"><img alt="zse brief logo" src={logo}></img></Link>  
+                        <Link to="/home"><img alt="zse brief logo" src={logo} className={`image-${themeName}`}></img></Link>  
                     </div>
         
                     <div className="header-right-top">
@@ -66,7 +84,9 @@ export default function Header() {
                             Time is {time}Z | {pstTime} PST
                             </div>
                             <div className="header-signout">
-                            <button onClick={signOut}>Sign out</button>
+                            <button className={buttonDark} onClick={signOut}>Sign out</button>
+                            </div>
+                            <div><Button/>
                             </div>
                     </div>
                 </div>

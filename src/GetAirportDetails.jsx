@@ -1,8 +1,10 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
 import GetAirportRunways from './GetAirportRunways'
 import GetAirportDepartures from './GetAirportDepartures'
 import { Link } from 'react-router-dom';
-
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 //https://blog.openreplay.com/creating-a-collapsible-component-for-react/
 //Expand and collapse airports
@@ -12,6 +14,9 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const [airportOpen,setAirportOpen] = useState(false)
     const [airportLogo,setAirportLogo] = useState(false)
     const [towerOpen, setTowerOpen] = useState(false)
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
+
     const hostName = window.location.hostname;
 
     const images = require.context('./logos-airports', false, /\.(png|jpe?g|svg)$/);
@@ -149,11 +154,11 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
         <div className="airport-details-box">
             <div className="airport-code-name" onClick={()=>toggleOpen()}>
                 <div id="airportName" >
-                    <button className="button">{airportICAO} | {airportName} </button>
-                    {open && <div className="collapsible-expand">
+                    <button className={`button-airport-${themeName}`}>{airportICAO} | {airportName} </button>
+                    {open && <div className={`collapsible-expand-${themeName}`}>
                         <div className="airport-status-logos" > 
                            
-                            <div className="airport-status"> 
+                            <div className={`airport-status-${themeName}`}> 
                             {airportOpen &&  
                             <table>
                                 <thead>
@@ -199,23 +204,20 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             
                             {airportLogo &&
                               <div className="airport-logos">
-                                        <img alt="airport logo" src={airportImageLoc(airportICAO)}></img>
+                                        <img alt="airport logo" className={`image-${themeName}`} src={airportImageLoc(airportICAO)}></img>
                              </div>
                           }
                         </div>
-                            
-              
-           
                             <GetAirportRunways airportICAO={airportICAO}/>
                             <p></p>
                             <GetAirportDepartures airportICAO={airportICAO}/>
                             <p></p>
                         <div>
-                            <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>View All Airport Details</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>View All Airport Details</button></Link><br></br>
                             {isAdminRole && <div>
-                            <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button>Edit Airport Info</button></Link><br></br>
-                            <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button>Edit Runway Info</button></Link><br></br>
-                            <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button>Add / Edit Departures</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button className={buttonDark}>Edit Airport Info</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button className={buttonDark}>Edit Runway Info</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button className={buttonDark}>Add / Edit Departures</button></Link><br></br>
                              </div>}
                         </div>
                            

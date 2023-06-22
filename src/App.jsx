@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 import Home from './Home';
 import Signup from './Signup';
 import AdminDepsByDClass from './AdminDepsByDClass'
@@ -11,6 +14,7 @@ import AirportEditRunways from './AirportEditRunways'
 import AirportEditDepartures from './AirportEditDepartures'
 import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne'
 import GetAirportDeparturesAddOne from './GetAirportDeparturesAddOne'
+import GetAirportRunwaysEditOne from './GetAirportRunwaysEditOne'
 import Login from './Login'
 import './App.css';
 import './Zsebrief.css';
@@ -56,22 +60,29 @@ function App() {
     },[])
     
   return (
+    <ThemeController>
     <div>
      <Routes>
-        {/* <Route path = "/" element={<Login />}/> */}
-        <Route path = "/" element={isAuthenticated() === true ? <Home />: <Login />}/>
-        <Route path = "/signup" element={<Signup />}/>
-        <Route path = "/home" element={isAuthenticated() === true ? <Home />: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao" element={isAuthenticated() === true ? <AirportEdit/>: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao/overview" element={isAdminRole === true ? <AirportEditOverview/>: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao/runways" element={isAdminRole === true? <AirportEditRunways/>: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao/departures" element={isAdminRole === true ? <AirportEditDepartures/>: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao/departures/add-new" element={isAdminRole === true ? <GetAirportDeparturesAddOne/>: <Navigate to="/" replace />}/>
-        <Route path = "/details/:icao/departures/:id" element={isAdminRole === true ? <GetAirportDeparturesEditOne/>: <Navigate to="/" replace />}/>
-        <Route path = "/admin/deps-by-class/d" element={isAdminRole === true ? <AdminDepsByDClass />: <Navigate to="/" replace />}/>
-        <Route path = "/admin/deps-by-class/c" element={isAdminRole === true ? <AdminDepsByCClass />: <Navigate to="/" replace />}/>
-        <Route path = "/admin/deps-by-class/b" element={isAdminRole === true ? <AdminDepsByBClass />: <Navigate to="/" replace />}/>      </Routes>  
+
+        
+          <Route path = "/" element={isAuthenticated() === true ? <Home />: <Login />}/>
+          <Route path = "/signup" element={<Signup />}/>
+          <Route path = "/home" element={isAuthenticated() === true ? <Home />: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao" element={isAuthenticated() === true ? <AirportEdit/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/overview" element={isAdminRole === true ? <AirportEditOverview/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/runways" element={isAdminRole === true? <AirportEditRunways/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/departures" element={isAdminRole === true ? <AirportEditDepartures/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/departures/add-new" element={isAdminRole === true ? <GetAirportDeparturesAddOne/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/departures/:id" element={isAdminRole === true ? <GetAirportDeparturesEditOne/>: <Navigate to="/" replace />}/>
+          <Route path = "/details/:icao/runways/:id" element={isAdminRole === true ? <GetAirportRunwaysEditOne/>: <Navigate to="/" replace />}/>
+          <Route path = "/admin/deps-by-class/d" element={isAdminRole === true ? <AdminDepsByDClass />: <Navigate to="/" replace />}/>
+          <Route path = "/admin/deps-by-class/c" element={isAdminRole === true ? <AdminDepsByCClass />: <Navigate to="/" replace />}/>
+          <Route path = "/admin/deps-by-class/b" element={isAdminRole === true ? <AdminDepsByBClass />: <Navigate to="/" replace />}/> 
+      
+       </Routes>  
     </div>
+
+    </ThemeController>
   );
 }
 

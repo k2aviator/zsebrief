@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo} from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useContext } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { depPhraseology } from './utilDepPhraseology'
 import UtilAdminRole from './UtilAdminRole';
 import Header from './Header';
 import Footer from './Footer'
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportDeparturesEditOne() {  
     const navigate = useNavigate()
@@ -29,6 +32,8 @@ export default function GetAirportDeparturesEditOne() {
     const [previewName, setPreviewName] = useState()
     const [previewNum, setPreviewNum] = useState()
     const [runwayList, setRunwayList] = useState();
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
     //FORM Interactive Elements
     const [formData, setFormData] = useState([])
@@ -325,14 +330,16 @@ export default function GetAirportDeparturesEditOne() {
     }
 
     return (
-        <div>
+        <div className={`parent-${themeName}`}>
+        <div className={`header-nav-${themeName}`}>
+          </div>
             <div className='main-body'>
                 <div className="sticky-header">
                     <Header />
                 </div>
                 <div className="details-margin-top">
-                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>Back to all details</button></Link>            
-                    <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button>Back to {airportICAO} departures</button></Link>
+                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark} >Back to all details</button></Link>            
+                    <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button className={buttonDark} >Back to {airportICAO} departures</button></Link>
                 </div>
                 <div>
                 <h3>Edit {airportICAO} {departureType} departure </h3>
@@ -381,7 +388,7 @@ export default function GetAirportDeparturesEditOne() {
                         </select><br></br>
                         <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
                         <br></br>
-                        <button type="submit">Submit</button>{updatedDeparture ===true  && <p id="success-message">Success: departure has been updated.</p>}
+                        <button type="submit" className={buttonDark} >Submit</button>{updatedDeparture ===true  && <p id="success-message">Success: departure has been updated.</p>}
                         <p></p>  
                     </form>
                 </div>
@@ -413,7 +420,7 @@ export default function GetAirportDeparturesEditOne() {
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     Caution: &nbsp; 
-                    <button onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p id="success-message">Success: departure deleted.</p>}
+                    <button className={buttonDark} onClick={(event) => handleDepartureDelete(event, {departureId}, {departureName})}>&nbsp;Delete departure</button>{departureDeleted ===true  && <p id="success-message">Success: departure deleted.</p>}
                     &nbsp;<br></br>
                     &nbsp;<br></br>
                     &nbsp;<br></br>
@@ -422,7 +429,7 @@ export default function GetAirportDeparturesEditOne() {
                 </div>
                 
             </div>
-            <div className="footer">
+            <div className={`footer-${themeName}`}>
                     <Footer/> 
             </div> 
         </div>

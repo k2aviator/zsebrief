@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import calmWindIcon from './icons/windcalm.svg'
 import medWindIcon from './icons/windmed.svg'
 import strongWindIcon from './icons/windstrong.svg'
-
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function GetAirportMETAR({airportICAO, runways}) {  
     const [metar, setMetar] = useState(undefined)
     const [hasError, setHasError] = useState(false);
     const [loading,toggleLoading] = useState(true);
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const pDarkClass = themeName === "dark" ? 'p-dark' : '';
+
 
     const avwxToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
     const avwxUrlCode = "https://avwx.rest/api/metar/"
@@ -255,8 +260,8 @@ export default function GetAirportMETAR({airportICAO, runways}) {
     return (
         <div>
              <div>
-                <p className="headerText">WEATHER</p>
-                <p>{metarToDisplay}</p>
+                <p className={`headerText-${themeName}`}>WEATHER</p>
+                <p className={`${pDarkClass}`} >{metarToDisplay}</p>
                     <table>
                         <thead>
                             <tr>
@@ -266,7 +271,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="flightRules">Flight rules:</td>
+                            <td className={`flightRules-${themeName}`}>Flight rules:</td>
                             <td className={evalSkyConditions(airportFlightRules)}>{airportFlightRules}</td>
                         </tr>
                         </tbody>
@@ -274,9 +279,9 @@ export default function GetAirportMETAR({airportICAO, runways}) {
              
             </div>
             <div>
-                <span className="headerText">PREFERRED RUNWAY(S)</span><span className="windsNotCalm">{calmStatus}</span> <img alt="wind sock" className="iconWindSock" src={setWindSock(airportTotalWind)}></img>
+                <span className={`headerText-${themeName}`}>PREFERRED RUNWAY(S)</span><span className={pDarkClass}>{calmStatus}</span> <img alt="wind sock" className="iconWindSock" src={setWindSock(airportTotalWind)}></img>
                 <p></p>
-                <table id="details">
+                <table className={`details-${themeName}`}>
                     <thead>
                         <tr>
                             <th>Runway</th>

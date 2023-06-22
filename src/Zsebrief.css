@@ -1,8 +1,44 @@
+html {
+  font-family: Arial;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+.p-dark {
+  color: #D8D8D8;
+}
+
+.span-dark{
+  color: #D8D8D8;
+}
+
+
+.parent {
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+.parent-dark {
+    color: #D8D8D8;
+    background-color: #202020;
+    min-height: 100vh;
+}
+
+
 .logo-text {
   text-decoration: none; /* no underline */
   color:#3b3939;
 }
 
+.image-light{
+  filter: grayscale(0%);
+}
+
+.image-dark {
+  filter: grayscale(100%) brightness(0.6);
+}
+
+/* 
 a:visited { 
   text-decoration: none; 
   color:#3b3939;
@@ -21,15 +57,8 @@ a:visited {
  a:active { 
   text-decoration: none; 
   color:#3b3939;
- }
+ } */
 
-
-html {
-  background-color: #ffffff;
-  font-family: Arial;
-  position: relative;
-  min-height: 100vh;
-}
 
 
 .main-body {
@@ -40,7 +69,6 @@ html {
   min-width:500px;
   width:900px;
   max-width:900px;
-
 }
 
 
@@ -70,7 +98,7 @@ html {
 }
 
 
-.button-collapse-all {
+.button-collapse-all-light {
   color: #ffffff;
   background-color: #738d5e;
   border: 2px solid #88af7f;
@@ -83,9 +111,31 @@ html {
   z-index:99
 }
 
+.button-collapse-all-dark {
+  color: 	#D8D8D8;
+  background-color: #707070;
+  border: 2px solid 	#A8A8A8;
+  font-size:14px;
+  border-radius: 5px;
+  position: absolute;
+  white-space: nowrap;
+  top:-45px;
+  left: 90%;
+  z-index:99
+}
+
+
+.button-dark {
+  color: 	#D8D8D8;
+  background-color: #707070;
+  font-size:14px;
+  border-radius: 5px;
+  font-size:14px;
+}
+
 /* Navigation boxes*/
 
-.sticky-header{
+.sticky-header-light {
   position: sticky;
   background: #ffffff;
   min-width: 500px;
@@ -95,10 +145,30 @@ html {
   z-index: 20;
 }
 
-.header-nav {
+.sticky-header-dark {
+  position: sticky;
+  background: 	#202020;
+  min-width: 500px;
+  height: 150px;
+  top: 0;
+  padding-bottom: 3px;
+  z-index: 20;
+}
+
+.header-nav-light {
   width: 100%;
   height: 15px;
   background-color: #5A8895;
+  color: rgb(182, 182, 182);
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+}
+
+.header-nav-dark {
+  width: 100%;
+  height: 15px;
+  background-color: #707070;
   color: rgb(182, 182, 182);
   text-align: left;
   vertical-align: middle;
@@ -116,7 +186,7 @@ html {
 
 }
 
-.footer {
+.footer-light {
   padding-top:0px;
   background-color: #5A8895;
   color: rgb(218, 217, 217);
@@ -128,6 +198,21 @@ html {
   width: 100%;
   height: 2.5rem;  
 }
+
+
+.footer-dark {
+  padding-top:0px;
+  background-color: #707070;
+  color: rgb(218, 217, 217);
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 2.5rem;  
+}
+
 
 .footer-center {
   display:flex;
@@ -163,6 +248,14 @@ html {
   font-size: 15px;
   flex-direction:row;
 }
+
+.header-box-top{
+  display:flex;
+  justify-content:space-between;
+  font-size: 15px;
+  flex-direction:row;
+}
+
 
 .header-box-bottom{
   display:flex;
@@ -226,7 +319,7 @@ html {
 /*Above styling of page
 
 /* Style the button that is used to open and close the collapsible content */
-.collapsible-expand {
+.collapsible-expand-light {
     background-color: #edededea;
     color: #3b3939;
     cursor: pointer;
@@ -238,19 +331,45 @@ html {
     padding:10px;
   }
 
+  .collapsible-expand-dark {
+    background-color: #333333;
+    color: #3b3939;
+    cursor: pointer;
+    width: auto;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    padding:10px;
+  }
+
+
     
   /* Style the collapsible content. Note: hidden by default */
-  .collapsible-hidden {
+  .hidden {
     display: none;
     overflow: hidden;
     background-color: #f1f1f1;
   }
   
 
-  .button {
+  .button-airport-light {
     background-color: #dadada;
     color: #ffffff;
     background-image: linear-gradient(0.75turn, #738D5E,#71a2cd);
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .button-airport-dark {
+    background-color: #dadada;
+    color: #D8D8D8;;
+    background-image: linear-gradient(0.2turn, #404040,#202020);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -293,9 +412,12 @@ html {
   font-weight: bold;
 }
 
-.flightRules {
+.flightRules-light {
   width:85px;
-
+}
+.flightRules-dark {
+  color: #D8D8D8;;
+  width:85px;
 }
 
 .skyVFR{
@@ -336,7 +458,7 @@ html {
 
 /*Text headers*/
 
-.headerText{
+.headerText-light{
   width:20%;
   padding:2px;
   color:  #424242;
@@ -344,33 +466,71 @@ html {
 
 }
 
+.headerText-dark{
+  width:20%;
+  padding:2px;
+  color: 	#D8D8D8;
+  font-weight: bold;
+}
+
 .windsNotCalm {
   font-size: 15px;
 }
 
-/*Details tables*/
-#details {
+/*Details tables - light mode*/
+.details-light {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   min-width: 400px;
 
 }
 
-#details td, #details th {
+.details-light td, .details-light th {
   border: 1px solid #dadada;
   padding: 8px;
 }
 
-#details tr:nth-child(even){background-color: #dadada;}
+.details-light tr:nth-child(even){background-color: #dadada;}
 
-#details tr:hover {background-color: #ddd;}
+.details-light tr:hover {background-color: #ddd;}
 
-#details th {
+.details-light th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
   background-color: #dadada;
   color: rgba(90, 90, 90, 0.929);
+}
+
+/*Details tables - light mode*/
+.details-dark {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  min-width: 400px;
+
+}
+
+.details-dark td, .details-dark th {
+  border: 1px solid #333333;
+  color:#D8D8D8;
+  padding: 8px;
+}
+
+.details-dark tr:nth-child(even){
+  background-color: #202020;
+
+}
+
+.details-dark tr:hover {
+  background-color: #1c1c1c;
+}
+
+.details-dark th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #202020;
+  color:#D8D8D8;
 }
 
 
@@ -406,9 +566,15 @@ html {
     justify-content: space-between;
   } 
 
-   .airport-status {
+   .airport-status-light {
     border: none;
    }
+
+   .airport-status-dark {
+    color: 	#D8D8D8;
+    border: none;
+   }
+
 
    .airport-logos {
     border: none;
@@ -472,12 +638,20 @@ html {
 
   /*Phraseology preview box*/
 
-  .phraseologyPreview {
+  .phraseologyPreview-light {
     padding-top: 5px;
     padding-left: 15px; 
     padding-bottom: 25px;
     background-color: #edededea;
 
   }
+
+  .phraseologyPreview-dark {
+    padding-top: 5px;
+    padding-left: 15px; 
+    padding-bottom: 25px;
+
+  }
+
 
   

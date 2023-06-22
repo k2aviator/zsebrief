@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import GetAirportMETAR from './GetAirportMETAR'
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 
 export default function GetAirportRunways({airportICAO}) {  
@@ -7,6 +10,7 @@ export default function GetAirportRunways({airportICAO}) {
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [runways, setRunways] = useState([]);
+    const { themeName, toggleTheme } = useContext(ThemeContext)
 
     //MONGO DB GET RUNWAYS
 
@@ -62,7 +66,7 @@ export default function GetAirportRunways({airportICAO}) {
         let runwayNumber = runway.RUNWAY
         let runwayCalmWind = runway.CALM_WIND_RUNWAY
         let runwayCalmWindThreshold = runway.CALM_WIND_THRESHOLD
-        let runwayODP = runway.ODP
+        let runwayODP = decodeURIComponent(runway.ODP)
 
         return (
             <tr key={index}>
@@ -91,8 +95,8 @@ export default function GetAirportRunways({airportICAO}) {
            
             </div>
             <div>
-            <p className="headerText">ALL RUNWAYS</p>
-            <table id="details">
+            <p className={`headerText-${themeName}`}>ALL RUNWAYS</p>
+            <table className={`details-${themeName}`}>
                 <thead>
                     <tr>
                         <th>Runway</th>
