@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext  } from 'react';
 import ThemeContext, {ThemeController} from './ThemeContext'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import UtilAdminRole from './UtilAdminRole';
 import useTheme from './useTheme';
@@ -15,7 +15,7 @@ export default function Header() {
     const [showDropdown, setShowDropdown] = useState(false);
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
-   
+    const aDark = themeName === "dark" ? 'a-dark' : '';
 
     const isAdminRole = UtilAdminRole()
 
@@ -86,19 +86,19 @@ export default function Header() {
                             <div className="header-signout">
                             <button className={buttonDark} onClick={signOut}>Sign out</button>
                             </div>
-                            <div><Button/>
+                            <div className="header-night-mode">
+                            <Button/>
                             </div>
                     </div>
                 </div>
                 <div className="header-box-bottom">
                         <nav>
                             <ul>
-                            <li>
-                                <Link to="/home">Home</Link>
+                            <li className={`nav-${themeName}`}>
+                                <Link to="/home" className={aDark}>Home</Link>
                             </li>
                             {isAdminRole && (
-                                <li
-                                className="dropdown"
+                                <li 
                                 onMouseEnter={toggleDropdown}
                                 onMouseLeave={toggleDropdown}
                                 >
@@ -107,14 +107,14 @@ export default function Header() {
                                 {showDropdown && (
                                     <div className="dropdown-content">
                                     <ul>
-                                        <li>
-                                        <Link to="/admin/deps-by-class/b">Class B Deps</Link>
+                                        <li className={`nav-${themeName}`}>
+                                        <Link to="/admin/deps-by-class/b" className={aDark}>Class B Deps</Link>
                                         </li>
-                                        <li>
-                                        <Link to="/admin/deps-by-class/c">Class C Deps</Link>
+                                        <li className={`nav-${themeName}`}>
+                                        <Link to="/admin/deps-by-class/c" className={aDark}>Class C Deps</Link>
                                         </li>
-                                        <li>
-                                        <Link to="/admin/deps-by-class/d">Class D Deps</Link>
+                                        <li className={`nav-${themeName}`}>
+                                        <Link to="/admin/deps-by-class/d" className={aDark}>Class D Deps</Link>
                                         </li>
                                     </ul>
                                     </div>

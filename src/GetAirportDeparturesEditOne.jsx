@@ -331,10 +331,10 @@ export default function GetAirportDeparturesEditOne() {
 
     return (
         <div className={`parent-${themeName}`}>
-        <div className={`header-nav-${themeName}`}>
-          </div>
+            <div className={`header-nav-${themeName}`}>
+            </div>
             <div className='main-body'>
-                <div className="sticky-header">
+                <div className={`sticky-header-${themeName}`}>
                     <Header />
                 </div>
                 <div className="details-margin-top">
@@ -394,7 +394,7 @@ export default function GetAirportDeparturesEditOne() {
                 </div>
                 <div className="phraseologyPreview">
                         <p className="headerText">Phraseology Preview</p>
-                        <table id="details">
+                        <table className={`details-${themeName}`}>
                         <thead>
                             <tr>
                                 <th>Type</th>

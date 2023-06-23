@@ -21,7 +21,7 @@ export default function AirportEditDepartures(){
             </div>
        
             <div className='main-body'>
-                <div className="sticky-header">
+                <div className={`sticky-header-${themeName}`}>
                 <Header />
                 </div>
                     <div className="details-margin-top">

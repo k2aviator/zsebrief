@@ -24,13 +24,13 @@ export default function AirportEditOverview(){
                 <div className={`sticky-header-${themeName}`}>
                 <Header />
                 </div>
-                    <div className="details-margin-top">
-                        <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>Back to all details</button></Link><br></br>            
-                    </div>
-                    <div>
-                        <h3>Overview Information for {airportICAO}</h3>
-                    </div>
-                    <GetAirportDetailsEdit airportICAO={airportICAO}/>
+                <div className="details-margin-top">
+                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>Back to all details</button></Link><br></br>            
+                </div>
+                <div>
+                    <h3>Overview Information for {airportICAO}</h3>
+                </div>
+                <GetAirportDetailsEdit airportICAO={airportICAO}/>
             </div>
             <div className={`footer-${themeName}`}>
                 <Footer/> 

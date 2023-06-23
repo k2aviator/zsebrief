@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo} from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useContext} from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import UtilAdminRole from './UtilAdminRole';
 import Header from './Header';
 import Footer from './Footer'
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
+
 
 export default function GetAirportRunwaysEditOne() {  
     const navigate = useNavigate()
@@ -26,6 +30,8 @@ export default function GetAirportRunwaysEditOne() {
     const [previewMag, setPreviewMag] = useState()
     const [previewTrue, setPreviewTrue] = useState()
     const [previewPattern, setPreviewPattern] = useState()
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
     //FORM Interactive Elements
     const [formData, setFormData] = useState([])
@@ -180,14 +186,16 @@ export default function GetAirportRunwaysEditOne() {
     }
 
     return (
-        <div>
+        <div className={`parent-${themeName}`}>
+            <div className={`header-nav-${themeName}`}>
+            </div>
             <div className='main-body'>
-                <div className="sticky-header">
+                <div className={`sticky-header-${themeName}`}>
                     <Header />
                 </div>
                 <div className="details-margin-top">
-                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button>Back to all details</button></Link>            
-                    <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button>Back to {airportICAO} runways</button></Link>
+                    <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>Back to all details</button></Link>            
+                    <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button className={buttonDark}>Back to {airportICAO} runways</button></Link>
                 </div>
                 <div>
                 <h3>Edit {airportICAO} Runway {runwayNumber} </h3>
@@ -223,7 +231,7 @@ export default function GetAirportRunwaysEditOne() {
                             <option value="RIGHT">RIGHT</option>
                         </select><br></br>
                         <br></br>
-                        <button type="submit">Submit</button>{updatedRunway ===true  && <p id="success-message">Success: runway has been updated.</p>}
+                        <button type="submit" className={buttonDark}>Submit</button>{updatedRunway ===true  && <p id="success-message">Success: runway has been updated.</p>}
                         <p></p>  
                     </form>
                 </div>
@@ -233,7 +241,7 @@ export default function GetAirportRunwaysEditOne() {
                 </div>
                 
             </div>
-            <div className="footer">
+            <div className={`footer-${themeName}`}>
                     <Footer/> 
             </div> 
         </div>

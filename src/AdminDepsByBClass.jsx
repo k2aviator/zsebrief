@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import Header from './Header';
 import Footer from './Footer'
+import ThemeContext, { ThemeController } from './ThemeContext';
+import useTheme from './useTheme';
+import Button from './Button'
 
 export default function AdminDepsByBClass(){
     /* eslint-disable */        
@@ -9,6 +12,8 @@ export default function AdminDepsByBClass(){
     const [isLoading, setIsLoading] = useState(true);
     /* eslint-enable */
     const [airspaceDepartures, setAirspaceDepartures] = useState([]);
+    const { themeName, toggleTheme } = useContext(ThemeContext)
+    const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
 
 
@@ -59,17 +64,16 @@ export default function AdminDepsByBClass(){
 
 
     return (
-            <div>
-            <div className="header-nav">
+            <div className={`parent-${themeName}`}>
+            <div className={`header-nav-${themeName}`}>
             </div>
-    
             <div className='main-body'>
-                <div className="sticky-header">
+                <div className={`sticky-header-${themeName}`}>
                 <Header />
                 </div>
                     <div>
                         <h4>Review / Edit departure procedures for Class B airports</h4>
-                        <table id="details">
+                        <table className={`details-${themeName}`}>
                             <thead>
                                 <tr>
                                     <th></th>
@@ -90,7 +94,7 @@ export default function AdminDepsByBClass(){
                         &nbsp;<br></br>
                     </div>
             </div>
-            <div className="footer">
+            <div className={`footer-${themeName}`}>
                 <Footer/>
             </div> 
         </div>
