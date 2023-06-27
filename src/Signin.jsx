@@ -89,24 +89,10 @@ export default function Signin({isMobile}) {
                 //console.log("response is ", data.token)
                 console.log("is mobile result", isMobile)
                 localStorage.setItem("token", data.token)
-                if (isMobile === true ){
-                    console.log("is mobile result", isMobile)
-                    setTimeout(() => {
-                        // Redirect the user to the desired page
-                        window.location.href = '/home/mobile';
-                        }, 1000);
-                } else {
-       
-                    setTimeout(() => {
-                        // Redirect the user to the desired page
-                        window.location.href = '/home';
-                        }, 1000);
-                            
-               
-                }
-        
-           
-
+                setTimeout(() => {
+                    // Redirect the user to the desired page
+                    window.location.href = '/home';
+                    }, 1000); 
             }    
         }).catch (error => {
             console.log(error)
