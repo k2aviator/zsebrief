@@ -5,7 +5,7 @@ import useTheme from './useTheme';
 import Button from './Button'
 
 
-export default function GetAirportDepartures({airportICAO}) {  
+export default function MobileGetAirportDepartures({airportICAO}) {  
     
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +64,7 @@ export default function GetAirportDepartures({airportICAO}) {
         const depPhraseology = (departureType)=>{
             let phrase = ""
             if (departureType === "R/V"){
-                phrase = `...via the ${departureName} ${departureNum} departure, radar vectors to {FIX}, then as filed... `
+                phrase = `...via the ${departureName} ${departureNum} departure, radar vectors to (FIX), then as filed... `
                 return phrase
             } else if (departureType === "RNAV"){
                 phrase = `...via the ${departureName} ${departureNum} departure`
@@ -113,13 +113,19 @@ export default function GetAirportDepartures({airportICAO}) {
 
         return (
         
-                <tr key={index}> 
-                    <td>({departureType}) {depPreferredRunway(departureRunway)}</td>
-                    <td>{depPhraseology(departureType)}</td>
-                    <td>{departureClimb}</td>
-                    <td>{depClimbPhraseology(departureTopAlt)}</td>
-                    <td>{decodeURIComponent(departureExpectCruise)}</td>
-                </tr>
+            <span key={index}> 
+            {departureName} {departureNum} ({departureType}) {depPreferredRunway(departureRunway)}
+            <br></br>
+            &nbsp;<br></br>
+            {depPreferredRunway(departureRunway)}
+            {depPhraseology(departureType)}  <br></br>
+            {departureClimb} {depClimbPhraseology(departureTopAlt)}<br></br> 
+            expect (INSERT FINAL ALT)  {decodeURIComponent(departureExpectCruise)}<br></br>
+            &nbsp;<br></br>
+            ------------------------------------------------
+            &nbsp;<br></br>
+            &nbsp;<br></br>
+            </span>
         )
     })
 
@@ -134,22 +140,10 @@ export default function GetAirportDepartures({airportICAO}) {
 
 
     return (
-        <div>
+        <div className={`airport-status-${themeName}`}> 
             <p className={`headerText-${themeName}`}>DEPARTURES</p>
-            <table className={`details-${themeName}`}>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Phraseology</th>
-                        <th>Climb</th>
-                        <th>Top Alt</th>
-                        <th>Expect Cruise</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {departuresList}
-                </tbody>
-            </table>
+
+            {departuresList}
          </div>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext  } from 'react';
-import GetAirportRunways from './GetAirportRunways'
-import GetAirportDepartures from './GetAirportDepartures'
+import MobileGetAirportRunways from './MobileGetAirportRunways'
+import MobileGetAirportDepartures from './MobileGetAirportDepartures'
 import { Link } from 'react-router-dom';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
@@ -8,9 +8,10 @@ import Button from './Button'
 
 //https://blog.openreplay.com/creating-a-collapsible-component-for-react/
 //Expand and collapse airports
-export default function GetAirportDetails({airportICAO, airportName, airportTowered, airportHoursOpen, airportHoursClose, airspaceClass, airportElev, pstTime}) {  
+export default function MobileGetAirportDetails({airportICAO, airportName, airportTowered, airportHoursOpen, airportHoursClose, airspaceClass, airportElev, pstTime}) {  
     //console.log(airportState)
     const [open, setOpen] = useState(false)
+    const [previouslyOpened, setPreviouslyOpened] = useState(null);
     const [airportOpen,setAirportOpen] = useState(false)
     const [airportLogo,setAirportLogo] = useState(false)
     const [towerOpen, setTowerOpen] = useState(false)
@@ -56,10 +57,26 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
 
     var dataLayer = window.dataLayer = window.dataLayer || [];
 
-    const toggleOpen = () =>{
+    const toggleCollapseAll = () =>{
+        console.log("function")
+        const allExpandedElements = document.querySelectorAll(`div[class^='collapsible-expand-${themeName}']`);
+        // console.log("all expanded elements are ", allExpandedElements)
+        allExpandedElements.forEach((element) => {
+            element.classList.add("hidden");
+        });
+
+    }
+
+    const toggleOpen = (divId) =>{
+        toggleCollapseAll()
+        // console.log("div id to close is ", divId)
+        // console.log("open value is ", open)
         setOpen(!open);
-        //console.log(airportICAO, airportName, airportTowered, airportHoursOpen, airspaceClass)
-        //console.log("clicked on airport expand")
+        // setOpen((prevOpen) => (prevOpen === divId ? null : divId));
+        // setOpen((prevOpen) => !prevOpen);
+        // setPreviouslyOpened(null); // Close the previously opened div
+
+
         dataLayer.push({
             'event': 'vpv',     
             'vpv_page_path':`http://${hostName}/vpv/${airportICAO}-details` ,
@@ -152,9 +169,9 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     // const imageDisplay = imageFiles[4].src
     return (
         <div>
-            <div className="airport-code-name" onClick={()=>toggleOpen()}>
-                <div id="airportName" >
-                    <button className={`button-airport-${themeName}`}>{airportICAO} | {airportName} </button>
+            <div className="airport-code-name" onClick={()=>toggleOpen(`airport-${airportICAO}`)}>
+                <div id={`airport-${airportICAO}`} >
+                    <button className={`button-airport-${themeName}`}>{airportICAO} </button>
                     {open && <div className={`collapsible-expand-${themeName}`}>
                         <div className="airport-status-logos" > 
                            
@@ -202,24 +219,24 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             </div>
                             </div>
                             
-                            {airportLogo &&
+                            {/* {airportLogo &&
                               <div className="airport-logos">
                                         <img alt="airport logo" className={`image-${themeName}`} src={airportImageLoc(airportICAO)}></img>
                              </div>
-                          }
+                          } */}
                         </div>
-                            <GetAirportRunways airportICAO={airportICAO}/>
+                            <MobileGetAirportRunways airportICAO={airportICAO}/>
                             <p></p>
-                            <GetAirportDepartures airportICAO={airportICAO}/>
+                            <MobileGetAirportDepartures airportICAO={airportICAO}/>
                             <p></p>
-                        <div>
+                        {/* <div>
                             <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>View All Airport Details</button></Link><br></br>
                             {isAdminRole && <div>
                             <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button className={buttonDark}>Edit Airport Info</button></Link><br></br>
                             <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button className={buttonDark}>Edit Runway Info</button></Link><br></br>
                             <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button className={buttonDark}>Add / Edit Departures</button></Link><br></br>
                              </div>}
-                        </div>
+                        </div> */}
                            
                     </div>}
                 </div> 
@@ -227,7 +244,4 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
         </div>
     )
 
-}
-
-GetAirportDetails.propTypes = {
 }

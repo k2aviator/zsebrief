@@ -4,7 +4,7 @@ import './db'
 import './Zsebrief.css'
 //import { validateSignupinForm } from './utilSigninupValidate'
 
-export default function Signin() {
+export default function Signin({isMobile}) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -87,11 +87,25 @@ export default function Signin() {
             } else {
                 setSubmitMessage("Login succesful: redirecting you to homepage")
                 //console.log("response is ", data.token)
+                console.log("is mobile result", isMobile)
                 localStorage.setItem("token", data.token)
-                setTimeout(() => {
-                    // Redirect the user to the desired page
-                    window.location.href = '/home';
-                    }, 1000);
+                if (isMobile === true ){
+                    console.log("is mobile result", isMobile)
+                    setTimeout(() => {
+                        // Redirect the user to the desired page
+                        window.location.href = '/home/mobile';
+                        }, 1000);
+                } else {
+       
+                    setTimeout(() => {
+                        // Redirect the user to the desired page
+                        window.location.href = '/home';
+                        }, 1000);
+                            
+               
+                }
+        
+           
 
             }    
         }).catch (error => {

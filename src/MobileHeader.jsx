@@ -9,7 +9,7 @@ import './Zsebrief.css';
 import logo from './icons/zsebrief.png'
 
 
-export default function Header() {
+export default function MobileHeader({isMobile}) {
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
     const [showDropdown, setShowDropdown] = useState(false);
@@ -20,8 +20,6 @@ export default function Header() {
     const liDark = themeName === "dark" ? 'li-dark' : '';
 
     const isAdminRole = UtilAdminRole()
-
-
 
     //Set zulu time
     useEffect(() => {
@@ -67,6 +65,8 @@ export default function Header() {
         )
 
     }
+
+    console.log("is mobile ", isMobile)
     //Display home content
 
     return (
@@ -76,7 +76,7 @@ export default function Header() {
             <div>
                 <div className={`header-box-top`}>             
                     <div className="header-logo">   
-                        <Link to="/home"><img alt="zse brief logo" src={logo} className={`image-${themeName}`}></img></Link>  
+                        <img alt="zse brief logo" src={logo} className={`image-${themeName}`}></img>
                     </div>
         
                     <div className={`header-right-top`}>
@@ -85,47 +85,11 @@ export default function Header() {
                                 <span>{pstTime} PST </span>
         
                             </div>
-                            <div className="header-signout">
-                            <button className={buttonDark} onClick={signOut}>Sign out</button>
-                            </div>
                             <div className="header-night-mode">
                             <Button/>
                             </div>
                     </div>
                 </div>
-                    <div className="header-box-bottom">
-                            <nav>
-                                <ul>
-                                <li className={`nav-${themeName}`}>
-                                    <Link to="/home" className={aDark}>Home</Link>
-                                </li>
-                                {isAdminRole && (
-                                <li className={liDark} 
-                                    onMouseEnter={toggleDropdown}
-                                    onMouseLeave={toggleDropdown}
-                                    >
-                                    Admin - Departures
-                                    {showDropdown && (
-                                        <div className="dropdown-content">
-                                        <ul>
-                                            <li className={`nav-${themeName}`}>
-                                            <Link to="/admin/deps-by-class/b" className={aDark}>Class B Deps</Link>
-                                            </li>
-                                            <li className={`nav-${themeName}`}>
-                                            <Link to="/admin/deps-by-class/c" className={aDark}>Class C Deps</Link>
-                                            </li>
-                                            <li className={`nav-${themeName}`}>
-                                            <Link to="/admin/deps-by-class/d" className={aDark}>Class D Deps</Link>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                    )}
-                                    </li>
-                                    
-                                )}
-                                </ul>
-                            </nav>
-                    </div>
                 </div>               
         </header>
     )

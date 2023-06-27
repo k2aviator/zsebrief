@@ -15,6 +15,7 @@ import AirportEditDepartures from './AirportEditDepartures'
 import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne'
 import GetAirportDeparturesAddOne from './GetAirportDeparturesAddOne'
 import GetAirportRunwaysEditOne from './GetAirportRunwaysEditOne'
+import GetAirportFullPage from './GetAirportFullPage'
 import Login from './Login'
 import './App.css';
 import './Zsebrief.css';
@@ -51,23 +52,27 @@ function App() {
           const isAdmin = data.admin
           setIsAdminRole(isAdmin)
       }).catch (error => {
-        console.error('An error occurred:', error);
+        // console.error('An error occurred:', error);
       })     
     } 
 
     useEffect(() => {
-      isAdmin();
+      try {
+        console.log("is admin function")
+        isAdmin(); // Call the isAdmin() function
+      } catch (error) {
+        console.error('An error occurred:', error); // Handle the error
+      }
     },[])
     
   return (
     <ThemeController>
     <div>
      <Routes>
-
-        
           <Route path = "/" element={isAuthenticated() === true ? <Home />: <Login />}/>
           <Route path = "/signup" element={<Signup />}/>
           <Route path = "/home" element={isAuthenticated() === true ? <Home />: <Navigate to="/" replace />}/>
+          <Route path = "/airports/:icao" element={isAuthenticated() === true ? <GetAirportFullPage />: <Navigate to="/" replace />}/>
           <Route path = "/details/:icao" element={isAuthenticated() === true ? <AirportEdit/>: <Navigate to="/" replace />}/>
           <Route path = "/details/:icao/overview" element={isAdminRole === true ? <AirportEditOverview/>: <Navigate to="/" replace />}/>
           <Route path = "/details/:icao/runways" element={isAdminRole === true? <AirportEditRunways/>: <Navigate to="/" replace />}/>

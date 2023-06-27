@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import GetAirportDetails from './GetAirportDetails'
+import MobileGetAirportDetails from './MobileGetAirportDetails'
 import PropTypes from 'prop-types';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
 
-export default function GetAirportList({pstTime}) {  
+export default function MobileGetAirportList({pstTime}) {  
    
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +47,7 @@ export default function GetAirportList({pstTime}) {
 
         return (
             <div key={index}>
-            <GetAirportDetails airportICAO={airportICAO} airportName={airportName} airportTowered={airportTowered} airportHoursOpen={airportHoursOpen} airportHoursClose={airportHoursClose} airspaceClass={airspaceClass} airportElev={airportElev} pstTime={pstTime}/>
+            <MobileGetAirportDetails airportICAO={airportICAO} airportName={airportName} airportTowered={airportTowered} airportHoursOpen={airportHoursOpen} airportHoursClose={airportHoursClose} airspaceClass={airspaceClass} airportElev={airportElev} pstTime={pstTime}/>
             </div>
         )
     })
@@ -60,22 +60,22 @@ export default function GetAirportList({pstTime}) {
         return <p>Has error!</p>
     }
 
-    const toggleCollapseAll = () =>{
-        console.log("function")
-        const allExpandedElements = document.querySelectorAll("div[class^='collapsible-expand']");
-        console.log("all expanded elements are ", allExpandedElements)
-        allExpandedElements.forEach((element) => {
-            element.classList.add("hidden");
-        });
+    // const toggleCollapseAll = () =>{
+    //     console.log("function")
+    //     const allExpandedElements = document.querySelectorAll("div[class^='collapsible-expand']");
+    //     console.log("all expanded elements are ", allExpandedElements)
+    //     allExpandedElements.forEach((element) => {
+    //         element.classList.add("hidden");
+    //     });
 
-    }
+    // }
 
     return (
 
         <div>
-            <div className="airport-details-collapse-button">
+            {/* <div className="airport-details-collapse-button">
                 <button className={`button-collapse-all-${themeName}`} onClick={toggleCollapseAll}>Collapse all</button>
-            </div>
+            </div> */}
             <div className="airport-details-container">
                 {airportList}
             </div>

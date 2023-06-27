@@ -6,7 +6,7 @@ import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
 
-export default function GetAirportMETAR({airportICAO, runways}) {  
+export default function MobileGetAirportMETAR({airportICAO, runways}) {  
     const [metar, setMetar] = useState(undefined)
     const [hasError, setHasError] = useState(false);
     const [loading,toggleLoading] = useState(true);
@@ -279,15 +279,16 @@ export default function GetAirportMETAR({airportICAO, runways}) {
              
             </div>
             <div>
-                <span className={`headerText-${themeName}`}>PREFERRED RUNWAY(S)</span><span className={pDarkClass}>{calmStatus}</span> <img alt="wind sock" className={`iconWindSock-${themeName}`} src={setWindSock(airportTotalWind)}></img>
+                <span className={`headerText-${themeName}`}>PREFERRED RUNWAY(S)</span><span className={pDarkClass}>{calmStatus}</span> 
+                <img alt="wind sock" className={`iconWindSock-${themeName}`} src={setWindSock(airportTotalWind)}></img>
                 <p></p>
                 <table className={`details-${themeName}`}>
                     <thead>
                         <tr>
-                            <th>Runway</th>
-                            <th>Length by width</th>
-                            <th>Wind offset</th>
-                            <th>Pattern direction</th>
+                            <th>Rwy</th>
+                            <th>Length x width</th>
+                            <th>Wind diff</th>
+                            <th>Pattern</th>
                         </tr>
                     </thead>
                     <tbody>

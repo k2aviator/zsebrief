@@ -35,7 +35,6 @@ export default function Signup() {
     //handle password change
     const handlePasswordChange = (event)=> {
         const password = event.target.value;
-        console.log(password)
         setPassword(password)     
         const passwordTest = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/
         if (!passwordTest.test(password)) {
@@ -93,14 +92,16 @@ export default function Signup() {
     }
 
     return (
-        <div>
-            <div className="header-nav">
+        <div className={`parent`}>
+            <div className="header-nav-light">
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
             height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
             </div>       
             <div className='main-body'>
                   <div className="header-logo">
                     <img src={logo} alt="zse brief logo"></img>
+                </div>
+                <div>
                     <p>Create your account</p>
                     <form onSubmit = {handleSignUp}>
                         <label>Email</label><br></br>
@@ -117,7 +118,7 @@ export default function Signup() {
                     <p id="error-message">{submitMessage}</p>}
                 </div>
             </div>
-            <div className="footer">
+            <div className="footer-light">
                 <Footer/> 
             </div>
         </div>
