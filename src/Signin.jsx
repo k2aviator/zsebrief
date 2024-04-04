@@ -4,7 +4,7 @@ import './db'
 import './Zsebrief.css'
 //import { validateSignupinForm } from './utilSigninupValidate'
 
-export default function Signin({isMobile}) {
+export default function Signin() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -87,7 +87,6 @@ export default function Signin({isMobile}) {
             } else {
                 setSubmitMessage("Login succesful: redirecting you to homepage")
                 //console.log("response is ", data.token)
-                console.log("is mobile result", isMobile)
                 localStorage.setItem("token", data.token)
                 setTimeout(() => {
                     // Redirect the user to the desired page

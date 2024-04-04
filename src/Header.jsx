@@ -81,8 +81,8 @@ export default function Header() {
         
                     <div className={`header-right-top`}>
                             <div className={`header-welcome${headerWelcomeDark}`}>
-                                <span>{time}Z | </span>
-                                <span>{pstTime} PST </span>
+                                <span>{time}Z | </span>&nbsp;
+                                <span> {pstTime} PST </span>
         
                             </div>
                             <div className="header-signout">

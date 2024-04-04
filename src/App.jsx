@@ -15,6 +15,7 @@ import AirportEditDepartures from './AirportEditDepartures'
 import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne'
 import GetAirportDeparturesAddOne from './GetAirportDeparturesAddOne'
 import GetAirportRunwaysEditOne from './GetAirportRunwaysEditOne'
+import VatsimAuth from './VatsimAuth'
 import GetAirportFullPage from './GetAirportFullPage'
 import Login from './Login'
 import './App.css';
@@ -70,6 +71,8 @@ function App() {
     <div>
      <Routes>
           <Route path = "/" element={isAuthenticated() === true ? <Home />: <Login />}/>
+          <Route path = "/login" element={<VatsimAuth />} />
+          <Route path = "/vatsim-auth" element={<VatsimAuth />} />
           <Route path = "/signup" element={<Signup />}/>
           <Route path = "/home" element={isAuthenticated() === true ? <Home />: <Navigate to="/" replace />}/>
           <Route path = "/airports/:icao" element={isAuthenticated() === true ? <GetAirportFullPage />: <Navigate to="/" replace />}/>

@@ -350,7 +350,7 @@ export default function GetAirportDeparturesEditOne() {
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
                         <label>Database id: {departureId}</label><br></br>
-                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s]*$" onChange={(event) => {handleDropDown(event, "NAME"); setPreviewName(event.target.value)}}/> &nbsp; Text only<br></br>
+                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s()]*$" onChange={(event) => {handleDropDown(event, "NAME"); setPreviewName(event.target.value)}}/> &nbsp; Text only<br></br>
                         <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}" onChange={(event) => {handleDropDown(event, "NUM"); setPreviewNum(event.target.value)}}/><br></br>
                         <label>Type: </label>
                         <select id="depTypeOption" value={previewType} onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value),  buildPhraseology(event.target.value)}}>
