@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import GetAirportRunways from './GetAirportRunways'
 import GetAirportDepartures from './GetAirportDepartures'
+import GetAirportNotes from './GetAirportNotes'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ThemeContext, { ThemeController } from './ThemeContext';
@@ -227,6 +228,8 @@ export default function GetAirportFullPage() {
                     <GetAirportRunways airportICAO={airportICAO}/>
                     <p></p>
                     <GetAirportDepartures airportICAO={airportICAO}/>
+                     <p></p>
+                    <GetAirportNotes airportICAO={airportICAO}/>
                     <p></p>
                     <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>View All Airport Details</button></Link><br></br>
                 </div>        

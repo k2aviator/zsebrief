@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext  } from 'react';
 import GetAirportRunways from './GetAirportRunways'
 import GetAirportDepartures from './GetAirportDepartures'
+import GetAirportNotes from './GetAirportNotes'
 import { Link } from 'react-router-dom';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
@@ -13,6 +14,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const [open, setOpen] = useState(false)
     const [airportOpen,setAirportOpen] = useState(false)
     const [airportLogo,setAirportLogo] = useState(false)
+    const [airportMap,setAirportMap] = useState(false)
     const [towerOpen, setTowerOpen] = useState(false)
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
@@ -20,11 +22,17 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
     const hostName = window.location.hostname;
 
     const images = require.context('./logos-airports', false, /\.(png|jpe?g|svg)$/);
+    const imageMaps = require.context('./maps-airports', false, /\.(png|jpe?g|svg)$/);
 
     const imageFiles = images.keys().map((path) => {
-    const src = images(path);
-    const filename = path.replace('./', '');
+        const src = images(path);
+        const filename = path.replace('./', '');
+     return { filename, src };});
 
+
+     const imageMapFiles = imageMaps.keys().map((path) => {
+        const src = imageMaps(path);
+        const filename = path.replace('./', '');
      return { filename, src };});
 
      const [isAdminRole, setIsAdminRole] = useState('false')
@@ -70,6 +78,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
         
 
         airportImage(airportICAO)
+        airportMapImage(airportICAO)
     
         isTowerOpen()
         if( airportTowered === "TRUE"){
@@ -89,10 +98,28 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
         } 
     }
 
+    const airportMapImage = (airportICAO)=>{
+        console.log("airport map image function")
+        let codePng = `${airportICAO}.png`
+        const indexMatch = imageMapFiles.findIndex(obj => codePng === obj.filename)   
+        console.log("does the index match?", indexMatch)
+        if (indexMatch !== -1){
+            console.log(imageMapFiles[indexMatch].src)
+            setAirportMap(!airportMap)
+        } 
+    }
+
+
     const airportImageLoc = (airportICAO)=>{
         let codePng = `${airportICAO}.png`
         const indexMatch = imageFiles.findIndex(obj => codePng === obj.filename)
         return imageFiles[indexMatch].src   
+     }
+
+     const airportMapImageLoc = (airportICAO)=>{
+        let codePng = `${airportICAO}.png`
+        const indexMatch = imageMapFiles.findIndex(obj => codePng === obj.filename)
+        return imageMapFiles[indexMatch].src   
      }
 
     const isTowerOpen = ()=>{
@@ -212,6 +239,17 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                             <p></p>
                             <GetAirportDepartures airportICAO={airportICAO}/>
                             <p></p>
+                            <GetAirportNotes airportICAO={airportICAO}/>
+                            <p></p>
+                            {/* {airportMap &&
+                                <p>
+                                    <p className={`headerText-${themeName}`}>AIRPORT MAPS (beta)</p>
+                                <div className="airport-maps">
+                                            <img alt="airport maps" width="600px" className={`image-map-${themeName}`} src={airportMapImageLoc(airportICAO)}></img>
+                                </div>
+                                </p>
+                            } */}
+                            
                         <div>
                             <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>View All Airport Details</button></Link><br></br>
                             {isAdminRole && <div>

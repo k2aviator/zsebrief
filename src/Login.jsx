@@ -64,8 +64,8 @@ export default function Login() {
                     <p>Welcome to ZSEBrief, a simple app designed to give Seattle Virtual ARTCC (ZSE) controllers visibility into the operations of over 30 airports while working Enroute or TRACON positions on the VATSIM network.</p>
                     <p>In the Pacific Northwest the weather is dynamic and staying on top of which runways and procedures to use can be a burden, especially when you have a bustling sector. With a few clicks, ZSEBrief makes it possible to work your airports like a pro.</p>
                     <p>Have a good shift and please sign-in to get started!</p>
-                    <p><a href={vatsimSSO}><button> Login with VATSIM</button></a></p>
-                    <p>Or, login with user name and password:</p>
+                    {/* <p><a href={vatsimSSO}><button> Login with VATSIM</button></a></p> */}
+                    {/* <p>Or, login with user name and password:</p> */}
                     <Signin/>
                     <p>Don't have an account? <a href="signup"><button> Create account</button></a></p>
                 </div>
