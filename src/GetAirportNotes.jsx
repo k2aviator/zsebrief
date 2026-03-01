@@ -39,28 +39,18 @@ useEffect(() => {
 
 }, [mongoAirportsURL]);
 
- 
-// LAST LEFT OFF 2-28-26
 
     console.log("airport data", airportData)
-    const airportNotes = airportData?.NOTES;
-    console.log("airport notes", airportNotes)
-
-    //MAP Airport Notes
-    // if (airportData.NOTES) {
-    //      let airportNotes = airportData.NOTES
-    //      console.log("airport notes: ", airportNotes)
-    // }
-   
+    const airportNotes = decodeURIComponent(airportData?.NOTES || "");
 
 
-    // if (isLoading) {
-    //     return <p>loading...</p>
-    // }
+    if (isLoading) {
+        return <p>loading...</p>
+    }
 
-    // if (hasError) {
-    //     return <p>Has error!</p>
-    // }
+    if (hasError) {
+        return <p>Has error!</p>
+    }
 
 
     return (
