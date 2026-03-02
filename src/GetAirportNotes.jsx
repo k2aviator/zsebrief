@@ -11,6 +11,7 @@ export default function GetAirportNotes({airportICAO}) {
     const [isLoading, setIsLoading] = useState(true);
     const { themeName, toggleTheme } = useContext(ThemeContext);
     const [airportData, setAirportData] = useState()
+    const [notesInput, setNotesInput] = useState("");
     //MONGO DB Get Airport Details
 
     //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
@@ -29,8 +30,19 @@ useEffect(() => {
         })
         .then((data) => {
             setAirportData(data);
+            let decodedNotes = "";
+             try {
+                decodedNotes = data?.NOTES
+                    ? decodeURIComponent(data.NOTES)
+                    : "";
+                console.log("decoted notes", decodedNotes)
+            } catch (e) {
+                decodedNotes = data?.NOTES || ""; // fallback if already decoded
+            }
+
+            setNotesInput(decodedNotes); 
             setIsLoading(false);
-        })
+                })
         .catch((error) => {
             console.log(error);
             setIsLoading(false);
@@ -40,8 +52,8 @@ useEffect(() => {
 }, [mongoAirportsURL]);
 
 
-    console.log("airport data", airportData)
-    const airportNotes = decodeURIComponent(airportData?.NOTES || "");
+    console.log("notes input", notesInput)
+    // const airportNotes = decodeURIComponent(airportData?.NOTES || "");
 
 
     if (isLoading) {
@@ -55,9 +67,10 @@ useEffect(() => {
 
     return (
          <div>
-            <p className={`headerText-${themeName}`}>NOTES</p>
-            {airportNotes}
-          
+            <p className={`headerText-${themeName}`}>ARRIVAL NOTES</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>
+            {notesInput}
+            </p>          
          </div>
     );
 }

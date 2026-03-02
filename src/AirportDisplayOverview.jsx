@@ -56,9 +56,13 @@ export default function AirportDisplayOverview({airportICAO}) {
                 <label>Towered: {airportTowered}</label><br></br>
                 <label>Hour Open: {airportHoursOpen}</label><br></br>
                 <label>Hour Closed: {airportHoursClose}</label><br></br>
-                <label>Notes: {airportNotes}</label><br></br>
-                <br></br>
-                <p></p>
+                <label>Arrival Notes: 
+                    <p style={{ whiteSpace: 'pre-wrap' }}>
+                    {airportNotes}
+                    </p>
+                </label>
+                                
+                        
             </form>
         </div>
         )

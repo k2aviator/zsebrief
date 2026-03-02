@@ -77,7 +77,9 @@ export default function GetAirportDeparturesEditOne() {
     const [depTopAlt, setDepTopAlt] = useState('');
     const [depClimbIns, setDepClimbIns] = useState('');
     const [depExpectedCruise, setDepExpectedCruise] = useState('');
+    
     const [depTopAltListed, setDepTopAltListed] = useState('');
+    const [depNotes, setDepNotes] = useState('');
    
     //BEGIN PHRASEOLOGY BUILDER FUNCTION
 
@@ -146,11 +148,22 @@ export default function GetAirportDeparturesEditOne() {
         setPreviewClimbPhrase(data.CLIMB)
         setPreviewTopAltListed(data.TOP_ALT_LISTED)
         setPreviewDepRunway(data.RWY_SPECIFIC)
+        setDepNotes(data.NOTES)
         setPreviewExpectedCruise(decodeURIComponent(data.EXPECT_CRUISE))
         setPreviewNeedForInterim(data.NEED_FOR_INTERIM_ALT)
         let [clearPhrase, climbPhrase] = depPhraseology(data.TYPE, data.NAME, data.NUM, data.TOP_ALT)
         setPreviewPhrase(clearPhrase)
         setPreviewTopAlt(climbPhrase)
+        setDepType(data.TYPE)
+        setDepName(data.NAME)
+        setDepNumber(data.NUM)
+        setDepTopAlt(data.TOP_ALT)
+        // setDepClimbIns
+        setDepExpectedCruise(
+        data?.EXPECT_CRUISE
+            ? decodeURIComponent(data.EXPECT_CRUISE)
+            : "");
+        // setDepTopAltListed
         setIsLoading(false);   
         },
         (error)=>{
@@ -218,6 +231,8 @@ export default function GetAirportDeparturesEditOne() {
         const depInterimAltInput = document.getElementById('depInterimAlt')
         const depClimbInsInput = document.getElementById('depClimbIns')
         const depExpectedCruiseInput = document.getElementById('depExpectedCruise')
+        const depNotesLocation = document.getElementById('depNotes')
+
 
         //clear validity statements
         //array to submit
@@ -309,7 +324,7 @@ export default function GetAirportDeparturesEditOne() {
     let departureTopAlt = departure.TOP_ALT
     let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
     let departureUpdated = departure.UPDATED
-
+    let departureNotes = departure.NOTES
     let runwayListForm; 
 
     if (runwayList) {
@@ -350,8 +365,30 @@ export default function GetAirportDeparturesEditOne() {
                         <label>Last updated: {departureUpdated}</label><br></br>
                         <label>Updated by {departureUpdatedBy}</label><br></br>
                         <label>Database id: {departureId}</label><br></br>
-                        <label>Name:  </label><input type="text" id="depName" size="15" placeholder={departureName} pattern="^[A-Za-z\s()]*$" onChange={(event) => {handleDropDown(event, "NAME"); setPreviewName(event.target.value)}}/> &nbsp; Text only<br></br>
-                        <label>Number: </label><input type="text" id="depNumber" size="1" placeholder={departureNum} pattern="[0-9]{0,2}" onChange={(event) => {handleDropDown(event, "NUM"); setPreviewNum(event.target.value)}}/><br></br>
+                        <label>Name:  </label> 
+                        <textarea
+                        id="depName"
+                        rows={1}
+                        style={{ width: "200px" }} 
+                        value={depName|| ""}
+                        onChange={(event) => {
+                            setDepName(event.target.value);
+                            handleDropDown(event, "NAME");
+                        }}
+                        />       
+                        &nbsp; Text only<br></br>    
+                        <label>Number: </label>
+                        <textarea
+                        id="depNumber"
+                        rows={1}
+                        style={{ width: "50px" }} 
+                        value={depNumber|| ""}
+                        onChange={(event) => {
+                            setDepNumber(event.target.value);
+                            handleDropDown(event, "NUM");
+                        }}
+                        />        
+                        <br></br>                           
                         <label>Type: </label>
                         <select id="depTypeOption" value={previewType} onChange={(event) => {handleDropDown(event, "TYPE"); setPreviewType(event.target.value),  buildPhraseology(event.target.value)}}>
                             <option value=""></option>
@@ -373,7 +410,18 @@ export default function GetAirportDeparturesEditOne() {
                             <option value="YES">YES</option>
                             <option value="NO">NO</option>
                         </select><br></br>
-                        <label>Top alt (FT): </label><input type="text" id="depTopAlt" size="20" placeholder={departureTopAlt}  pattern="^[0-9]{0,5}$" onChange={(event) => {handleDropDown(event, "TOP_ALT"); setPreviewTopAlt(event.target.value)}}/> Thousands of feet with no comma: for example, 5k would be 5000.<br></br>                    
+                        <label>Top alt (FT): </label>                   
+                        <textarea
+                        id="depTopAlt"
+                        rows={1}
+                        style={{ width: "100px" }} 
+                        value={depTopAlt|| ""}
+                        onChange={(event) => {
+                            setDepTopAlt(event.target.value);
+                            handleDropDown(event, "TOP_ALT");
+                        }}
+                        />   
+                        &nbsp; Thousands of feet with no comma: for example, 5k would be 5000.<br></br> 
                         <label>Need for interim alt? </label>
                         <select id="depNeedForInterim" value={previewNeedForInterim} onChange={(event) => {handleDropDown(event, "NEED_FOR_INTERIM_ALT"); setPreviewNeedForInterim(event.target.value)}}>
                             <option value="NA"></option>
@@ -386,8 +434,31 @@ export default function GetAirportDeparturesEditOne() {
                             <option value="CLB VIA SID">CLB VIA SID</option>
                             <option value="CLB VIA SID, EXCEPT MAINTAIN">CLB VIA SID, EXCEPT MAINTAIN</option>
                         </select><br></br>
-                        <label>Expect cruise: </label><input type="text" id="depExpectedCruise" size="20" placeholder={departureExpectCruise} onChange={(event) => {handleDropDown(event, "EXPECT_CRUISE"); setDepExpectedCruise(event.target.value)}}/> &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>      
+                        <label>Expect cruise: </label>    
+                        <textarea
+                        id="depExpectedCruise"
+                        rows={1}
+                        style={{ width: "200px" }} 
+                        value={depExpectedCruise|| ""}
+                        onChange={(event) => {
+                            setDepExpectedCruise(event.target.value);
+                            handleDropDown(event, "EXPECTED-CRUISE");
+                        }}
+                        />
+                        &nbsp; Free text (format # MINS AFT DEP or # NM FROM WAYPOINT)<br></br>   
                         <br></br>
+                        <label>Notes: </label><br></br>
+                        <textarea
+                        id="depNotesLocation"
+                        rows={4}
+                        style={{ width: "400px" }} 
+                        value={depNotes || ""}
+                        onChange={(event) => {
+                            setDepNotes(event.target.value);
+                            handleDropDown(event, "NOTES");
+                        }}
+                        />
+                        <p></p>  
                         <button type="submit" className={buttonDark} >Submit</button>{updatedDeparture ===true  && <p id="success-message">Success: departure has been updated.</p>}
                         <p></p>  
                     </form>

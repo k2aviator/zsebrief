@@ -63,6 +63,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
         let departureTopAlt = departure.TOP_ALT
         let departureExpectCruise = decodeURIComponent(departure.EXPECT_CRUISE)
         let departureUpdated = departure.UPDATED
+        let departureNotes = departure.NOTES
 
         return (
                 <div key={index}> 
@@ -78,7 +79,12 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
                         <label>Top alt: {departureTopAlt}</label><br></br>                        
                         <label>Need for interim alt? {departureNeedForInterim}</label><br></br>
                         <label>Climb instruction: {departureClimb}</label><br></br>
-                        <label>Expect cruise: {departureExpectCruise}</label><br></br>      
+                        <label>Expect cruise: {departureExpectCruise}</label><br></br>
+                       
+                        <p style={{ whiteSpace: "pre-wrap" }}>
+                        <label>Notes:</label><br></br>
+                        {departureNotes}
+                        </p>         
                         &nbsp;
                         <br></br>    
                     </form>

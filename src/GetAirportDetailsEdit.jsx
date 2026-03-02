@@ -15,6 +15,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     const [icaoClass, setIcaoClass] = useState('');
     const [icaoTowered, setIcaoTowered] = useState('');
     const [formData, setFormData] = useState([])
+    const [notes, setNotes] = useState('');
 
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
@@ -37,6 +38,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         setIcaoClass(data.AIRSPACE_CLASS)
         setIcaoTowered(data.TOWERED)
         setFormData(prevData => [...prevData, {"ICAO":airportICAO}])
+        setNotes(decodeURIComponent(data.NOTES)); 
         setIsLoading(false);   
         },
         (error)=>{
@@ -77,7 +79,6 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         const openInput = document.getElementById('airportHoursOpen')
         const closedInput = document.getElementById('airportHoursClosed')
         const notesInput = document.getElementById('airportNotes')
-
         var overviewFormData = formData;
 
 
@@ -246,8 +247,16 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                     <label>Hour Closed: </label><input type="text" id="airportHoursClosed" size="1" placeholder={airportHoursClose} pattern="([0-9]{4}|[NA]{2})"/><br></br>
                 </span>
                 }
-                <label>Notes: </label><input type="text" id="airportNotes" size="40" placeholder={airportNotes} /><br></br>
-                <br></br>
+               <label>Arrival Notes: </label>
+               <p>     
+               <textarea
+                id="airportNotes"
+                rows="4"
+                cols="50"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                />
+                </p>
                 <button type="submit" className={buttonDark}>Submit</button>
                 <p></p>
             </form>

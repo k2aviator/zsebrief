@@ -43,7 +43,7 @@ export default function GetAirportDepartures({airportICAO}) {
 
 
 
-    //MAP Airport Runways
+        //MAP Airport Runways
     const departuresList = varAirportSelected.map((departure,index) =>{
         // let departureICAO = departure.ICAO
         // let departureProcedure = departure.PROCEDURE
@@ -57,7 +57,6 @@ export default function GetAirportDepartures({airportICAO}) {
         let departureTopAlt = departure.TOP_ALT
         let departureExpectCruise = departure.EXPECT_CRUISE
         // let departureUpdated = departure.LAST_UPDATED
-
 
         //Departure clearance phraseology 
         
@@ -119,10 +118,36 @@ export default function GetAirportDepartures({airportICAO}) {
                     <td>{departureClimb}</td>
                     <td>{depClimbPhraseology(departureTopAlt)}</td>
                     <td>{decodeURIComponent(departureExpectCruise)}</td>
-                </tr>
-        )
+                </tr>        )
     })
 
+    
+const departuresNotes = varAirportSelected
+    .filter(departure => departure.NOTES && departure.NOTES.trim() !== "")
+    .map((departure, index) => {
+
+        const departureName = departure.NAME;
+        const departureNum = departure.NUM;
+        const departureType = departure.TYPE;
+        const departureRunway = departure.RWY_SPECIFIC;
+        const departureNotes = departure.NOTES;
+
+        const displayTitle =
+            departureName || departureNum
+                ? `${departureName || ""} ${departureNum || ""}`.trim()
+                : `${departureType}: Runway(s) ${departureRunway}`;
+
+        return (
+            <tr key={index}>
+                <td>{displayTitle}</td>
+                <td>
+                    <span style={{ whiteSpace: "pre-wrap" }}>
+                        {departureNotes}
+                    </span>
+                </td>
+            </tr>
+        );
+    });
 
     if (isLoading) {
         return <p>loading...</p>
@@ -148,6 +173,18 @@ export default function GetAirportDepartures({airportICAO}) {
                 </thead>
                 <tbody>
                     {departuresList}
+                </tbody>
+            </table>
+                   <p className={`headerText-${themeName}`}>DEPARTURE NOTES</p>
+            <table className={`details-${themeName}`}>
+                <thead>
+                    <tr>
+                        <th>Departure</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {departuresNotes}
                 </tbody>
             </table>
          </div>
