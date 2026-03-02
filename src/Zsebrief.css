@@ -20,7 +20,9 @@ html {
     background-color: #ffffff;
     min-height: 100vh;
     display:flex;
+    flex-direction: column;
 }
+
 .parent-dark {
     color: #D8D8D8;
     background-color: #202020;
