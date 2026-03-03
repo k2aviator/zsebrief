@@ -36,10 +36,10 @@ export default function OAuthSuccess({ setToken }) {
 
         const data = await response.json();
 
+        
         localStorage.setItem("token", data.token);
-        setToken(data.token);
+        window.location.replace("/home");
 
-        navigate("/home");
 
       } catch (err) {
         console.error("OAuth exchange failed:", err);
