@@ -72,7 +72,7 @@ export default function Login() {
                     {/* <p><a href={vatsimSSO}><button> Login with VATSIM</button></a></p> */}
                     {/* <p>Or, login with user name and password:</p> */}
                       {/* VATSIM LOGIN BUTTON */}
-                    <div style={{ marginBottom: "20px" }}>
+                    {/* <div style={{ marginBottom: "20px" }}>
                         <button
                         type="button"
                         onClick={handleVatsimLogin}
@@ -89,7 +89,7 @@ export default function Login() {
                         >
                         Login with VATSIM
                         </button>
-                    </div>
+                    </div> */}
                     <Signin/>
                     <p>Don't have an account? <a href="signup"><button> Create account</button></a></p>
                 </div>
