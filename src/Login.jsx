@@ -32,25 +32,24 @@ export default function Login() {
   
 
     const handleVatsimLogin = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+        e.preventDefault();
 
-    const state = crypto.randomUUID();
-    localStorage.setItem("vatsim_oauth_state", state);
+        const state = crypto.randomUUID();
+        localStorage.setItem("vatsim_oauth_state", state);
 
-    const params = new URLSearchParams({
-        client_id: process.env.REACT_APP_VATSIM_CLIENT_ID,
-        redirect_uri: "http://localhost:3001/auth/vatsim/callback",
-        response_type: "code",
-        scope: "full_name email vatsim_details",
-        state: state
-    });
+        const params = new URLSearchParams({
+            client_id: process.env.REACT_APP_VATSIM_CLIENT_ID,
+            redirect_uri: `${window.location.origin}/oauth-success`,
+            response_type: "code",
+            scope: "full_name email vatsim_details",
+            state: state
+        });
 
-    const oauthUrl =
-        `${process.env.REACT_APP_VATSIM_BASE_URL}/oauth/authorize?${params.toString()}`;
+        const oauthUrl =
+            `${process.env.REACT_APP_VATSIM_BASE_URL}/oauth/authorize?${params.toString()}`;
 
-    window.location.assign(oauthUrl);
-    };
+        window.location.assign(oauthUrl);
+        };
     return (
         <div className={`parent`}>
             {/* <div className="yellow-ribbon">
@@ -72,24 +71,15 @@ export default function Login() {
                     {/* <p><a href={vatsimSSO}><button> Login with VATSIM</button></a></p> */}
                     {/* <p>Or, login with user name and password:</p> */}
                       {/* VATSIM LOGIN BUTTON */}
-                    {/* <div style={{ marginBottom: "20px" }}>
-                        <button
+                    <div style={{ marginBottom: "20px"}}>
+                    <button
                         type="button"
                         onClick={handleVatsimLogin}
-                        style={{
-                            padding: "12px 20px",
-                            fontSize: "16px",
-                            backgroundColor: "#1a73e8",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "6px",
-                            cursor: "pointer",
-                            width: "25%"
-                        }}
-                        >
+                        className="vatsim-button"
+                    >
                         Login with VATSIM
-                        </button>
-                    </div> */}
+                    </button>
+                    </div>
                     <Signin/>
                     <p>Don't have an account? <a href="signup"><button> Create account</button></a></p>
                 </div>

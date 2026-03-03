@@ -7,6 +7,38 @@ html {
   /* min-height: 100vh; */
 }
 
+/* ======================
+   Global Typography
+====================== */
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #424242;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #5A8895; /* matches header bar */
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #3b3939;
+}
+
+.parent-dark h1,
+.parent-dark h2,
+.parent-dark p {
+  color: #D8D8D8;
+}
+
 .p-dark {
   color: #D8D8D8;
 }
@@ -31,6 +63,38 @@ html {
     flex-direction: column;
 }
 
+.spinner {
+  margin: 20px auto;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #738D5E; /* match your login button color */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vatsim-button {
+  padding: 14px 24px;
+  font-size: 16px;
+  background-image: linear-gradient(0.75turn, #738D5E, #71a2cd);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 280px;
+  max-width: 90%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.vatsim-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
 
 .logo-text {
   text-decoration: none; /* no underline */
@@ -324,6 +388,18 @@ a:visited {
   color: #D8D8D8;
 }
 
+.footer-center-middle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-center-middle a:visited {
+  color: inherit;
+}
+
+.footer-center-middle a:hover {
+  text-decoration: underline; /* optional */
+}
 
 .header-box-top{
   display:flex;
