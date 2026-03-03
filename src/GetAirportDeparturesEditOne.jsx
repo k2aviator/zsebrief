@@ -136,8 +136,8 @@ export default function GetAirportDeparturesEditOne() {
     const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures`
 
     //MONGO DB GET BY DEPARTURE ID
-    const mongoDepartureById = `${process.env.REACT_APP_API_URL}/departures/${departureId}`//PRODUCTION
-    //const mongoDepartureById = `http://localhost:3000/departures/${departureId}`//TEST
+    const mongoDepartureById = `${process.env.REACT_APP_API_URL}/departures/${departureId}`
+
     useEffect(()=>{
     fetch(mongoDepartureById)
     .then(response => response.json())
@@ -174,13 +174,13 @@ export default function GetAirportDeparturesEditOne() {
 
 
     //MONGO DB GET RUNWAYS LIST
-    const mongoRunwaysById = `https://zsebrief-backend-production.up.railway.app/runways/numbers/${airportICAO}`//PRODUCTION
+    const mongoRunwaysById = `${process.env.REACT_APP_API_URL}/airports/${airportICAO}`//PRODUCTION
     //const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
     useEffect(()=>{
     fetch(mongoRunwaysById)
     .then(response => response.json())
     .then((data) => {
-        setRunwayList(data)
+        setRunwayList(data.RUNWAYS || [])
         setIsLoading(false);   
         },
         (error)=>{
@@ -259,7 +259,7 @@ export default function GetAirportDeparturesEditOne() {
 
         var token = localStorage.getItem('token');
 
-        const mongoDeparturesURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
+        const mongoDeparturesURL = `${process.env.REACT_APP_API_URL}/departures` // PRODUCTION URL
         //const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
 
         //reduce the array 
@@ -267,12 +267,18 @@ export default function GetAirportDeparturesEditOne() {
 
         console.log("departure form data before reduction", departureFormData)
 
-        const transformedDepartureFormData = departureFormData.reduce((result, item) => {
-        const key = Object.keys(item)[0]; // Assuming each object has only one key
-        const value = item[key];
-        result[key] = value;
-        return result;
-        }, {});
+      const transformedDepartureFormData = {
+            NAME: depName,
+            NUM: depNumber,
+            TYPE: previewType,
+            TOP_ALT: depTopAlt,
+            EXPECT_CRUISE: depExpectedCruise
+                ? encodeURIComponent(depExpectedCruise)
+                : "",
+            NOTES: depNotes,
+            ICAO: airportICAO,
+            UPDATED: new Date().toISOString()
+            };
 
 
 
@@ -280,25 +286,31 @@ export default function GetAirportDeparturesEditOne() {
                 
         //console.log("data to send in put " , JSON.stringify(transformedDepartureFormData))
             fetch(`${mongoDeparturesURL}/${departureId}`, {
-            method:'PUT',
+            method: 'PUT',
             body: JSON.stringify(transformedDepartureFormData),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-                },
-            }).then(response=> response.json()
-            ).then(data=>{
-                if (data !== null) {
-                    //console.log("returned data is ", JSON.stringify(data));
-                    setUpdatedDeparture(true)
-                    refreshPage()
-                } else {
-                    // console.log("No data returned from the server");
-                    setUpdatedDeparture(false)
-                }
-            }).catch (error => {
-                console.error('An error occurred:', error);
+                'Authorization': `Bearer ${token}`
+            }
             })
+            .then(async response => {
+            const text = await response.text();
+            console.log("Status:", response.status);
+            console.log("Response:", text);
+
+            if (!response.ok) {
+                throw new Error(text);
+            }
+
+            return JSON.parse(text);
+            })
+            .then(data => {
+            setUpdatedDeparture(true);
+            refreshPage();
+            })
+            .catch(error => {
+            console.error("Update failed:", error);
+            });
         }
         fetchData()
 

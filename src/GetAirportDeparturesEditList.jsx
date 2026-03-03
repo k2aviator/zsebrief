@@ -22,8 +22,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
 
     //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = process.env.REACT_APP_API_URL  //PRODUCTION
-    //const mongoDepartureURL = "http://localhost:3000/departures" //TEST
+    const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures` //PRODUCTION
 
     useEffect(()=>{
         fetch(mongoDepartureURL)
