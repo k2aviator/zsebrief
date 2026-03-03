@@ -39,7 +39,7 @@ export default function Login() {
 
         const params = new URLSearchParams({
             client_id: process.env.REACT_APP_VATSIM_CLIENT_ID,
-            redirect_uri: `${window.location.origin}/oauth-success`,
+            redirect_uri: process.env.REACT_APP_VATSIM_REDIRECT_URI,
             response_type: "code",
             scope: "full_name email vatsim_details",
             state: state
