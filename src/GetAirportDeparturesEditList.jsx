@@ -22,7 +22,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
 
     //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION
+    const mongoDepartureURL = process.env.REACT_APP_API_URL  //PRODUCTION
     //const mongoDepartureURL = "http://localhost:3000/departures" //TEST
 
     useEffect(()=>{

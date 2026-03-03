@@ -153,10 +153,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
 
         var token = localStorage.getItem('token');
 
-        const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports" // PRODUCTION URL
-        //const mongoAirportURL = "http://localhost:3000/airports" //TEST URL
-        // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
-
+        const mongoAirportURL = `${process.env.REACT_APP_API_URL}/airports` 
 
         const transformedOverviewFormData = overviewFormData.reduce((result, item) => {
             const key = Object.keys(item)[0]; // Assuming each object has only one key
@@ -167,7 +164,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     
      
         const fetchData = async () => {
-                
+            const token = localStorage.getItem("token");         
         console.log("data to send in put " , JSON.stringify(transformedOverviewFormData))
             fetch(`${mongoAirportURL}/${airportICAO}`, {
             method:'PUT',

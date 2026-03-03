@@ -133,11 +133,10 @@ export default function GetAirportDeparturesEditOne() {
 
 
     //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures" //PRODUCTION
-    //const mongoDepartureURL = "http://localhost:3000/departures" //TEST
+    const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures`
 
     //MONGO DB GET BY DEPARTURE ID
-    const mongoDepartureById = `https://zsebrief-backend-production.up.railway.app/departures/${departureId}`//PRODUCTION
+    const mongoDepartureById = `${process.env.REACT_APP_API_URL}/departures/${departureId}`//PRODUCTION
     //const mongoDepartureById = `http://localhost:3000/departures/${departureId}`//TEST
     useEffect(()=>{
     fetch(mongoDepartureById)

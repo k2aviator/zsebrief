@@ -39,8 +39,8 @@ export default function GetAirportDeparturesAddOne() {
     const [formData, setFormData] = useState([])
 
     //MONGO DB GET RUNWAYS LIST
-    const mongoRunwaysById = `https://zsebrief-backend-production.up.railway.app/runways/numbers/${airportICAO}`//PRODUCTION
-    //const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
+    const mongoRunwaysById = `${process.env.REACT_APP_API_URL}/runways/numbers/${airportICAO}`
+    
     useEffect(()=>{
     fetch(mongoRunwaysById)
     .then(response => response.json())

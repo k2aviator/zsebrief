@@ -16,7 +16,7 @@ export default function GetAirportList({pstTime}) {
     //MONGO DB GET AIRPORTS
 
     //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoAirportURL = "https://zsebrief-backend-production.up.railway.app/airports"
+    const mongoAirportURL = `${process.env.REACT_APP_API_URL}/airports`
     // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
     useEffect(()=>{

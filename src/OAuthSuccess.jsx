@@ -7,48 +7,39 @@ import "./Zsebrief.css";
 export default function OAuthSuccess({ setToken }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const exchangeCode = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
+ useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
 
-      if (!code) {
-        navigate("/login");
-        return;
-      }
+  if (!code) return;
 
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/auth/vatsim/exchange`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ code })
-          }
-        );
-
-        if (!response.ok) {
-          navigate("/login");
-          return;
+  const exchangeCode = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/vatsim/exchange`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
         }
+      );
 
-        const data = await response.json();
+      const data = await response.json();
 
-        
+      if (response.ok) {
         localStorage.setItem("token", data.token);
         window.location.replace("/home");
-
-
-      } catch (err) {
-        console.error("OAuth exchange failed:", err);
-        navigate("/login");
+      } else {
+        console.error("OAuth exchange failed:", data);
       }
-    };
+    } catch (err) {
+      console.error("OAuth exchange failed:", err);
+    }
+  };
 
-    exchangeCode();
-  }, [navigate, setToken]);
+  exchangeCode();
+
+}, []);
 
   return (
   <div

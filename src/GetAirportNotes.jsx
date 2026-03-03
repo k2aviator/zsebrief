@@ -14,9 +14,8 @@ export default function GetAirportNotes({airportICAO}) {
     const [notesInput, setNotesInput] = useState("");
     //MONGO DB Get Airport Details
 
-    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoAirportsURL = `https://zsebrief-backend-production.up.railway.app/airports/${airportICAO}`
-    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+    const mongoAirportsURL =
+  `${process.env.REACT_APP_API_URL}/airports/${airportICAO}`;
 
 useEffect(() => {
     setIsLoading(true);

@@ -15,7 +15,7 @@ export default function GetAirportDepartures({airportICAO}) {
     //MONGO DB GET DEPARTURES
 
     //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures"
+    const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures`
     // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
     useEffect(()=>{
