@@ -778,13 +778,13 @@ a:visited {
   }
 
   /*Announcement*/
-  .yellow-ribbon {
+  /* .yellow-ribbon {
     background-color: grey;
     color: white;
     margin-top: 0px;
     padding: 1px;
     text-align: center;
-  }
+  } */
 
   /*Phraseology preview box*/
 
@@ -1019,6 +1019,10 @@ a:visited {
   }
   
   .footer-center-left {
+    display:flex;
+    color: #D8D8D8;
+  }
+  .footer-center-middle {
     display:flex;
     color: #D8D8D8;
   }

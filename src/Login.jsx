@@ -13,7 +13,7 @@ export default function Login() {
       const checkWindowWidth = () => {
         const newIsMobile = window.innerWidth <= 600;
         setIsMobile(newIsMobile);
-        console.log('isMobile:', newIsMobile);
+        // console.log('isMobile:', newIsMobile);
       };
   
    
@@ -29,28 +29,33 @@ export default function Login() {
       };
     }, []);
 
-    const vatsimSSO = 'https://auth-dev.vatsim.net/oauth/authorize?client_id=76&client_secret=qdXcEyuhycldIs4w86xsck6OklfDCvWgLRHuzyFf&redirect_uri=http://localhost:3000/login&response_type=code&scope=full_name+email+vatsim_details&state=d0d657bf5db2748024229aa600fd6613aceb3fcb4be36a557229fdcafc2868ad'
-
-    const fetchData = async () => {
-          
-      fetch(vatsimSSO, {
-      method:'POST', 
-      headers:  {
-         'Content-Type': 'application/json',
-          },
-      }).then(response=> response.json()
-      ).then(data=>{
-          console.log("returned data is ", data)
-      }).catch (error => {
-      })
-  }
   
-  /*10000010*/
+
+    const handleVatsimLogin = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const state = crypto.randomUUID();
+    localStorage.setItem("vatsim_oauth_state", state);
+
+    const params = new URLSearchParams({
+        client_id: process.env.REACT_APP_VATSIM_CLIENT_ID,
+        redirect_uri: "http://localhost:3001/auth/vatsim/callback",
+        response_type: "code",
+        scope: "full_name email vatsim_details",
+        state: state
+    });
+
+    const oauthUrl =
+        `${process.env.REACT_APP_VATSIM_BASE_URL}/oauth/authorize?${params.toString()}`;
+
+    window.location.assign(oauthUrl);
+    };
     return (
         <div className={`parent`}>
-            <div className="yellow-ribbon">
+            {/* <div className="yellow-ribbon">
             <p>UPDATE: Please create a new account with the 'Create account button' as the backend changed on 5/31/23.</p>
-            </div>
+            </div> */}
             <div className="header-nav-light">
             <noscript><iframe title="Google Analytics" src="https://www.googletagmanager.com/ns.html?id=GTM-M8V5JMD"
             height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
@@ -66,10 +71,30 @@ export default function Login() {
                     <p>Have a good shift and please sign-in to get started!</p>
                     {/* <p><a href={vatsimSSO}><button> Login with VATSIM</button></a></p> */}
                     {/* <p>Or, login with user name and password:</p> */}
+                      {/* VATSIM LOGIN BUTTON */}
+                    <div style={{ marginBottom: "20px" }}>
+                        <button
+                        type="button"
+                        onClick={handleVatsimLogin}
+                        style={{
+                            padding: "12px 20px",
+                            fontSize: "16px",
+                            backgroundColor: "#1a73e8",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "6px",
+                            cursor: "pointer",
+                            width: "25%"
+                        }}
+                        >
+                        Login with VATSIM
+                        </button>
+                    </div>
                     <Signin/>
                     <p>Don't have an account? <a href="signup"><button> Create account</button></a></p>
                 </div>
             </div>
+            
             <div className="footer-light">
                 <Footer/> 
             </div>

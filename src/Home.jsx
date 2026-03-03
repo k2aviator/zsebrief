@@ -11,7 +11,7 @@ import './Zsebrief.css';
 import { convertTime12to24 } from './utilTime'
 
 
-export default function Home() {
+export default function Home({ setToken }) {
     const [pstTime, setPstTime] = useState()
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const [isMobile, setIsMobile] = useState(false);
@@ -59,7 +59,7 @@ export default function Home() {
             <div className='main-body'>
                 <div className={`sticky-header-${themeName}`}>     
                     {isMobile === true && <MobileHeader />}
-                    {isMobile === false && <Header />}
+                    {isMobile === false && <Header setToken={setToken} />}
                 </div>
                 <div>
                 {isMobile === true &&  <MobileGetAirportList pstTime={pstTime}/>}

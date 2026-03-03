@@ -38,8 +38,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
      const [isAdminRole, setIsAdminRole] = useState('false')
      var token = localStorage.getItem('token');
      //console.log("run is admin function... token is ", token)
-     const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PROD URL
-     //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
+     const mongoIsAdminURL = `${process.env.REACT_APP_API_URL}/login/isadmin`
         
      useEffect(() => {
          const fetchData = async () => {

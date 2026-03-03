@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext  } from 'react';
-import ThemeContext, {ThemeController} from './ThemeContext'
-import { Link, useLocation } from 'react-router-dom';
+import ThemeContext, {ThemeController} from './ThemeContext';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { convertTime12to24 } from './utilTime'
 import UtilAdminRole from './UtilAdminRole';
 import useTheme from './useTheme';
@@ -9,7 +9,9 @@ import './Zsebrief.css';
 import logo from './icons/zsebrief.png'
 
 
-export default function Header() {
+export default function Header({ setToken }) {
+
+    const navigate = useNavigate();
     const [time, setTime] = useState(new Date().toUTCString().substring(17,19) + new Date().toUTCString().substring(20,22));
     const [pstTime, setPstTime] = useState()
     const [showDropdown, setShowDropdown] = useState(false);
@@ -44,14 +46,11 @@ export default function Header() {
 
     //Logout
 
-    const signOut = ()=> {
-        localStorage.removeItem('token');
-        setTimeout(() => {
-            // Redirect the user to the desired page
-            window.location.href = '/';
-          }, 1000);
-    }
-
+    const signOut = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    navigate("/login", { replace: true });
+    };
 
     const toggleDropdown = () => {
         setShowDropdown(prevState => !prevState);

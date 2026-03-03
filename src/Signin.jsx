@@ -1,120 +1,103 @@
 import React, { useState } from 'react';
-import 'firebase/compat/auth';
-import './db'
-import './Zsebrief.css'
-//import { validateSignupinForm } from './utilSigninupValidate'
+import './Zsebrief.css';
 
 export default function Signin() {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [submitMessage, setSubmitMessage] = useState("")
-    const [emailError, setEmailError] = useState()
-    const [passwordError, setPasswordError] = useState()
- 
-    const mongoSignupURL = "https://zsebrief-backend-production.up.railway.app/login"
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const mongoSignupURL = `${process.env.REACT_APP_API_URL}/login`;
+
+  const handleEmailChange = (event) => {
+    const value = event.target.value;
+    setEmail(value);
+
+    const emailRegex = /^[\w.-]+@[a-zA-Z_-]+?\.[a-zA-Z]{2,}$/;
+    setEmailError(!emailRegex.test(value));
+  };
+
+  const handlePasswordChange = (event) => {
+    const value = event.target.value;
+    setPassword(value);
+
+    const passwordTest = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
+    setPasswordError(!passwordTest.test(value));
+  };
+
+  const handleSignin = async (event) => {
+    console.log("Email login submit triggered");
+    event.preventDefault();
+
+    if (emailError || passwordError) {
+      setSubmitMessage("Please fix form errors before submitting.");
+      return;
+    }
+
+    try {
+      const response = await fetch(mongoSignupURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        setSubmitMessage("Invalid email or password.");
+        return;
+      }
+
+      const data = await response.json();
+
+    localStorage.setItem("token", data.token);
+    setSubmitMessage("Login successful! Redirecting...");
+    window.location.replace("/home");
     
-    const user = {"email": email, "password": password}
-    const emailInput = document.getElementById('email')
-    const passwordInput = document.getElementById('password')
 
-    //handle email change
-    const handleEmailChange = (event)=> {
-        const email = event.target.value;
-        setEmail(email)     
-        const emailRegex = /^[\w.-]+@[a-zA-Z_-]+?\.[a-zA-Z]{2,3}$/
-        if (!emailRegex.test(email)) {
-            setEmailError("true");
-            emailInput.classList.add("input-error")
-          } else {
-            emailInput.classList.remove("input-error")
-            emailInput.setCustomValidity('')
-            setEmailError("false");
-          }
+
+    } catch (error) {
+      console.error(error);
+      setSubmitMessage("Login failed. Please try again.");
     }
+  };
 
-    //handle password change
-    const handlePasswordChange = (event)=> {
-        const password = event.target.value;
-        //console.log(password)
-        setPassword(password)     
-        const passwordTest = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/
-        if (!passwordTest.test(password)) {
-            setPasswordError("true");
-            passwordInput.classList.add("input-error")
-          } else {
-            passwordInput.classList.remove("input-error")
-            passwordInput.setCustomValidity('')
-            setPasswordError("false"); 
-          }
-    }
-   
+  return (
+    <div>
+      <form onSubmit={handleSignin}>
 
-    const handleSignin = (event)=>{
+        <label>Email</label><br />
+        <input
+          type="email"
+          autoComplete="email"
+          size="25"
+          placeholder="Enter your email address"
+          value={email}
+          onChange={handleEmailChange}
+          className={emailError ? "input-error" : ""}
+        /><br /><br />
 
-        event.preventDefault();
-          
-        //display validation errors
+        <label>Password</label><br />
+        <input
+          type="password"
+          autoComplete="current-password"
+          size="25"
+          placeholder="Enter your password"
+          value={password}
+          onChange={handlePasswordChange}
+          className={passwordError ? "input-error" : ""}
+        /><br /><br />
 
-        if (emailError === "true"){
-            //console.log('email error', emailError)
-            emailInput.setCustomValidity("email form not valid")
-            emailInput.reportValidity()
-        } 
-        
-        if (passwordError === "true"){
-            //console.log('password error', passwordError)
-            passwordInput.setCustomValidity("password must contain at least six charachters and contain a special charachter")
-            passwordInput.reportValidity()
-        } 
+        <button type="submit">Submit</button>
+      </form>
 
-        fetch(mongoSignupURL, {
-            method:'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(user), // Data to be sent in the request body
-        }).then(response=> {
-            if (response.ok) {
-                return response.json()
-            } else {
-                const errorStatus = response.status
-                console.log(errorStatus)     
-            }
-        }).then(data=>{
-            if (!data){
-                setSubmitMessage(`Error logging in`)
-            } else {
-                setSubmitMessage("Login succesful: redirecting you to homepage")
-                //console.log("response is ", data.token)
-                localStorage.setItem("token", data.token)
-                setTimeout(() => {
-                    // Redirect the user to the desired page
-                    window.location.href = '/home';
-                    }, 1000); 
-            }    
-        }).catch (error => {
-            console.log(error)
-        });
-
-    }
-
-    return (
-            <div>
-                <form onSubmit = {handleSignin}>
-                    <label>Email</label><br></br>
-                    <input type="text" id="email" className="" size="25" placeholder="Enter your email address" value={email} onChange={handleEmailChange}/><br></br>
-                    &nbsp;<br></br>
-                    <label>Password</label><br></br>
-                    <input type="password" id="password" className="" size="25" placeholder="Enter your password" value={password} onChange={handlePasswordChange}/><br></br>
-                    <button type="submit">Submit</button>
-                </form>
-                &nbsp;<br></br>
-                {submitMessage.includes("succesful") &&  
-                <p id="success-message">{submitMessage}</p>}
-                {submitMessage.includes("Error") &&  
-                <p id="error-message">{submitMessage}</p>}
-            </div>  
-        );
+      {submitMessage && (
+        <p className={submitMessage.includes("successful") ? "success-message" : "error-message"}>
+          {submitMessage}
+        </p>
+      )}
+    </div>
+  );
 }
-

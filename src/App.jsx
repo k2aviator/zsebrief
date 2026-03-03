@@ -1,95 +1,203 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import ThemeContext, { ThemeController } from './ThemeContext';
-import useTheme from './useTheme';
-import Button from './Button'
+import { ThemeController } from './ThemeContext';
+
 import Home from './Home';
 import Signup from './Signup';
-import AdminDepsByDClass from './AdminDepsByDClass'
-import AdminDepsByCClass from './AdminDepsByCClass'
-import AdminDepsByBClass from './AdminDepsByBClass'
-import AirportEdit from './AirportDetails'
-import AirportEditOverview from './AirportEditOverview'
-import AirportEditRunways from './AirportEditRunways'
-import AirportEditDepartures from './AirportEditDepartures'
-import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne'
-import GetAirportDeparturesAddOne from './GetAirportDeparturesAddOne'
-import GetAirportRunwaysEditOne from './GetAirportRunwaysEditOne'
-import VatsimAuth from './VatsimAuth'
-import GetAirportFullPage from './GetAirportFullPage'
-import Login from './Login'
+import AdminDepsByDClass from './AdminDepsByDClass';
+import AdminDepsByCClass from './AdminDepsByCClass';
+import AdminDepsByBClass from './AdminDepsByBClass';
+import AirportEdit from './AirportDetails';
+import AirportEditOverview from './AirportEditOverview';
+import AirportEditRunways from './AirportEditRunways';
+import AirportEditDepartures from './AirportEditDepartures';
+import GetAirportDeparturesEditOne from './GetAirportDeparturesEditOne';
+import GetAirportDeparturesAddOne from './GetAirportDeparturesAddOne';
+import GetAirportRunwaysEditOne from './GetAirportRunwaysEditOne';
+import GetAirportFullPage from './GetAirportFullPage';
+import Login from './Login';
+import OAuthSuccess from "./OAuthSuccess";
+import PrivacyPolicy from "./PrivacyPolicy";
+
 import './App.css';
 import './Zsebrief.css';
 
-
 function App() {
 
-  const [isAdminRole, setIsAdminRole] = useState('false')
+  const [isAdminRole, setIsAdminRole] = useState(false);
 
-  const isAuthenticated = function checkIfUserIsAuthenticated(){
-    //console.log("check if user is authenticated function")
-    var token = localStorage.getItem('token');
-    if (token){
-      //console.log("token exists, login ", token)
-      return true
-    } else {
-      //console.log("no token exists")
-      return false
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+
+  // 🔐 Protected Route (Requires Login)
+  const ProtectedRoute = ({ children }) => {
+    if (!token) {
+      return <Navigate to="/login" replace />;
     }
-    
-  }
-  
-    const isAdmin = async () => {
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
-    var token = localStorage.getItem('token');
-    fetch(mongoIsAdminURL, {
-      method:'POST', 
-      headers:  {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Set the Authorization header with the token
-          },
-      }).then(response=> response.json()
-      ).then(data=>{
-          const isAdmin = data.admin
-          setIsAdminRole(isAdmin)
-      }).catch (error => {
-        // console.error('An error occurred:', error);
-      })     
-    } 
+    return children;
+  };
 
-    useEffect(() => {
+  // 🔐 Admin Route (Requires Login + Admin)
+  const AdminRoute = ({ children }) => {
+    if (!token) {
+      return <Navigate to="/login" replace />;
+    }
+    if (!isAdminRole) {
+      return <Navigate to="/home" replace />;
+    }
+    return children;
+  };
+
+  // 🔎 Check Admin Role
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!token) return;
+
       try {
-        console.log("is admin function")
-        isAdmin(); // Call the isAdmin() function
-      } catch (error) {
-        console.error('An error occurred:', error); // Handle the error
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/login/isadmin`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        setIsAdminRole(data.admin === true);
+
+      } catch (err) {
+        console.error("Admin check failed:", err);
       }
-    },[])
-    
+    };
+
+    checkAdmin();
+  }, [token]);
+
   return (
     <ThemeController>
-    <div>
-     <Routes>
-          <Route path = "/" element={isAuthenticated() === true ? <Home />: <Login />}/>
-          <Route path = "/login" element={<VatsimAuth />} />
-          <Route path = "/vatsim-auth" element={<VatsimAuth />} />
-          <Route path = "/signup" element={<Signup />}/>
-          <Route path = "/home" element={isAuthenticated() === true ? <Home />: <Navigate to="/" replace />}/>
-          <Route path = "/airports/:icao" element={isAuthenticated() === true ? <GetAirportFullPage />: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao" element={isAuthenticated() === true ? <AirportEdit/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/overview" element={isAdminRole === true ? <AirportEditOverview/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/runways" element={isAdminRole === true? <AirportEditRunways/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/departures" element={isAdminRole === true ? <AirportEditDepartures/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/departures/add-new" element={isAdminRole === true ? <GetAirportDeparturesAddOne/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/departures/:id" element={isAdminRole === true ? <GetAirportDeparturesEditOne/>: <Navigate to="/" replace />}/>
-          <Route path = "/details/:icao/runways/:id" element={isAdminRole === true ? <GetAirportRunwaysEditOne/>: <Navigate to="/" replace />}/>
-          <Route path = "/admin/deps-by-class/d" element={isAdminRole === true ? <AdminDepsByDClass />: <Navigate to="/" replace />}/>
-          <Route path = "/admin/deps-by-class/c" element={isAdminRole === true ? <AdminDepsByCClass />: <Navigate to="/" replace />}/>
-          <Route path = "/admin/deps-by-class/b" element={isAdminRole === true ? <AdminDepsByBClass />: <Navigate to="/" replace />}/> 
-      
-       </Routes>  
-    </div>
+      <Routes>
 
+        {/* Public Routes */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth-success" element={<OAuthSuccess setToken={setToken} />} />
+        {/* Protected Routes */}
+        <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <Home setToken={setToken} />
+          </ProtectedRoute>
+        }
+      />
+
+        <Route
+          path="/airports/:icao"
+          element={
+            <ProtectedRoute>
+              <GetAirportFullPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao"
+          element={
+            <ProtectedRoute>
+              <AirportEdit />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/details/:icao/overview"
+          element={
+            <AdminRoute>
+              <AirportEditOverview />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao/runways"
+          element={
+            <AdminRoute>
+              <AirportEditRunways />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao/departures"
+          element={
+            <AdminRoute>
+              <AirportEditDepartures />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao/departures/add-new"
+          element={
+            <AdminRoute>
+              <GetAirportDeparturesAddOne />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao/departures/:id"
+          element={
+            <AdminRoute>
+              <GetAirportDeparturesEditOne />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/details/:icao/runways/:id"
+          element={
+            <AdminRoute>
+              <GetAirportRunwaysEditOne />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/deps-by-class/d"
+          element={
+            <AdminRoute>
+              <AdminDepsByDClass />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/deps-by-class/c"
+          element={
+            <AdminRoute>
+              <AdminDepsByCClass />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/deps-by-class/b"
+          element={
+            <AdminRoute>
+              <AdminDepsByBClass />
+            </AdminRoute>
+          }
+        />
+
+      </Routes>
     </ThemeController>
   );
 }

@@ -5,7 +5,7 @@ export default function UtilAdminRole() {
     const [isAdminRole, setIsAdminRole] = useState(false)
     var token = localStorage.getItem('token');
     //console.log("run is admin function... token is ", token)
-    const mongoIsAdminURL = "https://zsebrief-backend-production.up.railway.app/login/isadmin" //PRODUCTION
+    const mongoIsAdminURL = `${process.env.REACT_APP_API_URL}/login/isadmin`
     //const mongoIsAdminURL = "http://localhost:3000/login/isadmin" //TEST URL
 
     useEffect(() => {
