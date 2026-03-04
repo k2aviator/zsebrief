@@ -32,7 +32,7 @@ export default function GetAirportMETAR({airportICAO, runways}) {
               toggleLoading(false);
               setHasError(true);
           })  
-        }, [avwxUrlCodeFetch])
+        }, [airportICAO])
 
 
  
@@ -48,37 +48,23 @@ export default function GetAirportMETAR({airportICAO, runways}) {
 
     const airportRawMetar = metar.raw
     const airportFlightRules = metar.flight_rules 
-    // eslint-disable-next-line
-    // let airportWindSpeed;
-    // eslint-disable-next-line
+
+
+
     let airportWindValue;
-    let airportWindDirection;
 
+    let airportWindDirection = metar.wind_direction?.value ?? 0;
+    let windSpeed = metar.wind_speed?.value ?? 0;
+    let windGust = metar.wind_gust?.value ?? null;
 
-    //NEED HELP HANDLING ERRORS WHEN WINDS ARE NOT PRESENT
+    let airportTotalWind = windGust ?? windSpeed;
 
-
-    if (!metar.wind_direction){
-        //console.log("wind direction does not exist")
-        airportWindDirection = 0
+    if (metar.wind_gust && metar.wind_gust.value !== null) {
+        airportTotalWind = metar.wind_gust.value;
+    } else if (metar.wind_speed && metar.wind_speed.value !== null) {
+        airportTotalWind = metar.wind_speed.value;
     } else {
-        //console.log("wind directions exists ", metar.wind_direction.value)
-        airportWindDirection = metar.wind_direction.value
-    }
-
-    let airportTotalWind;
-
-    if (!metar.wind_speed){
-        //console.log("wind speed doesn't exist in metar")
-        airportTotalWind = 0
-    } 
-
-    if (!metar.wind_gust){
-        //console.log("wind gust doesn't exist")
-        airportTotalWind = metar.wind_speed.value
-    } else {
-        //console.log("wind gust exists - use this value: ", metar.wind_gust.value)
-        airportTotalWind = metar.wind_gust.value
+        airportTotalWind = 0;
     }
 
     //console.log("airport wind gust value ", airportTotalWind)
@@ -228,9 +214,12 @@ export default function GetAirportMETAR({airportICAO, runways}) {
 
     //Exclude remarks part of the atis
     let metarToDisplay;
-    const atisRemarkIndex = airportRawMetar.indexOf("RMK")
-    metarToDisplay = airportRawMetar.substring(0,atisRemarkIndex)
-    // console.log("airport raw metar", )
+    const atisRemarkIndex = airportRawMetar.indexOf("RMK");
+    if (atisRemarkIndex !== -1) {
+        metarToDisplay = airportRawMetar.substring(0, atisRemarkIndex);
+    } else {
+        metarToDisplay = airportRawMetar;
+    }
 
     
     const evalSkyConditions = (airportFlightRules)=>{
