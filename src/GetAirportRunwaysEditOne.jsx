@@ -6,7 +6,7 @@ import Footer from './Footer'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
-
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportRunwaysEditOne() {  
     const navigate = useNavigate()
@@ -72,8 +72,7 @@ export default function GetAirportRunwaysEditOne() {
     }
 
     //MONGO DB GET BY RUNWAY ID
-    const mongoRunwaysById = `https://zsebrief-backend-production.up.railway.app/runways/${runwayId}`//PRODUCTION
-    //const mongoRunwaysById = `http://localhost:3000/runways/${runwayId}`//TEST
+    const mongoRunwaysById = `${API_BASE_URL}/runways/${runwayId}`
 
     useEffect(()=>{
     fetch(mongoRunwaysById)

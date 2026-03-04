@@ -5,6 +5,7 @@ import UtilAdminRole from './UtilAdminRole';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportDeparturesEdit({airportICAO}) {
 
@@ -22,7 +23,7 @@ export default function GetAirportDeparturesEdit({airportICAO}) {
 
 
     //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures` //PRODUCTION
+    const mongoDepartureURL = `${API_BASE_URL}/departures`
 
     useEffect(()=>{
         fetch(mongoDepartureURL)

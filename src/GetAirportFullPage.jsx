@@ -11,7 +11,7 @@ import Header from './Header';
 import Footer from './Footer'
 import './Zsebrief.css';
 import { convertTime12to24 } from './utilTime'
-
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportFullPage() {
     const { icao } = useParams();
@@ -73,7 +73,7 @@ export default function GetAirportFullPage() {
         const upperIcao = icao.toUpperCase()
 
         //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-        const mongoAirportURL = `${process.env.REACT_APP_API_URL}/airports/${upperIcao}`
+        const mongoAirportURL = `${API_BASE_URL}/airports/${upperIcao}`
         // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
         fetch(mongoAirportURL)

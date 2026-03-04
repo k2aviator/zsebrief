@@ -7,6 +7,7 @@ import Footer from './Footer'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportDeparturesAddOne() {  
     const navigate = useNavigate()
@@ -39,8 +40,8 @@ export default function GetAirportDeparturesAddOne() {
     const [formData, setFormData] = useState([])
 
     //MONGO DB GET RUNWAYS LIST
-    const mongoRunwaysById = `${process.env.REACT_APP_API_URL}/runways/numbers/${airportICAO}`
-    
+    const mongoRunwaysById = `${API_BASE_URL}/runways/numbers/${airportICAO}`
+
     useEffect(()=>{
     fetch(mongoRunwaysById)
     .then(response => response.json())
@@ -186,12 +187,8 @@ export default function GetAirportDeparturesAddOne() {
 
         var token = localStorage.getItem('token');
 
-        const mongoDeparturesAddURL = "https://zsebrief-backend-production.up.railway.app/departures" // PRODUCTION URL
-        //const mongoDeparturesAddURL = "http://localhost:3000/departures" //TEST URL
+        const mongoDeparturesAddURL = `${API_BASE_URL}/departures` 
 
-        //reduce the array 
-
-        console.log("departure form data before reduction", departureFormData)
 
         const transformedDepartureFormData = departureFormData.reduce((result, item) => {
         const key = Object.keys(item)[0]; // Assuming each object has only one key

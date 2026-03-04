@@ -5,6 +5,7 @@ import Footer from './Footer'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function AdminDepsByDClass(){
     /* eslint-disable */        
@@ -18,9 +19,7 @@ export default function AdminDepsByDClass(){
 
     //MONGO DB GET CLASS B DEPARTURES
 
-    const mongoDepByClassURL = "https://zsebrief-backend-production.up.railway.app/admin/deps-by-class/" //PRODUCTION
-    //const mongoDepByClassURL = "http://localhost:3000/admin/deps-by-class/" //TEST
-
+    const mongoDepByClassURL = `${API_BASE_URL}/admin/deps-by-class/` 
     useEffect(()=>{
         fetch(`${mongoDepByClassURL}D`)
         .then(response => response.json())

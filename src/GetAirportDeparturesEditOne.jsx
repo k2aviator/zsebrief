@@ -7,6 +7,7 @@ import Footer from './Footer'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportDeparturesEditOne() {  
     const navigate = useNavigate()
@@ -133,10 +134,10 @@ export default function GetAirportDeparturesEditOne() {
 
 
     //MONGO DB GET DEPARTURES
-    const mongoDepartureURL = `${process.env.REACT_APP_API_URL}/departures`
+    const mongoDepartureURL = `${API_BASE_URL}/departures`
 
     //MONGO DB GET BY DEPARTURE ID
-    const mongoDepartureById = `${process.env.REACT_APP_API_URL}/departures/${departureId}`
+    const mongoDepartureById = `${API_BASE_URL}/departures/${departureId}`
 
     useEffect(()=>{
     fetch(mongoDepartureById)
@@ -174,8 +175,8 @@ export default function GetAirportDeparturesEditOne() {
 
 
     //MONGO DB GET RUNWAYS LIST
-    const mongoRunwaysById = `${process.env.REACT_APP_API_URL}/airports/${airportICAO}`//PRODUCTION
-    //const mongoRunwaysById = `http://localhost:3000/runways/numbers/${airportICAO}`//TEST
+    const mongoRunwaysById = `${API_BASE_URL}/airports/${airportICAO}`
+    
     useEffect(()=>{
     fetch(mongoRunwaysById)
     .then(response => response.json())
@@ -259,7 +260,7 @@ export default function GetAirportDeparturesEditOne() {
 
         var token = localStorage.getItem('token');
 
-        const mongoDeparturesURL = `${process.env.REACT_APP_API_URL}/departures` // PRODUCTION URL
+        const mongoDeparturesURL = `${API_BASE_URL}/departures` // PRODUCTION URL
         //const mongoDeparturesURL = "http://localhost:3000/departures" //TEST URL
 
         //reduce the array 

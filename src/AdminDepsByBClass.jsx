@@ -5,6 +5,7 @@ import Footer from './Footer'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function AdminDepsByBClass(){
     /* eslint-disable */        
@@ -15,13 +16,10 @@ export default function AdminDepsByBClass(){
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
-
-
     
     //MONGO DB GET CLASS B DEPARTURES
 
-    const mongoDepByClassURL = "https://zsebrief-backend-production.up.railway.app/admin/deps-by-class/" //PRODUCTION
-    //const mongoDepByClassURL = "http://localhost:3000/admin/deps-by-class/" //TEST
+    const mongoDepByClassURL = `${API_BASE_URL}/admin/deps-by-class/` //PRODUCTION
 
     useEffect(()=>{
         fetch(`${mongoDepByClassURL}B`)

@@ -3,7 +3,7 @@ import GetAirportMETAR from './GetAirportMETAR'
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
-
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportRunways({airportICAO}) {  
     
@@ -14,9 +14,7 @@ export default function GetAirportRunways({airportICAO}) {
 
     //MONGO DB GET RUNWAYS
 
-    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoRunwayURL = "https://zsebrief-backend-production.up.railway.app/runways"
-    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
+    const mongoRunwayURL = `${API_BASE_URL}/runways`
 
     useEffect(()=>{
         fetch(mongoRunwayURL)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
-
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportDepartures({airportICAO}) {  
     
@@ -13,10 +13,8 @@ export default function GetAirportDepartures({airportICAO}) {
     const { themeName, toggleTheme } = useContext(ThemeContext)
 
     //MONGO DB GET DEPARTURES
+    const mongoDepartureURL = `${API_BASE_URL}/departures`
 
-    //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoDepartureURL = "https://zsebrief-backend-production.up.railway.app/departures"
-    // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
     useEffect(()=>{
         fetch(mongoDepartureURL)

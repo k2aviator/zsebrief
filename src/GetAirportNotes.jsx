@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
-
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportNotes({airportICAO}) {  
     console.log("airport ICAO", airportICAO)
@@ -15,7 +15,7 @@ export default function GetAirportNotes({airportICAO}) {
     //MONGO DB Get Airport Details
 
     const mongoAirportsURL =
-  `${process.env.REACT_APP_API_URL}/airports/${airportICAO}`;
+  `${API_BASE_URL}/airports/${airportICAO}`;
 
 useEffect(() => {
     setIsLoading(true);

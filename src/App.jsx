@@ -18,6 +18,7 @@ import GetAirportFullPage from './GetAirportFullPage';
 import Login from './Login';
 import OAuthSuccess from "./OAuthSuccess";
 import PrivacyPolicy from "./PrivacyPolicy";
+import API_BASE_URL from './config/react_api';
 
 import './App.css';
 import './Zsebrief.css';
@@ -54,7 +55,7 @@ function App() {
 
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/login/isadmin`,
+          `${API_BASE_URL}/login/isadmin`,
           {
             method: 'POST',
             headers: {

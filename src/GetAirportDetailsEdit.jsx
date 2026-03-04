@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportDetailsEdit({airportICAO}) {  
     const [airports, setAirports] = useState([])
@@ -29,7 +30,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
 
     //MONGO DB GET AIRPORTS
 
-    const mongoAirportsURL = "https://zsebrief-backend-production.up.railway.app/airports"
+    const mongoAirportsURL = `${API_BASE_URL}/airports`
     useEffect(()=>{
     fetch(`${mongoAirportsURL}/${airportICAO}`)
     .then(response => response.json())

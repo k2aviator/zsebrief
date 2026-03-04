@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAirportList({pstTime}) {  
    
@@ -16,7 +17,7 @@ export default function GetAirportList({pstTime}) {
     //MONGO DB GET AIRPORTS
 
     //const mongoAirportToken =  "?token=auNV6JNACu-VW3cd2FOL5OIhEzv1Q9qJxKiRQok2O7k"
-    const mongoAirportURL = `${process.env.REACT_APP_API_URL}/airports`
+    const mongoAirportURL = `${API_BASE_URL}/airports`
     // let mongoUrlFetch = `${mongoAirportURL}${mongoAirportToken}`
 
     useEffect(()=>{

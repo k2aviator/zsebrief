@@ -7,8 +7,8 @@ import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
 
-//https://blog.openreplay.com/creating-a-collapsible-component-for-react/
-//Expand and collapse airports
+
+
 export default function GetAirportDetails({airportICAO, airportName, airportTowered, airportHoursOpen, airportHoursClose, airspaceClass, airportElev, pstTime}) {  
     //console.log(airportState)
     const [open, setOpen] = useState(false)

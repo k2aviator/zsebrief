@@ -2,6 +2,7 @@ import React, { useState, useEffect,  useContext  } from 'react';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function AirportDisplayOverview({airportICAO}) {  
     const [airports, setAirports] = useState([])
@@ -12,7 +13,7 @@ export default function AirportDisplayOverview({airportICAO}) {
     
     
     //MONGO DB GET AIRPORTS
-    const mongoAirportsURL = "https://zsebrief-backend-production.up.railway.app/airports"
+    const mongoAirportsURL = `${API_BASE_URL}/airports`
     useEffect(()=>{
     fetch(mongoAirportsURL)
     .then(response => response.json())

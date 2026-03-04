@@ -5,6 +5,7 @@ import UtilAdminRole from './UtilAdminRole';
 import ThemeContext, { ThemeController } from './ThemeContext';
 import useTheme from './useTheme';
 import Button from './Button'
+import API_BASE_URL from './config/react_api';
 
 export default function GetAllAirportRunways({airportICAO}) {  
             
@@ -16,7 +17,7 @@ export default function GetAllAirportRunways({airportICAO}) {
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
 
      //MONGO DB GET RUNWAYS
-    const mongoRunwaysURL = "https://zsebrief-backend-production.up.railway.app/runways"
+    const mongoRunwaysURL = `${API_BASE_URL}/runways`
 
     useEffect(()=>{
         fetch(mongoRunwaysURL)
