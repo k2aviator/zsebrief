@@ -42,7 +42,8 @@ export default function AirportDisplayOverview({airportICAO}) {
         let airportHoursClose = airport.HRS_CLOSE
         let airportClass = airport.AIRSPACE_CLASS
         let airportElev = airport.ELEV
-        let airportNotes = decodeURIComponent(airport.NOTES)
+        let airportNotes = decodeURIComponent(airport.AIRPORT_NOTES)
+        let arrivalNotes = decodeURIComponent(airport.ARRIVAL_NOTES)
         let airportUpdated = airport.UPDATED
         let airportUpdatedBy = airport.UPDATED_BY
 
@@ -57,11 +58,17 @@ export default function AirportDisplayOverview({airportICAO}) {
                 <label>Towered: {airportTowered}</label><br></br>
                 <label>Hour Open: {airportHoursOpen}</label><br></br>
                 <label>Hour Closed: {airportHoursClose}</label><br></br>
-                <label>Arrival Notes: 
+                <label>Airport Notes: 
                     <p style={{ whiteSpace: 'pre-wrap' }}>
                     {airportNotes}
                     </p>
                 </label>
+                <label>Arrival Notes: 
+                    <p style={{ whiteSpace: 'pre-wrap' }}>
+                    {arrivalNotes}
+                    </p>
+                </label>
+                              
                                 
                         
             </form>

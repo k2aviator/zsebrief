@@ -16,7 +16,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     const [icaoClass, setIcaoClass] = useState('');
     const [icaoTowered, setIcaoTowered] = useState('');
     const [formData, setFormData] = useState([])
-    const [notes, setNotes] = useState('');
+    const [airportNotes, setAirportNotes] = useState('');
+    const [arrivalNotes, setArrivalNotes] = useState('');
 
     const { themeName, toggleTheme } = useContext(ThemeContext)
     const buttonDark = themeName === "dark" ? 'button-dark' : '';
@@ -39,7 +40,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         setIcaoClass(data.AIRSPACE_CLASS)
         setIcaoTowered(data.TOWERED)
         setFormData(prevData => [...prevData, {"ICAO":airportICAO}])
-        setNotes(decodeURIComponent(data.NOTES)); 
+        setAirportNotes(decodeURIComponent(data.AIRPORT_NOTES)); 
+        setArrivalNotes(decodeURIComponent(data.ARRIVAL_NOTES)); 
         setIsLoading(false);   
         },
         (error)=>{
@@ -79,7 +81,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
         const toweredInput = document.getElementById('airportTowered')
         const openInput = document.getElementById('airportHoursOpen')
         const closedInput = document.getElementById('airportHoursClosed')
-        const notesInput = document.getElementById('airportNotes')
+        const airportNotesInput = document.getElementById('airportNotes')
+        const arrivalNotesInput = document.getElementById('arrivalNotes')
         var overviewFormData = formData;
 
 
@@ -138,12 +141,20 @@ export default function GetAirportDetailsEdit({airportICAO}) {
 
         //sanitize notes field
 
-        if (notesInput.value.length === 0){
+        if (airportNotesInput.value.length === 0){
             //console.log("no field entered, use placeholder value")
             // setFormData(prevData => [...prevData, {"NOTES":notesInput.placeholder}])
         } else {
-            const sanitizedNotes = encodeURIComponent(notesInput.value)
-            overviewFormData.push({"NOTES":sanitizedNotes})
+            const sanitizedNotes = encodeURIComponent(airportNotesInput.value)
+            overviewFormData.push({"AIRPORT_NOTES":sanitizedNotes})
+        }
+
+        if (arrivalNotesInput.value.length === 0){
+            //console.log("no field entered, use placeholder value")
+            // setFormData(prevData => [...prevData, {"NOTES":notesInput.placeholder}])
+        } else {
+            const sanitizedNotes = encodeURIComponent(arrivalNotesInput.value)
+            overviewFormData.push({"ARRIVAL_NOTES":sanitizedNotes})
         }
 
 
@@ -207,7 +218,7 @@ export default function GetAirportDetailsEdit({airportICAO}) {
     let airportHoursClose = airports.HRS_CLOSE
     let airportClass = airports.AIRSPACE_CLASS
     let airportElev = airports.ELEV
-    let airportNotes = decodeURIComponent(airports.NOTES)
+    // let airportNotes = decodeURIComponent(airports.NOTES)
     let airportUpdated = airports.UPDATED
     let airportUpdatedBy = airports.UPDATED_BY
 
@@ -245,14 +256,24 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                     <label>Hour Closed: </label><input type="text" id="airportHoursClosed" size="1" placeholder={airportHoursClose} pattern="([0-9]{4}|[NA]{2})"/><br></br>
                 </span>
                 }
-               <label>Arrival Notes: </label>
+               <label>Airport Notes: </label>
                <p>     
                <textarea
                 id="airportNotes"
                 rows="4"
                 cols="50"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
+                value={airportNotes}
+                onChange={(e) => setAirportNotes(e.target.value)}
+                />
+                </p>
+                <label>Arrival Notes: </label>
+               <p>     
+               <textarea
+                id="arrivalNotes"
+                rows="4"
+                cols="50"
+                value={arrivalNotes}
+                onChange={(e) => setArrivalNotes(e.target.value)}
                 />
                 </p>
                 <button type="submit" className={buttonDark}>Submit</button>

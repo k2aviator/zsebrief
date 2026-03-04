@@ -10,8 +10,9 @@ export default function GetAirportNotes({airportICAO}) {
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { themeName, toggleTheme } = useContext(ThemeContext);
-    const [airportData, setAirportData] = useState()
-    const [notesInput, setNotesInput] = useState("");
+
+    const [arrivalNotesInput, setArrivalNotesInput] = useState("");
+    const [airportNotesInput, setAirportNotesInput] = useState("");
     //MONGO DB Get Airport Details
 
     const mongoAirportsURL =
@@ -19,7 +20,6 @@ export default function GetAirportNotes({airportICAO}) {
 
 useEffect(() => {
     setIsLoading(true);
-
     fetch(mongoAirportsURL)
         .then(response => {
             if (!response.ok) {
@@ -28,18 +28,27 @@ useEffect(() => {
             return response.json();
         })
         .then((data) => {
-            setAirportData(data);
-            let decodedNotes = "";
+            let decodedArrivalNotes = "";
              try {
-                decodedNotes = data?.NOTES
-                    ? decodeURIComponent(data.NOTES)
+                decodedArrivalNotes = data?.ARRIVAL_NOTES
+                    ? decodeURIComponent(data.ARRIVAL_NOTES)
                     : "";
-                console.log("decoted notes", decodedNotes)
+                console.log("decoted notes", decodedArrivalNotes)
             } catch (e) {
-                decodedNotes = data?.NOTES || ""; // fallback if already decoded
+                decodedArrivalNotes = data?.ARRIVAL_NOTES || ""; // fallback if already decoded
             }
+            setArrivalNotesInput(decodedArrivalNotes); 
 
-            setNotesInput(decodedNotes); 
+            let decodedAirportNotes = "";
+             try {
+                decodedAirportNotes = data?.AIRPORT_NOTES
+                    ? decodeURIComponent(data.AIRPORT_NOTES)
+                    : "";
+                console.log("decoted notes", decodedAirportNotes)
+            } catch (e) {
+                decodedAirportNotes = data?.AIRPORT_NOTES || ""; // fallback if already decoded
+            }
+            setAirportNotesInput(decodedAirportNotes); 
             setIsLoading(false);
                 })
         .catch((error) => {
@@ -51,7 +60,7 @@ useEffect(() => {
 }, [mongoAirportsURL]);
 
 
-    console.log("notes input", notesInput)
+    console.log("notes input", arrivalNotesInput)
     // const airportNotes = decodeURIComponent(airportData?.NOTES || "");
 
 
@@ -68,8 +77,12 @@ useEffect(() => {
          <div>
             <p className={`headerText-${themeName}`}>ARRIVAL NOTES</p>
             <p style={{ whiteSpace: 'pre-wrap' }}>
-            {notesInput}
+            {arrivalNotesInput}
             </p>          
+            <p className={`headerText-${themeName}`}>AIRPORT NOTES</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>
+            {airportNotesInput}
+            </p>       
          </div>
     );
 }

@@ -252,7 +252,7 @@ export default function GetAirportDetails({airportICAO, airportName, airportTowe
                         <div>
                             <Link to={`/details/${airportICAO}`} state={{airportICAO}}> <button className={buttonDark}>View All Airport Details</button></Link><br></br>
                             {isAdminRole && <div>
-                            <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button className={buttonDark}>Edit Arrivals Info</button></Link><br></br>
+                            <Link to={`/details/${airportICAO}/overview`} state={{airportICAO}}> <button className={buttonDark}>Edit Airport Info</button></Link><br></br>
                             <Link to={`/details/${airportICAO}/runways`} state={{airportICAO}}> <button className={buttonDark}>Edit Runway Info</button></Link><br></br>
                             <Link to={`/details/${airportICAO}/departures`} state={{airportICAO}}> <button className={buttonDark}>Add / Edit Departures</button></Link><br></br>
                              </div>}
