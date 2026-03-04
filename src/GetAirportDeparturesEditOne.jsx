@@ -462,8 +462,8 @@ export default function GetAirportDeparturesEditOne() {
                         <label>Notes: </label><br></br>
                         <textarea
                         id="depNotesLocation"
-                        rows={4}
-                        style={{ width: "400px" }} 
+                        rows={10}
+                        style={{ width: "800px" }} 
                         value={depNotes || ""}
                         onChange={(event) => {
                             setDepNotes(event.target.value);

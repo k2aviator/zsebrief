@@ -260,8 +260,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                <p>     
                <textarea
                 id="airportNotes"
-                rows="4"
-                cols="50"
+                rows="10"
+                style={{ width: "800px" }} 
                 value={airportNotes}
                 onChange={(e) => setAirportNotes(e.target.value)}
                 />
@@ -270,8 +270,8 @@ export default function GetAirportDetailsEdit({airportICAO}) {
                <p>     
                <textarea
                 id="arrivalNotes"
-                rows="4"
-                cols="50"
+                rows="10"
+                style={{ width: "800px" }} 
                 value={arrivalNotes}
                 onChange={(e) => setArrivalNotes(e.target.value)}
                 />
